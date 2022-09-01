@@ -1,0 +1,15 @@
+"0","```r
+library(viridis)
+
+```"
+"1","Loading required package: viridisLite
+Warning messages:
+1: In doTryCatch(return(expr), name, parentenv, handler) :
+  \"add\" is not a graphical parameter
+2: In doTryCatch(return(expr), name, parentenv, handler) :
+  \"add\" is not a graphical parameter
+3: In doTryCatch(return(expr), name, parentenv, handler) :
+  \"add\" is not a graphical parameter
+4: In doTryCatch(return(expr), name, parentenv, handler) :
+  \"add\" is not a graphical parameter
+"

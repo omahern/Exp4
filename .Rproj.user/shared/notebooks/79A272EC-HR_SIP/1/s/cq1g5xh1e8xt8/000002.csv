@@ -1,0 +1,68 @@
+"0","## QC
+
+#!/bin/bash
+#SBATCH --partition=compute
+#SBATCH --ntasks=1
+#SBATCH --mem=10gb
+#SBATCH --time=04:35:00
+
+module load anaconda3/2021.05
+source activate bbtools
+
+cd  /vortexfs1/home/olivia.ahern/trophic_cascades/raw_data/
+for sample in $(cat samples); \
+do echo \"On sample: $sample\";
+bbduk.sh in1=\"$sample\"_R1_001.fastq out1=../filtered3/\"$sample\"_R1_filt.fq \
+in2=\"$sample\"_R2_001.fastq out2=../filtered3/\"$sample\"_R2_filt.fq \
+literal=CACGACGCTCTTCCGATCTGTGYCAGCMGCCGCGGTAA,GACGTGTGCTCTTCCGATCTGGACTACNVGGGTWTCTAAT \
+k=18 ordered=t mink=11 ktrim=l rcomp=t tbo tpe \
+hdist=1 minavgquality=25 \
+ref=/vortexfs1/omics/huber/db/adapters/illumina-adapters.fa
+done 2> bbduk_primer_trimming_stats2.txt
+
+
+## Qiime2
+
+#!/bin/bash
+#SBATCH --partition=compute
+#SBATCH --ntasks=1
+#SBATCH --mem=40gb
+#SBATCH --cpus-per-task=20
+#SBATCH --time=04:35:00
+ 
+module load anaconda/5.1
+source activate qiime2-2018.8
+echo importing 
+ 
+qiime tools import \
+--type 'SampleData[PairedEndSequencesWithQuality]' \
+--input-path manifest.txt \
+--output-path /vortexfs1/scratch/olivia.ahern/21Oct21/tagseq-qiime2-snakemake/paired-end-demux.qza \
+--input-format PairedEndFastqManifestPhred33
+echo made a sequence file from your manifest 
+ 
+echo running dada2 
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs paired-end-demux.qza \
+    --p-n-threads 20 \
+    --p-trunc-q 2 \
+    --p-trunc-len-f 200 \
+    --p-trunc-len-r 200 \
+    --p-max-ee 2 \
+    --p-n-reads-learn 1000000 \
+    --p-chimera-method pooled \
+    --o-table ASVs/asv_table.qza \
+    --o-representative-sequences ASVs/rep-seqs.qza \
+    --o-denoising-stats ASVs/stats-dada2.qza
+echo classifying sequences
+qiime feature-classifier classify-sklearn --i-classifier silva_all.qza \
+	 --i-reads ASVs/rep-seqs.qza \
+	 --o-classification ASVs/asv_tax_sklearn.qza
+ 
+cd ASVs
+qiime tools export --input-path asv_table.qza \
+	--output-path asv_table
+ 
+biom convert -i asv_table/feature-table.biom -o asv_table/asv-table.tsv --to-tsv
+ 
+qiime tools export  --input-path asv_tax_sklearn.qza --output-path asv_tax_dir"

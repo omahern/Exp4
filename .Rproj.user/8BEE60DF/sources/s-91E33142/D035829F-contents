@@ -1,0 +1,187 @@
+x<-read.csv(file='/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/asv-table.csv',header=TRUE,row.names=1)
+OTU = otu_table(x, taxa_are_rows=T)
+taxa<-read.csv(file="/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/taxonomy.csv",header=TRUE,row.names=1)
+t<-as.matrix(taxa)
+tax2<-tax_table(t)
+map<-import_qiime_sample_data("/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/map_exp4.txt")
+phyo = phyloseq(OTU, tax2,map)
+phyo1 = subset_taxa(phyo, !Order=="Chloroplast")
+phyo2 = subset_taxa(phyo1, !Family=="Mitochondria")
+phyo=phyo2
+dim(tax2)
+dim(x)
+
+library(DESeq2)
+ddst=phyloseq_to_deseq2(phyo,~Treatment)
+gm_mean = function(x, na.rm=TRUE){
+  exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x))
+  1
+}
+trial.deseq=estimateSizeFactors(ddst,geoMeans = apply(counts(ddst), 1, gm_mean))
+data.vst <- DESeq2::varianceStabilizingTransformation(trial.deseq, blind = T)
+fieldEco.vstMat <- assay(data.vst)
+# And put into my phloseq object
+OTU = otu_table(fieldEco.vstMat, taxa_are_rows=T)
+mcp_vst=phyloseq(OTU,map,tax2)
+
+
+dist=phyloseq::distance(mcp_vst,'euclidean')
+p=prcomp(dist)
+summary(p)
+plot(p$x[,1],p$x[,2], pch = sample_data(mcp_vst)$pch,
+     bg=sample_data(mcp_vst)$col,
+     xlab= 'PCA1 70.8%', ylab='PCoA2 16.4%')
+# remove siders
+
+mcp_vst2=subset_samples(mcp_vst,Treatment != "Pond"  )
+mcp_vst2
+
+dist=phyloseq::distance(mcp_vst2,'euclidean')
+p=prcomp(dist)
+summary(p)
+plot(p$x[,1],p$x[,2], pch = sample_data(mcp_vst2)$pch,
+     bg=sample_data(mcp_vst2)$col,
+     xlab= 'PCoA1 70.7%', ylab='PCoA2 15.3%')
+
+library(CoDaSeq)
+library(compositions)
+input=t(data.frame(otu_table(phyo)))
+dim(input)
+d.subset <- codaSeq.filter(input, 
+                           samples.by.row=T,min.reads=2,min.prop =0.0001)
+
+dim(d.subset)
+log_rats <- (compositions::clr(t(d.subset)))
+OTU=otu_table(t(log_rats),taxa_are_rows = T)
+comp_clr=phyloseq(OTU,map,tax2)
+
+mcp_vst2=subset_samples(comp_clr,Treatment != "Pond"  )
+
+# pca on variances 
+otu=t(otu_table(mcp_vst2))
+p=prcomp(otu)
+summary(p)
+mar=c(7,8,1,1)
+plot(p$x[,1],p$x[,2], pch = sample_data(mcp_vst2)$pch,
+     bg=sample_data(mcp_vst2)$col,cex.lab=1.3,
+     xlab= 'PCoA1 28.88%', ylab='PCoA2 11.12%',cex=1.5)
+legend('topright', legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
+                            "MC2-Met Batch", "MC2-Met Chemostat",
+                            "MC3-Eth Batch", "MC3-Eth Chemostat",
+                            "MC4-Ace Batch", "MC4-Ace Chemostat",
+                            "MC5-Glu Batch", "MC5-Glu Chemostat",
+                            "MC6-Xyl Batch", "MC6-Xyl Chemostat"),
+       pt.bg=c("gray70","gray70","#a44f9a","#a44f9a","#6870c8","#6870c8",
+             "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f"),
+       pch=c(21,23,21,23,21,23,21,23,21,23,21,23),
+       bty='n',cex=1)
+
+
+
+sub=subset_samples(phyo, B_C =="Batch")
+spec=specnumber(t(otu_table(sub)))
+mean(spec)
+sd(spec)
+
+sub=subset_samples(phyo, B_C =="Chemostat")
+spec=specnumber(t(otu_table(sub)))
+mean(spec)
+sd(spec)
+
+input=t(data.frame(otu_table(sub)))
+dim(input)
+d.subset <- codaSeq.filter(input, 
+                           samples.by.row=T,min.reads=2,min.prop =0.00001)
+
+dim(d.subset)
+log_rats <- (compositions::clr(t(d.subset)))
+OTU=otu_table(t(log_rats),taxa_are_rows = T)
+comp_clr=phyloseq(OTU,map,tax2)
+
+# pca on variances 
+otu=t(otu_table(comp_clr))
+p=prcomp(otu)
+summary(p)
+mar=c(7,8,1,1)
+plot(p$x[,1],p$x[,2], pch = sample_data(comp_clr)$pch,
+     bg=sample_data(comp_clr)$col,cex.lab=1.3,
+     xlab= 'PCoA1 17.10%', ylab='PCoA2 11.26%',cex=1.5)
+legend('topleft', legend=c("MC1-C12 Chemostat",
+                            "MC2-Met Chemostat",
+                             "MC3-Eth Chemostat",
+                             "MC4-Ace Chemostat",
+                             "MC5-Glu Chemostat",
+                            "MC6-Xyl Chemostat"),
+       pt.bg=c("gray70","#a44f9a","#6870c8",
+               "#56ae6c","#af953c","#ba4a4f"),
+       pch=23,
+       bty='n',cex=1)
+biplot(p)
+euc=vegdist(otu,'euclidean')
+adonis2(euc~sample_data(comp_clr)$Treatment+sample_data(comp_clr)$Timepoint,
+        by='margin')
+
+
+
+sub=subset_samples(phyo, Treatment =="Pond")
+spec=specnumber(t(otu_table(sub)))
+mean(spec)
+sd(spec)
+
+
+Treat=sample_data(mcp_vst2)$Treatment
+Exp=sample_data(mcp_vst2)$B_C
+ano=adonis2(dist~Exp, by='margin')
+ano
+
+spec=specnumber(t(otu_table(phyo)))
+spec
+barplot(spec, las=2, col=sample_data(phyo)$col, cex.names=0.5)
+
+mc1=subset_samples(phyo,Treatment != "Pond"  )
+mc3=subset_samples(mc1, B_C !="Batch")
+plot_bar(mc3)
+
+mc3a=transform_sample_counts(mc3, function(OTU) OTU/sum(OTU) )
+
+plot_bar(mc3a, fill="Class")
+plot_bar(mc3, "Class")
+
+f=subset_taxa(mc3, Class == "Alphaproteobacteria" | 
+              Class=="Gammaproteobacteria")
+plot_bar(f, "Order")
+
+fa=transform_sample_counts(f, function(OTU) OTU/sum(OTU) )
+plot_bar(fa, fill="Order")
+plot_bar(fa)
+
+
+
+
+
+
+
+### POC
+
+read=read.csv(file="/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/SIP_Spins/atomic_C.csv",header=T)
+
+MC1=subset(read, MC=="MC1")
+MC2=subset(read, MC=="MC2")
+MC3=subset(read, MC=="MC3")
+MC4=subset(read, MC=="MC4")
+MC5=subset(read,MC=="MC5")
+MC6=subset(read,MC=="MC6")
+
+par(mar=c(5,5,1,1))
+plot(MC1$TP,MC1$Atomic_13C, type='o',  ylim=c(0,30),pch=21,bg='gray70',
+     xlab="Time (days)", ylab="Atomic %13C", cex=1.5, cex.lab=1.4)
+lines(MC1$TP, MC2$Atomic_13C, type="o", col="#a44f9a", bg="#a44f9a", pch=21,cex=1.5)
+lines(MC1$TP, MC3$Atomic_13C, type="o", col="#6870c8", bg="#6870c8", pch=21,cex=1.5)
+lines(MC1$TP, MC4$Atomic_13C, type="o", col="#56ae6c", bg="#56ae6c", pch=21,cex=1.5)
+lines(MC1$TP, MC5$Atomic_13C, type="o", col="#af953c", bg="#af953c", pch=21,cex=1.5)
+lines(MC1$TP, MC6$Atomic_13C, type="o", col="#ba4a4f", bg="#ba4a4f", pch=21,cex=1.5)
+legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
+                          "MC5-Glu", "MC6-Xyl"), bty='n', pch =21,
+       pt.bg=c("gray70", "#a44f9a", "#6870c8", "#56ae6c", "#af953c", "#ba4a4f"))
+
+

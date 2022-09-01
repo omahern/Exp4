@@ -1,0 +1,6 @@
+"0","```r
+ordiplot(meta,type='none',yaxt='n',xaxt='n')
+
+```"
+"1","species scores not available
+"

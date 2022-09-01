@@ -1,0 +1,10 @@
+"0","```r
+phyo
+
+```"
+"1","phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 1025 taxa and 70 samples ]
+sample_data() Sample Data:       [ 70 samples by 9 sample variables ]
+tax_table()   Taxonomy Table:    [ 1025 taxa by 8 taxonomic ranks ]
+phy_tree()    Phylogenetic Tree: [ 1025 tips and 1024 internal nodes ]
+"

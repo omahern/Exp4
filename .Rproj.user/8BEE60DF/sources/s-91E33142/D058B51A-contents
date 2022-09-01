@@ -1,0 +1,31 @@
+read=read.csv(file="/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/SIP_Spins/atomic_C_30Aug22.csv",header=T)
+
+read1=subset(read, B_C=="B")
+
+MC1=subset(read1, MC=="MC1")
+MC2=subset(read1, MC=="MC2")
+MC3=subset(read1, MC=="MC3")
+MC4=subset(read1, MC=="MC4")
+MC5=subset(read1,MC=="MC5")
+MC6=subset(read1,MC=="MC6")
+
+read2=subset(read, B_C=="C")
+
+MC1c=subset(read2, MC=="MC1")
+MC2c=subset(read2, MC=="MC2")
+MC3c=subset(read2, MC=="MC3")
+MC4c=subset(read2, MC=="MC4")
+MC5c=subset(read2,MC=="MC5")
+MC6c=subset(read2,MC=="MC6")
+
+{par(mar=c(5,5,1,1), mfrow=c(1,1))
+  plot(MC1$TP,MC1$Atomic_13C, type='o',  ylim=c(0,30),pch=21,bg='gray70',
+       xlab="Time (days)", ylab="Atomic %13C", cex=1.5, cex.lab=1.4)
+  lines(MC1$TP, MC2$Atomic_13C, type="o", col="#a44f9a", bg="#a44f9a", pch=21,cex=1.5)
+  lines(MC1$TP, MC3$Atomic_13C, type="o", col="#6870c8", bg="#6870c8", pch=21,cex=1.5)
+  lines(MC1$TP, MC4$Atomic_13C, type="o", col="#56ae6c", bg="#56ae6c", pch=21,cex=1.5)
+  lines(MC1$TP, MC5$Atomic_13C, type="o", col="#af953c", bg="#af953c", pch=21,cex=1.5)
+  lines(MC1$TP, MC6$Atomic_13C, type="o", col="#ba4a4f", bg="#ba4a4f", pch=21,cex=1.5)
+  legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
+                            "MC5-Glu", "MC6-Xyl"), bty='n', pch =21,
+         pt.bg=c("gray70", "#a44f9a", "#6870c8", "#56ae6c", "#af953c", "#ba4a4f"))

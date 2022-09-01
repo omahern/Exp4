@@ -1,0 +1,31 @@
+"0","```r
+phyo_f=subset_samples(phyo_c,Comm_Frac==\"Frac\")
+phyo_f
+## try divide by ratio of maximum
+rmax=sample_data(phyo_f)$R_MAX
+otu=t(otu_table(phyo_f))
+
+otu_t=(otu*rmax)
+lala=t(otu_t)
+
+trans_16s=phyloseq(t(otu_t),map,tax2,tree)
+trans_16s
+
+dist=UniFrac(trans_16s,weighted=T)
+p=prcomp(dist)
+plot(p$x[,1],p$x[,2], pch = sample_data(trans)$pch,
+     bg=sample_data(trans)$col,
+     xlab= 'PCoA1 67%', ylab='PCoA2 16%')
+ordiellipse(p, groups=sample_data(trans)$Treatment,label=T)
+
+otu=t(otu_table(trans_16s))
+bray=vegdist(otu,'bray')
+meta=metaMDS(bray)
+{ordiplot(meta,type='none')
+points(meta,bg=as.character(sample_data(phyo_c)$col),pch=as.numeric(sample_data(phyo_c)$pch),cex=2,lwd=1)
+ordiellipse(meta, groups=sample_data(trans)$Treatment,label=T)
+legend('topleft',legend=c('11MC2-Comm','12MC2-Comm','14MC2-Comm','15MC2-Comm','5MC2-Comm','6MC2-Comm','7MC2-Comm','8MC2-Comm','9MC2-Comm','11MC2-Frac','12MC2-Frac','14MC2-Frac','15MC2-Frac','5MC2-Frac','6MC2-Frac','7MC2-Frac','8MC2-Frac','9MC2-Frac'),
+       pt.bg=c('#ba4758','#b75136','#c18a3c','#9fac3a','#69a150','#45c097','#6881d8','#8650a6','#b74d86'),
+       ncol=2,bty='n', pch=21) }
+
+```"
