@@ -118,7 +118,7 @@ lines(timec, mc6cO2c, type='l', pch=21, col='#ba4a4f')
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/gas-1.png)<!-- -->
 
-## Atomic %C
+## Atomic % 13C
 
 
 ```r
@@ -172,12 +172,72 @@ legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/atomc2-1.png)<!-- -->
 
 
+## Atomic % 13C + POC
 
-# RNA Data
 
-## SIP Spins
+```r
+{#par(mar=c(5,5,1,1), mfrow=c(2,2))
+  layout(matrix(c(1,2,2,3,4,4), nrow = 2, ncol = 3, byrow = TRUE))
+  
+  plot(MC1$TP,MC1$Balanced_Atomic_.13C, type='o',  ylim=c(0,30),pch=21,bg='gray70',
+       xlab="Time (days)", ylab="Atomic %13C", cex=1.2, cex.lab=1.2,
+       yaxt='n')
+  axis(2,at=c(0,10,20,30))
+  lines(MC1$TP, MC2$Balanced_Atomic_.13C, type="o", col="#a44f9a", bg="#a44f9a", pch=21,cex=1.2)
+  lines(MC1$TP, MC3$Balanced_Atomic_.13C, type="o", col="#6870c8", bg="#6870c8", pch=21,cex=1.2)
+  lines(MC1$TP, MC4$Balanced_Atomic_.13C, type="o", col="#56ae6c", bg="#56ae6c", pch=21,cex=1.2)
+  lines(MC1$TP, MC5$Balanced_Atomic_.13C, type="o", col="#af953c", bg="#af953c", pch=21,cex=1.2)
+  lines(MC1$TP, MC6$Balanced_Atomic_.13C, type="o", col="#ba4a4f", bg="#ba4a4f", pch=21,cex=1.2)
+ # legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
+  #                          "MC5-Glu", "MC6-Xyl"), bty='n', pch =21,
+  #       pt.bg=c("gray70", "#a44f9a", "#6870c8", "#56ae6c", "#af953c", "#ba4a4f"))
+  
+  
+  plot(MC1c$TP,MC1c$Balanced_Atomic_.13C, type='o',  ylim=c(0,30),pch=21,bg='gray70',
+       xlab="Time (days)", ylab="Atomic %13C", cex=1.2, cex.lab=1.2,
+       yaxt='n')
+  axis(2,at=c(0,10,20,30))
+  lines(MC1c$TP, MC2c$Balanced_Atomic_.13C, type="o", col="#a44f9a", bg="#a44f9a", pch=21,cex=1.2)
+  lines(MC1c$TP, MC3c$Balanced_Atomic_.13C, type="o", col="#6870c8", bg="#6870c8", pch=21,cex=1.2)
+  lines(MC1c$TP, MC4c$Balanced_Atomic_.13C, type="o", col="#56ae6c", bg="#56ae6c", pch=21,cex=1.2)
+  lines(MC1c$TP, MC5c$Balanced_Atomic_.13C, type="o", col="#af953c", bg="#af953c", pch=21,cex=1.2)
+  lines(MC1c$TP, MC6c$Balanced_Atomic_.13C, type="o", col="#ba4a4f", bg="#ba4a4f", pch=21,cex=1.2)
+  #legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
+  #                          "MC5-Glu", "MC6-Xyl"), bty='n', pch =21,
+   #      pt.bg=c("gray70", "#a44f9a", "#6870c8", "#56ae6c", "#af953c", "#ba4a4f"))
 
-### Batch 
+  
+  plot(MC1$TP,MC1$POC.._M., type='o',  ylim=c(0,500),pch=21,bg='gray70',
+       xlab="Time (days)", ylab="POC (uM)", cex=1.2, cex.lab=1.2,
+       yaxt='n')
+  axis(2,at=c(0,250,500))
+  lines(MC1$TP, MC2$POC.._M., type="o", col="#a44f9a", bg="#a44f9a", pch=21,cex=1.2)
+  lines(MC1$TP, MC3$POC.._M., type="o", col="#6870c8", bg="#6870c8", pch=21,cex=1.2)
+  lines(MC1$TP, MC4$POC.._M., type="o", col="#56ae6c", bg="#56ae6c", pch=21,cex=1.2)
+  lines(MC1$TP, MC5$POC.._M., type="o", col="#af953c", bg="#af953c", pch=21,cex=1.2)
+  lines(MC1$TP, MC6$POC.._M., type="o", col="#ba4a4f", bg="#ba4a4f", pch=21,cex=1.2)
+
+  
+  plot(MC1c$TP,MC1c$POC.._M., type='o',  ylim=c(0,1100),pch=21,bg='gray70',
+       xlab="Time (days)", ylab="POC (uM)", cex=1.2, cex.lab=1.2,
+       yaxt='n')
+  axis(2,at=c(0,500,1000))
+  lines(MC1c$TP, MC2c$POC.._M., type="o", col="#a44f9a", bg="#a44f9a", pch=21,cex=1.2)
+  lines(MC1c$TP, MC3c$POC.._M., type="o", col="#6870c8", bg="#6870c8", pch=21,cex=1.2)
+  lines(MC1c$TP, MC4c$POC.._M., type="o", col="#56ae6c", bg="#56ae6c", pch=21,cex=1.2)
+  lines(MC1c$TP, MC5c$POC.._M., type="o", col="#af953c", bg="#af953c", pch=21,cex=1.2)
+  lines(MC1c$TP, MC6c$POC.._M., type="o", col="#ba4a4f", bg="#ba4a4f", pch=21,cex=1.2)
+  
+  
+  }
+```
+
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/atomc3-1.png)<!-- -->
+
+
+# SIP Spins
+
+## Batch 
 
 ```r
 read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
@@ -191,9 +251,9 @@ dim(read)
 
 
 
-#### Ribogreen Raw
+### Ribogreen Raw
 
-##### MC1-C12
+#### MC1-C12
 
 ```r
 MC1_T2.5=subset(read, read$MC=="MC1" & TP =="2.5")
@@ -232,7 +292,7 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC1-C12-T3.5","MC1-C12-T4.5"), pch=
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo1a-1.png)<!-- -->
 
-##### MC1-C12 vs. MC2-Met
+#### MC1-C12 vs. MC2-Met
 
 
 
@@ -326,7 +386,7 @@ legend("topleft", legend=c("MC2-Met-T2.5","MC2-Met-T3.5", "MC2-Met-T4.5"), pch=c
 
 
 
-##### MC1-C12 vs. MC3-Eth
+#### MC1-C12 vs. MC3-Eth
 
 ```r
 # MC1-T2.5 and MC3-Eth-T2.5
@@ -415,7 +475,7 @@ MC3_T4.5=subset(read, read$MC=="MC3" & TP =="4.5")
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo3a-1.png)<!-- -->
 
-##### MC1-C12 vs. MC4-Ace
+#### MC1-C12 vs. MC4-Ace
 
 ```r
 ######
@@ -503,7 +563,7 @@ MC4_T4.5=subset(read, read$MC=="MC4" & TP =="4.5")
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo4a-1.png)<!-- -->
 
-##### MC1-C12 vs. MC5-Glu
+#### MC1-C12 vs. MC5-Glu
 
 ```r
 # MC1 vs MC5 
@@ -589,7 +649,7 @@ MC5_T4.5=subset(read, read$MC=="MC5" & TP =="4.5")
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo5a-1.png)<!-- -->
 
-##### MC1-C12 vs. MC6-Xyl
+#### MC1-C12 vs. MC6-Xyl
 
 ```r
 MC6_T2.5=subset(read, read$MC=="MC6" & TP =="2.5")
@@ -671,9 +731,9 @@ MC6_T4.5=subset(read, read$MC=="MC6" & TP =="4.5")
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo6a-1.png)<!-- -->
 
-#### Ribo - Buckley 
+### Ribo - Buckley 
 
-##### MC1- C12
+#### MC1- C12
 
 
 ```r
@@ -695,7 +755,7 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC1-C12-T3.5","MC1-C12-T4.5"), pch=
 ```
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo1b-1.png)<!-- -->
-##### MC1-C12- vs. MC2-Met
+#### MC1-C12- vs. MC2-Met
 
 ```r
 read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
@@ -786,7 +846,7 @@ MC2_T4.5=subset(read, read$MC=="MC2" & TP =="4.5")
 
 
 
-##### MC1-C12 vs. MC3-Eth
+#### MC1-C12 vs. MC3-Eth
 
 ```r
 # MC1-T2.5 and MC3-Eth-T2.5
@@ -875,7 +935,7 @@ MC3_T4.5=subset(read, read$MC=="MC3" & TP =="4.5")
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo3b-1.png)<!-- -->
 
-##### MC1-C12 vs. MC4-Ace
+#### MC1-C12 vs. MC4-Ace
 
 ```r
 ######
@@ -963,7 +1023,7 @@ MC4_T4.5=subset(read, read$MC=="MC4" & TP =="4.5")
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo4b-1.png)<!-- -->
 
-##### MC1-C12 vs. MC5-Glu
+#### MC1-C12 vs. MC5-Glu
 
 ```r
 # MC1 vs MC5 
@@ -1049,7 +1109,7 @@ MC5_T4.5=subset(read, read$MC=="MC5" & TP =="4.5")
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo5b-1.png)<!-- -->
 
-##### MC1-C12 vs. MC6-Xyl
+#### MC1-C12 vs. MC6-Xyl
 
 ```r
 MC6_T2.5=subset(read, read$MC=="MC6" & TP =="2.5")
@@ -1131,8 +1191,8 @@ MC6_T4.5=subset(read, read$MC=="MC6" & TP =="4.5")
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo6b-1.png)<!-- -->
 
-#### Ribo Correct Both
-##### MC1-C12 vs. MC2-Met
+### Ribo Correct Both
+#### MC1-C12 vs. MC2-Met
 
 ```r
 read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
@@ -1217,7 +1277,7 @@ legend("topright", legend=c("MC2-Met-T2.5", "MC2-Met-T3.5", "MC2-Met-T4.5"), pch
 
 
 
-##### MC1-C12 vs. MC3-Eth
+#### MC1-C12 vs. MC3-Eth
 
 ```r
 # MC1-T2.5 and MC3-Eth-T2.5
@@ -1301,7 +1361,7 @@ MC1_T3.5=subset(read, read$MC=="MC1" & TP == "3.5")
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo3-1.png)<!-- -->
 
-##### MC1-C12 vs. MC4-Ace
+#### MC1-C12 vs. MC4-Ace
 
 ```r
 ######
@@ -1383,7 +1443,7 @@ MC4_T4.5=subset(read, read$MC=="MC4" & TP =="4.5")
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo4-1.png)<!-- -->
 
-##### MC1-C12 vs. MC5-Glu
+#### MC1-C12 vs. MC5-Glu
 
 ```r
 # MC1 vs MC5 
@@ -1446,7 +1506,7 @@ legend("topright", legend=c("MC5-Glu-T2.5", "MC5-Glu-T3.5"), pch=c(21,22),
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo5-1.png)<!-- -->
 
-##### MC1-C12 vs. MC6-Xyl
+#### MC1-C12 vs. MC6-Xyl
 
 ```r
 MC6_T2.5=subset(read, read$MC=="MC6" & TP =="2.5")
@@ -1507,8 +1567,8 @@ legend("topright", legend=c("MC6-Xyl-T2.5", "MC6-Xyl-T3.5"), pch=c(21,22),
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo6-1.png)<!-- -->
 
 
-#### qRT PCR
-##### C12 T2.5, 3.5, & 4.5
+### qRT PCR
+#### C12 T2.5, 3.5, & 4.5
 
 ```r
 {
@@ -1554,10 +1614,10 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC1-C12-T3.5","MC1-C12-T3.5"), pch=
 ```
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_a-1.png)<!-- -->
-##### T2.5
+#### T2.5
 
 
-###### MC1 vs. MC2
+##### MC1-C12 vs. MC2-Met
 
 ```r
 read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
@@ -1620,7 +1680,7 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_1-1.png)<!-- -->
 
 
-###### MC1 vs. MC3
+##### MC1-C12 vs. MC3-Eth
 
 
 ```r
@@ -1662,7 +1722,7 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_2-1.png)<!-- -->
 
 
-###### MC1 vs. MC4
+##### MC1-C12 vs. MC4-Ace
 
 ```r
 {
@@ -1700,7 +1760,7 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC4-Ace-T2.5"), pch=c(21,21),
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_3-1.png)<!-- -->
 
 
-###### MC1 vs. MC5 - Bad
+##### MC1 vs. MC5 - Redo Spin
 
 REDO SPIN
 
@@ -1745,7 +1805,7 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC5-Glu-T2.5"), pch=c(21,21),
 
 
 
-###### MC1 vs. MC6 - Bad 
+##### MC1 vs. MC6 - Redo Spin 
 REDO SPIN
 
 ```r
@@ -1786,9 +1846,10 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC6-Xyl-T2.5"), pch=c(21,21),
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_5-1.png)<!-- -->
 
 
-##### T3.5 
+#### T3.5 - redo C12 qRT PCR
 
-###### MC1 vs. MC2
+##### MC1-C12 vs. MC2-Met -Redo qRT PCR
+
 
 ```r
 read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_1Sept22.csv',header=T)
@@ -1853,7 +1914,7 @@ legend("topright", legend=c("MC1-C12-T3.5", "MC2-Met-T3.5"), pch=c(21,21),
 
 
 
-###### MC1 vs. MC3
+##### MC1 vs. MC3 - Redo Spin
 
 
 ```r
@@ -1897,7 +1958,7 @@ legend("topright", legend=c("MC1-C12-T3.5", "MC3-Eth-T3.5"), pch=c(21,21),
 
 
 
-###### MC1 vs. MC4
+##### MC1-C12 vs. MC4-Ace
 
 ```r
 {
@@ -1935,7 +1996,7 @@ legend("topright", legend=c("MC1-C12-T3.5", "MC4-Ace-T3.5"), pch=c(21,21),
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_3a-1.png)<!-- -->
 
 
-###### MC1 vs. MC5
+##### MC1-C12 vs. MC5-Glu - Redo qRT PCR
 
 
 ```r
@@ -1974,7 +2035,7 @@ legend("topright", legend=c("MC1-C12-T3.5", "MC5-Glu-T3.5"), pch=c(21,21),
 
 
 
-###### MC1 vs. MC6
+##### MC1-C12 vs. MC6-Xyl - redo qRT PCR
 
 
 ```r
@@ -2015,9 +2076,10 @@ legend("topright", legend=c("MC1-C12-T3.5", "MC6-Xyl-T3.5"), pch=c(21,21),
 
 
 
-##### T4.5 
+#### T4.5 
 
-###### MC1 vs. MC2
+##### MC1-C12 vs. MC2-Met - redo qRT PCR
+
 
 ```r
 {
@@ -2058,3 +2120,209 @@ legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,21),
 
 # 16S Community Data
 
+
+```r
+library(phyloseq)
+x<-read.csv(file='/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/asv-table.csv',header=TRUE,row.names=1)
+OTU = otu_table(x, taxa_are_rows=T)
+taxa<-read.csv(file="/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/taxonomy.csv",header=TRUE,row.names=1)
+t<-as.matrix(taxa)
+tax2<-tax_table(t)
+map<-import_qiime_sample_data("/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/map_exp4.txt")
+phyo = phyloseq(OTU, tax2,map)
+phyo
+```
+
+```
+## phyloseq-class experiment-level object
+## otu_table()   OTU Table:         [ 2102 taxa and 96 samples ]
+## sample_data() Sample Data:       [ 96 samples by 8 sample variables ]
+## tax_table()   Taxonomy Table:    [ 2102 taxa by 8 taxonomic ranks ]
+```
+
+```r
+phyo1 = subset_taxa(phyo, !Order=="Chloroplast")
+phyo2 = subset_taxa(phyo1, !Family=="Mitochondria")
+phyo=phyo2
+phyo
+```
+
+```
+## phyloseq-class experiment-level object
+## otu_table()   OTU Table:         [ 1921 taxa and 96 samples ]
+## sample_data() Sample Data:       [ 96 samples by 8 sample variables ]
+## tax_table()   Taxonomy Table:    [ 1921 taxa by 8 taxonomic ranks ]
+```
+
+
+## PCoA with Pond 
+
+Transform data - remove ASVs that are less than 0.01% of total dataset and minimum reads of 2. 
+Aitchinson's distance - Euclidean distance of centered log ratio data. 
+
+
+
+```r
+library(CoDaSeq)
+library(compositions)
+```
+
+```
+## Welcome to compositions, a package for compositional data analysis.
+## Find an intro with "? compositions"
+```
+
+```
+## 
+## Attaching package: 'compositions'
+```
+
+```
+## The following object is masked from 'package:NADA':
+## 
+##     cor
+```
+
+```
+## The following object is masked from 'package:ape':
+## 
+##     balance
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     anova, cor, cov, dist, var
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     %*%, norm, scale, scale.default
+```
+
+```r
+input=t(data.frame(otu_table(phyo)))
+dim(input)
+```
+
+```
+## [1]   96 1921
+```
+
+```r
+d.subset <- codaSeq.filter(input, 
+                           samples.by.row=T,min.reads=2,min.prop =0.0001)
+
+dim(d.subset)
+```
+
+```
+## [1] 1145   96
+```
+
+```r
+log_rats <- (compositions::clr(t(d.subset)))
+OTU=otu_table(t(log_rats),taxa_are_rows = T)
+comp_clr=phyloseq(OTU,map,tax2)
+
+
+otu=t(otu_table(comp_clr))
+euc=vegdist(otu,'euc')
+p=prcomp(euc)
+# summary(p)
+{
+par(mar=c(7,8,1,10))
+plot(p$x[,1],p$x[,2], pch = sample_data(comp_clr)$pch,
+     bg=sample_data(comp_clr)$col,cex.lab=1.3,
+     xlab= 'PCoA1 62.10%', ylab='PCoA2 13.71%',cex=1.5)
+legend(60,60, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
+                            "MC2-Met Batch", "MC2-Met Chemostat",
+                            "MC3-Eth Batch", "MC3-Eth Chemostat",
+                            "MC4-Ace Batch", "MC4-Ace Chemostat",
+                            "MC5-Glu Batch", "MC5-Glu Chemostat",
+                            "MC6-Xyl Batch", "MC6-Xyl Chemostat",
+                            "Pond"),xpd=T,
+       pt.bg=c("gray70","gray70","#a44f9a","#a44f9a","#6870c8","#6870c8",
+             "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f",
+             "black"),
+       pch=c(21,23,21,23,21,23,21,23,21,23,21,23, 24),
+       bty='n',cex=1)
+ordiellipse(p, groups=sample_data(comp_clr)$Timepoint)
+}
+```
+
+```
+## Warning in chol.default(cov, pivot = TRUE): the matrix is either rank-deficient
+## or indefinite
+
+## Warning in chol.default(cov, pivot = TRUE): the matrix is either rank-deficient
+## or indefinite
+```
+
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/pcoa_all_samples-1.png)<!-- -->
+
+## PCoA no Pond
+Transform data - remove ASVs that are less than 0.01% of total dataset and minimum reads of 2. 
+Aitchinson's distance - Euclidean distance of centered log ratio data. 
+
+
+```r
+data1=subset_samples(phyo, Treatment !="Pond")
+input=t(data.frame(otu_table(data1)))
+dim(input)
+```
+
+```
+## [1]   94 1921
+```
+
+```r
+d.subset <- codaSeq.filter(input, 
+                           samples.by.row=T,min.reads=2,min.prop =0.0001)
+
+dim(d.subset)
+```
+
+```
+## [1] 748  94
+```
+
+```r
+log_rats <- (compositions::clr(t(d.subset)))
+OTU=otu_table(t(log_rats),taxa_are_rows = T)
+comp_clr=phyloseq(OTU,map,tax2)
+
+
+otu=t(otu_table(comp_clr))
+euc=vegdist(otu,'euc')
+p=prcomp(otu)
+#summary(p)
+{
+par(mar=c(7,8,1,10))
+plot(p$x[,1],p$x[,2], pch = sample_data(data1)$pch,
+     bg=sample_data(data1)$col,cex.lab=1.3,
+     xlab= 'PCoA1 29.17%', ylab='PCoA2 11.24%',cex=1.5)
+legend(12,20, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
+                            "MC2-Met Batch", "MC2-Met Chemostat",
+                            "MC3-Eth Batch", "MC3-Eth Chemostat",
+                            "MC4-Ace Batch", "MC4-Ace Chemostat",
+                            "MC5-Glu Batch", "MC5-Glu Chemostat",
+                            "MC6-Xyl Batch", "MC6-Xyl Chemostat"),xpd=T,
+       pt.bg=c("gray70","gray70","#a44f9a","#a44f9a","#6870c8","#6870c8",
+             "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f"),
+       pch=c(21,23,21,23,21,23,21,23,21,23,21,23),
+       bty='n',cex=1)
+ordiellipse(p, groups=sample_data(comp_clr)$Timepoint)
+}
+```
+
+```
+## Warning in chol.default(cov, pivot = TRUE): the matrix is either rank-deficient
+## or indefinite
+
+## Warning in chol.default(cov, pivot = TRUE): the matrix is either rank-deficient
+## or indefinite
+```
+
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/pcoa_nopond-1.png)<!-- -->
