@@ -169,7 +169,7 @@ legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
 
 ## Atomic % 13C + POC
 
-```{r atomc3, fig.width=10,fig.height=10, dpi=300}
+```{r atomc3, fig.width=6,fig.height=8, dpi=300}
 
 
 {#par(mar=c(5,5,1,1), mfrow=c(2,2))
