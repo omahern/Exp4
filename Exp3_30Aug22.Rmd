@@ -2149,3 +2149,62 @@ ordiellipse(p, groups=sample_data(comp_clr)$Timepoint)
 }
 
 ```
+
+## Batch PCoA
+
+Ellipses represent 80% confidence intervals around the centroid of the Timepoint
+
+```{r pcoa_batch,fig.height=5,fig.width=8, dpi=300}
+
+data1=subset_samples(comp_clr, B_C =="Batch")
+otu=t(otu_table(data1))
+euc=vegdist(otu,'euc')
+
+p=prcomp(otu)
+#summary(p)
+{
+  par(mar=c(7,8,1,10))
+  plot(p$x[,1],p$x[,2], pch = sample_data(data1)$pch,
+       bg=sample_data(data1)$col,cex.lab=1.3,
+       xlab= 'PCoA1 31.54%', ylab='PCoA2 14.79%',cex=1.5)
+  ordiellipse(p, groups=sample_data(data1)$Timepoint,
+              label=FALSE)
+
+  legend(12,5, legend=c("MC1-C12 Batch",
+                            "MC2-Met Batch", 
+                            "MC3-Eth Batch",
+                            "MC4-Ace Batch", 
+                            "MC5-Glu Batch", 
+                            "MC6-Xyl Batch"),xpd=T,
+       pt.bg=c("gray70","#a44f9a","#6870c8",
+             "#56ae6c","#af953c","#ba4a4f"),
+       pch=21,
+       bty='n',cex=1)
+}
+
+```
+
+
+
+## Chemostat PCoA
+
+Ellipses represent 80% confidence intervals around the centroid of the Timepoint
+
+```{r pcoa_chemo,fig.height=5,fig.width=8, dpi=300}
+
+data1=subset_samples(comp_clr, B_C =="Chemostat")
+otu=t(otu_table(data1))
+euc=vegdist(otu,'euc')
+
+p=prcomp(otu)
+#summary(p)
+{
+  par(mar=c(7,8,1,10))
+  plot(p$x[,1],p$x[,2], pch = sample_data(data1)$pch,
+       bg=sample_data(data1)$col,cex.lab=1.3,
+       xlab= 'PCoA1 17.66%', ylab='PCoA2 12.52%',cex=1.5)
+  ordiellipse(p, groups=sample_data(data1)$Treatment)
+  
+}
+
+```
