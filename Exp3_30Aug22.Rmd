@@ -17,7 +17,9 @@ knit: (function(input_file, encoding) {
  output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
 ---
 
-# Workspace Setup
+
+Full experimental information, including previous experiments and timeline, can be found at [the MCP website](http://ecosystems.mbl.edu/MEP-FoodWeb/Experiments/Exp4/index.html)
+
 
 ```{r setup, message=FALSE, error=FALSE, warning=FALSE}
 library(phyloseq)
@@ -36,7 +38,11 @@ library(phytools)
 ```
 
 # State Data
+
 ## Gas Data
+
+Full gas data for the entire experiment can be found at [the Experiment 4 highcharts website](http://ecosystems.mbl.edu/MEP-FoodWeb/Experiments/Exp4/Exp4_HighCharts.html)
+
 ```{r gas, fig.width=10,fig.height=8, dpi=300}
 x<-read.csv(file='/Users/oliviaahern/Documents/R/Exp4/22Apr22/Exp4_Chemostat.csv',header=TRUE)
 timec=x$Time..d.
@@ -117,6 +123,8 @@ lines(timec, mc6cO2c, type='l', pch=21, col='#ba4a4f')
 
 ## Atomic % 13C
 
+Atomic % 13C was measured from dried GFF filters. Calculations and measurements were carried out by the [MBL Stable Isotope](https://www.mbl.edu/research/research-centers/ecosystems-center/stable-isotope-laboratory)
+
 ```{r atomc2, fig.width=10,fig.height=5, dpi=300}
 
 read=read.csv(file="/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/SIP_Spins/atomic_C_30Aug22.csv",header=T)
@@ -168,6 +176,8 @@ legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
 
 
 ## Atomic % 13C + POC
+
+Atomic % 13C was measured from dried GFF filters. Calculations and measurements were carried out by the [MBL Stable Isotope](https://www.mbl.edu/research/research-centers/ecosystems-center/stable-isotope-laboratory). POC was normalized to the amount of water filtered through each sample. 
 
 ```{r atomc3, fig.width=6,fig.height=5, dpi=300}
 
@@ -230,6 +240,17 @@ legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
 
 
 # SIP Spins
+
+SIP gradients were setup using a CsTFA gradient centered at ~1.80 g/mL, formamide, and between 750-500 ng of RNA. Samples were spun using an ultracentrifuge spinning at 65,000 rpm at 20C for 65 hours. 
+
+Correction factors include Lueder's Buoyant density (Lueders et al, 2010) and the [Buckley Lab RNA SIP protocol](https://github.com/buckleylab/Buckley_Lab_SIP_project_protocols/blob/master/RNA_SIP/RNA_SIP.md).
+
+Standard deviation between SIP runs (as of Sept 9th, 2022) were:
+
+* Lueders BD and correction factor: 0.004110266 +/- 0.001662171 g/mL (~40% standard deviation)
+* Buckley BD and correction factor: 0.00309178 +/- 0.001010027 g/mL (~33% standard deviation)
+
+C13 peak was about 0.016 g/mL higher than the 13C peak. 
 
 ## Batch 
 ```{r}
@@ -1523,6 +1544,29 @@ legend("topright", legend=c("MC6-Xyl-T2.5", "MC6-Xyl-T3.5"), pch=c(21,22),
 }
 ```
 
+#### Fig for talk 
+```{r ribome, fig.height=8, fig.width=8, dpi=300}
+
+{
+par(mar=c(5,5,1,1))
+plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density (g/mL)",
+     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.84), ylim=c(0,1),
+     yaxt='n',xaxt='n', cex.lab=1.2, bty='n',cex=1.4)
+rect(xleft=1.787, xright=1.794, ybottom=0, ytop=1.03, col= rgb(0.9960784,0.9411765,0.2745098,alpha=0.8),lty=1, lwd=0)
+#rect(xleft=1.807990115-0.0035, xright=1.807990115+0.0035, ybottom=0, ytop=1.03, col= rgb(0.5529412,0.08627451,0.08627451,alpha=0.7),lty=1, lwd=0)
+rect(xleft=1.807990115-0.0035, xright=1.807990115+0.0035, ybottom=0, ytop=1.03, col= rgb(0.9058824,0.1803922,0.1803922,alpha=0.3),lty=1, lwd=0)
+
+lines(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o",  pch=21, bg="gray70",cex=1.4)
+axis(1,at=c(1.76,1.78,1.80,1.82,1.84), lwd=1)
+axis(2,at=c(0,0.25,0.5,0.75,1),lwd=1)
+lines(MC2_T4.5$Buckley, MC2_T4.5$Ribo_RMAX,type="o",  pch=21, bg="#a44f9a", 
+      col="black",cex=1.4)
+lines(MC2_T4.5$Buckley, MC2_T4.5$Ribo_RMAX,type="o",  pch=21, bg="#a44f9a", 
+      col="black",cex=1.4)
+legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,21),
+       pt.bg=c("gray70", "#a44f9a"), bty='n')
+}
+```
 
 ### qRT PCR
 #### C12 T2.5, 3.5, & 4.5
@@ -2046,7 +2090,7 @@ legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,21),
 
 # 16S Community Data
 
-```{r}
+```{r, message=FALSE, warning=FALSE, error=FALSE}
 library(phyloseq)
 x<-read.csv(file='/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/asv-table.csv',header=TRUE,row.names=1)
 OTU = otu_table(x, taxa_are_rows=T)
@@ -2054,7 +2098,8 @@ taxa<-read.csv(file="/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Expe
 t<-as.matrix(taxa)
 tax2<-tax_table(t)
 map<-import_qiime_sample_data("/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/map_exp4.txt")
-phyo = phyloseq(OTU, tax2,map)
+tree=read.tree('/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/tree.nwk')
+phyo = phyloseq(OTU, tax2,map,tree)
 phyo
 phyo1 = subset_taxa(phyo, !Order=="Chloroplast")
 phyo2 = subset_taxa(phyo1, !Family=="Mitochondria")
@@ -2063,13 +2108,214 @@ phyo
 ```
 
 
-## PCoA with Pond 
+## Alpha Diversity 
+
+### ASV Barplot
+
+```{r bar1, fig.width=10, fig.height=5, message=FALSE, error=FALSE, warning=FALSE,dpi=300}
+phyo_abund=transform_sample_counts(phyo, function(x) (x/sum(x)))
+pd <- psmelt(phyo_abund)
+
+colors=readRDS('/Users/oliviaahern/Documents/GitHub/Exp4/colors_asvs.rds')
+library(grid)
+#palette(as.character(t(colors)))
+d_rgn = ggplot(pd, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = Strain)) +
+  scale_fill_manual(values=as.character(t(colors))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "ASV Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+        legend.position = "none",
+        panel.grid=element_blank(),
+        strip.text.x = element_text(
+          size = 10, color = "black", face = "bold"),
+        strip.background = element_rect(
+          color="white", fill="white", size=1, linetype="solid"),
+        panel.spacing = unit(0.05, "lines"))
+
+d_rgn
+
+```
+
+
+
+### interactive ASV Barplot > 0.001%
+
+```{r bar2, fig.width=9, fig.height=6, message=FALSE, error=FALSE, warning=FALSE,dpi=300}
+phyo_nop=subset_samples(phyo, B_C!='pond')
+
+library(plyr)
+# get abundance in %
+phy <- transform_sample_counts(phyo_nop, function(x) x/sum(x))
+# create dataframe from phyloseq object
+dat <- psmelt(phy)
+# convert Phylum to a character vector from a factor because R
+dat$OTU <- as.character(dat$OTU)
+# group dataframe by Phylum, calculate median rel. abundance
+medians <- ddply(dat, ~OTU, function(x) c(median=median(x$Abundance)))
+# find Phyla whose rel. abund. is less than 0.1%
+remainder <- medians[medians$median <= 0.00001,]$OTU
+# change their name to "Other"
+dat[dat$OTU %in% remainder,]$OTU <- 'Other <0.1%'
+# boxplot
+
+blah=data.frame(tax_table(phyo_abund))
+nan=cbind(row.names(blah), (colors))
+nano = data.frame(nan)
+colnames(nano) = c("OTU", "Colors")
+subs=levels(as.factor(dat$OTU))
+sub=subset(nano, OTU %in% subs)
+color2=c(sub$Colors, 'gray80')
+
+
+p_rgn = ggplot(dat, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = OTU)) +
+  scale_fill_manual(values=as.character(t((color2)))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~MC, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "ASV Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+        legend.position = "bottom",
+        panel.grid=element_blank(),
+        legend.text = element_text(size=6),
+        legend.key.size = unit(0.25,'cm'),
+        #strip.text.x = element_text(
+        # size = 10, color = "black", face = "bold"),
+        #strip.background = element_rect(
+        # color="white", fill="white", size=1, linetype="solid"),
+        #panel.spacing = unit(0.05, "lines")
+  )
+p_rgn
+
+library(plotly)
+fig <- ggplotly(p_rgn)
+fig
+```
+
+
+
+
+### interactive Genera Barplot
+Working on this plot 
+
+```{r bar5, fig.width=9, fig.height=6, message=FALSE, error=FALSE, warning=FALSE,dpi=300}
+
+
+phyo_nop_g=tax_glom(phyo_nop, taxrank="Genus")
+
+
+library(plyr)
+# get abundance in %
+phy <- transform_sample_counts(phyo_nop_g, function(x) x/sum(x))
+# create dataframe from phyloseq object
+dat <- psmelt(phy)
+# convert Phylum to a character vector from a factor because R
+dat$Genus <- as.character(dat$Genus)
+dat$Genus[dat$Genus==""] <- NA
+
+# group dataframe by Phylum, calculate median rel. abundance
+medians <- ddply(dat, ~Genus, function(x) c(median=median(x$Abundance)))
+# find Phyla whose rel. abund. is less than 0.1%
+remainder <- medians[medians$median <= 0.00001,]$Genus
+# change their name to "Other"
+dat[dat$Genus %in% remainder,]$Genus <- 'Other <0.1%'
+# boxplot
+
+blah=data.frame(tax_table(phyo_abund))
+
+nan=cbind(blah$Genus, (colors))
+nano = data.frame(nan)
+colnames(nano) = c("Genus", "Colors")
+subs=levels(as.factor(dat$Genus))
+sub=subset(nano, Genus %in% subs)
+color4=c(sub$Colors, 'gray80')
+
+
+p_rgn = ggplot(dat, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = Genus)) +
+  scale_fill_manual(values=as.character(t((color4)))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~MC, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "Genus Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+        legend.position = "bottom",
+        panel.grid=element_blank(),
+        legend.text = element_text(size=6),
+        legend.key.size = unit(0.25, 'cm')
+        #strip.text.x = element_text(
+        # size = 10, color = "black", face = "bold"),
+        #strip.background = element_rect(
+        # color="white", fill="white", size=1, linetype="solid"),
+        #panel.spacing = unit(0.05, "lines")
+  )
+p_rgn
+
+library(plotly)
+fig <- ggplotly(p_rgn)
+fig
+```
+
+
+
+### Class Barplot
+
+```{r cbar5, fig.width=9, fig.height=6, message=FALSE, error=FALSE, warning=FALSE, dpi=300}
+micro=microbiome::aggregate_taxa(phyo, "Class")
+
+phyo_abund=transform_sample_counts(micro, function(x) (x/sum(x)))
+pd <- psmelt(phyo_abund)
+
+colors=readRDS("/Users/oliviaahern/Documents/GitHub/Exp4/c_class.rds")
+library(grid)
+#palette(as.character(t(colors)))
+d_rgn = ggplot(pd, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = Class)) +
+  scale_fill_manual(values=as.character(t(colors))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~MC, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "Class Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+       legend.position = "bottom",
+        panel.grid=element_blank(),
+        strip.text.x = element_text(
+          size = 10, color = "black", face = "bold"),
+       legend.text = element_text(size=6),
+        legend.key.size = unit(0.25, 'cm')
+        #strip.background = element_rect(
+        #  color="white", fill="white", size=1, linetype="solid"),
+       # panel.spacing = unit(0.05, "lines"))
+)
+d_rgn
+```
+
+
+
+## Beta Diversity 
+
+### Aitchison's Distance
+
+Euclidean distance of centered log ratio transformed data 
+
+#### PCoA with Pond 
 
 Transform data - remove ASVs that are less than 0.01% of total dataset and minimum reads of 2. 
 Aitchinson's distance - Euclidean distance of centered log ratio data. 
 
 
-```{r pcoa_all_samples,fig.height=5,fig.width=8, dpi=300}
+```{r pcoa_all_samples,fig.height=5,fig.width=8, dpi=300, message=FALSE, error=FALSE, warning=FALSE}
 
 library(CoDaSeq)
 library(compositions)
@@ -2109,11 +2355,11 @@ ordiellipse(p, groups=sample_data(comp_clr)$Timepoint)
 }
 ```
 
-## PCoA no Pond
+#### PCoA no Pond
 Transform data - remove ASVs that are less than 0.01% of total dataset and minimum reads of 2. 
 Aitchinson's distance - Euclidean distance of centered log ratio data. 
 
-```{r pcoa_nopond,fig.height=5,fig.width=8, dpi=300}
+```{r pcoa_nopond,fig.height=5,fig.width=8,message=FALSE, error=FALSE, warning=FALSE, dpi=300}
 data1=subset_samples(phyo, Treatment !="Pond")
 input=t(data.frame(otu_table(data1)))
 dim(input)
@@ -2150,13 +2396,13 @@ ordiellipse(p, groups=sample_data(comp_clr)$Timepoint)
 
 ```
 
-## Batch PCoA
+#### Batch PCoA
 
 Ellipses represent 80% confidence intervals around the centroid of the Timepoint.
 
 Data is significantly tied to the timepoint sampled (adonis2, R2=0.23, F=9.4, p<0.001) not the Treatment/MC (adonis2, R2=0.08, F=0.7, p=0.973).
 
-```{r pcoa_batch,fig.height=5,fig.width=8, dpi=300}
+```{r pcoa_batch,fig.height=5,fig.width=8, dpi=300, message=FALSE, warning=FALSE, error=FALSE}
 
 data1=subset_samples(comp_clr, B_C =="Batch")
 otu=t(otu_table(data1))
@@ -2191,13 +2437,13 @@ adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment,
 
 
 
-## Chemostat PCoA
+#### Chemostat PCoA
 
 Ellipses represent 80% confidence intervals around the centroid of the Treatment. 
 
 Chemostat data is significantly associated with both Timepoint (adonis2, R2=0.06, F=5.5, p<0.001) and Treatment/MC (adonis2, R2=0.39, F=6.8, p<0.001).
 
-```{r pcoa_chemo,fig.height=5,fig.width=8, dpi=300}
+```{r pcoa_chemo,fig.height=5,fig.width=8, message=FALSE, error=FALSE, warning=FALSE,dpi=300}
 
 data1=subset_samples(comp_clr, B_C =="Chemostat")
 otu=t(otu_table(data1))
@@ -2227,4 +2473,215 @@ legend(15.5,5, legend=c("MC1-C12 Chemostat",
 adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment,
         by='margin')
 
+```
+
+### Phylogenetic Distance (philr)
+
+#### PCoA with Pond
+```{r pcoa_phil1,fig.height=5,fig.width=8,message=FALSE, error=FALSE, warning=FALSE, dpi=300}
+library(philr)
+
+GP <- transform_sample_counts(phyo, function(x) x+1)
+phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
+name.balance(phy_tree(GP), tax_table(GP), 'n1')
+
+otu.table <- t(otu_table(GP))
+treefr <- phy_tree(GP)
+metadata <- sample_data(GP)
+tax <- tax_table(GP)
+
+gp.philr <- philr(otu.table, treefr, 
+                  part.weights='enorm.x.gm.counts', 
+                  ilr.weights='blw.sqrt')
+
+
+gp.dist <- dist(gp.philr, method="euclidean")
+p <- prcomp(gp.dist)
+
+
+
+
+{
+par(mar=c(7,8,1,10))
+plot(p$x[,1],p$x[,2], pch = sample_data(phyo)$pch,
+     bg=sample_data(phyo)$col,cex.lab=1.3,
+     xlab= 'PCoA1 79.27%', ylab='PCoA2 9.19%',cex=1.5)
+legend(80,45, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
+                            "MC2-Met Batch", "MC2-Met Chemostat",
+                            "MC3-Eth Batch", "MC3-Eth Chemostat",
+                            "MC4-Ace Batch", "MC4-Ace Chemostat",
+                            "MC5-Glu Batch", "MC5-Glu Chemostat",
+                            "MC6-Xyl Batch", "MC6-Xyl Chemostat",
+                            "Pond"),xpd=T,
+       pt.bg=c("gray70","gray70","#a44f9a","#a44f9a","#6870c8","#6870c8",
+             "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f",
+             "black"),
+       pch=c(21,23,21,23,21,23,21,23,21,23,21,23, 24),
+       bty='n',cex=1)
+}
+
+```
+
+
+
+
+#### PCoA no Pond
+
+Samples significantly tied to 
+
+* Treatment (aka MC) R2 = 0.16, F = 6.26, p < 0.001
+* Timepoint R2 = 0.021, F = 5.33, p = 0.007
+* Batch or Chemostat R2 = 0.05, F=12.80, p < 0.001
+
+```{r pcoa_phil2,fig.height=5,fig.width=8,message=FALSE, error=FALSE, warning=FALSE, dpi=300}
+
+phyo1=subset_samples(phyo, B_C !="Pond")
+
+GP <- transform_sample_counts(phyo1, function(x) x+1)
+phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
+name.balance(phy_tree(GP), tax_table(GP), 'n1')
+
+otu.table <- t(otu_table(GP))
+treefr <- phy_tree(GP)
+metadata <- sample_data(GP)
+tax <- tax_table(GP)
+
+gp.philr <- philr(otu.table, treefr, 
+                  part.weights='enorm.x.gm.counts', 
+                  ilr.weights='blw.sqrt')
+
+
+gp.dist <- dist(gp.philr, method="euclidean")
+p <- prcomp(gp.dist)
+
+
+
+
+{
+par(mar=c(7,8,1,10))
+plot(p$x[,1],p$x[,2], pch = sample_data(phyo1)$pch,
+     bg=sample_data(phyo1)$col,cex.lab=1.3,
+     xlab= 'PCoA1 78.84%', ylab='PCoA2 9.93%',cex=1.5)
+legend(80,45, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
+                            "MC2-Met Batch", "MC2-Met Chemostat",
+                            "MC3-Eth Batch", "MC3-Eth Chemostat",
+                            "MC4-Ace Batch", "MC4-Ace Chemostat",
+                            "MC5-Glu Batch", "MC5-Glu Chemostat",
+                            "MC6-Xyl Batch", "MC6-Xyl Chemostat"),xpd=T,
+       pt.bg=c("gray70","gray70","#a44f9a","#a44f9a","#6870c8","#6870c8",
+             "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f"),
+       pch=c(21,23,21,23,21,23,21,23,21,23,21,23),
+       bty='n',cex=1)
+}
+
+adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint + sample_data(phyo1)$B_C, by='margin')
+```
+
+
+
+
+#### Batch PCoA
+
+Samples significantly tied to 
+
+* Treatment (aka MC) R2 = 0.04, F = 0.3267, p = 0.99
+* Timepoint R2 = 0.21501, F = 8.3907, p = 0.002
+
+
+```{r pcoa_phil3,fig.height=5,fig.width=8, dpi=300, warning=FALSE, error=FALSE, message=FALSE}
+
+phyo1=subset_samples(phyo, B_C =="Batch")
+
+GP <- transform_sample_counts(phyo1, function(x) x+1)
+phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
+name.balance(phy_tree(GP), tax_table(GP), 'n1')
+
+otu.table <- t(otu_table(GP))
+treefr <- phy_tree(GP)
+metadata <- sample_data(GP)
+tax <- tax_table(GP)
+
+gp.philr <- philr(otu.table, treefr, 
+                  part.weights='enorm.x.gm.counts', 
+                  ilr.weights='blw.sqrt')
+
+
+gp.dist <- dist(gp.philr, method="euclidean")
+p <- prcomp(gp.dist)
+
+
+
+
+{
+  par(mar=c(7,8,1,10))
+  plot(p$x[,1],p$x[,2], pch = sample_data(phyo1)$pch,
+       bg=sample_data(phyo1)$col,cex.lab=1.3,
+       xlab= 'PCoA1 64.96%', ylab='PCoA2 18.17%',cex=1.5)
+  ordiellipse(p, groups=sample_data(phyo1)$Timepoint,
+              label=TRUE, cex=1.5)
+
+  legend(90,20, legend=c("MC1-C12 Batch",
+                            "MC2-Met Batch", 
+                            "MC3-Eth Batch",
+                            "MC4-Ace Batch", 
+                            "MC5-Glu Batch", 
+                            "MC6-Xyl Batch"),xpd=T,
+       pt.bg=c("gray70","#a44f9a","#6870c8",
+             "#56ae6c","#af953c","#ba4a4f"),
+       pch=21,
+       bty='n',cex=1)
+}
+
+adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by='margin')
+```
+
+
+
+#### Chemostat PCoA
+
+Samples significantly tied to 
+
+* Treatment (aka MC) R2 = 0.58701, F = 16.814, p = 0.001
+* Timepoint R2 = 0.08482, F = 12.148, p = 0.001
+
+
+```{r pcoa_phil4,fig.height=5,fig.width=8, dpi=300, warning=FALSE, error=FALSE, message=FALSE}
+
+phyo1=subset_samples(phyo, B_C =="Chemostat")
+
+GP <- transform_sample_counts(phyo1, function(x) x+1)
+phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
+name.balance(phy_tree(GP), tax_table(GP), 'n1')
+
+otu.table <- t(otu_table(GP))
+treefr <- phy_tree(GP)
+metadata <- sample_data(GP)
+tax <- tax_table(GP)
+
+gp.philr <- philr(otu.table, treefr, 
+                  part.weights='enorm.x.gm.counts', 
+                  ilr.weights='blw.sqrt')
+
+
+gp.dist <- dist(gp.philr, method="euclidean")
+p <- prcomp(gp.dist)
+
+{
+  par(mar=c(7,8,1,10))
+  plot(p$x[,1],p$x[,2], pch = sample_data(data1)$pch,
+       bg=sample_data(data1)$col,cex.lab=1.3,
+       xlab= 'PCoA1 53.93%', ylab='PCoA2 24.54%',cex=1.5)
+  ordiellipse(p, groups=sample_data(data1)$Treatment,label=TRUE)
+legend(85,50, legend=c("MC1-C12 Chemostat",
+                            "MC2-Met Chemostat", 
+                            "MC3-Eth Chemostat",
+                            "MC4-Ace Chemostat", 
+                            "MC5-Glu Chemostat", 
+                            "MC6-Xyl Chemostat"),xpd=T,
+       pt.bg=c("gray70","#a44f9a","#6870c8",
+             "#56ae6c","#af953c","#ba4a4f"),
+       pch=23,
+       bty='n',cex=1)
+}
+adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by='margin')
 ```
