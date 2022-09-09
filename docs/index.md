@@ -1661,7 +1661,7 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
 
 plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
      ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0.00001,175))
+     ylim=c(0.00001,20))
 lines(MC2_T2.5$Corrected, MC2_T2.5$qPCR_conc,type="o", pch=21, bg="#a44f9a", 
       col="#a44f9a")
 legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
@@ -1669,7 +1669,7 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
 
 plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
      ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0.00001,175))
+     ylim=c(0.00001,20))
 lines(MC2_T2.5$Buckley, MC2_T2.5$qPCR_conc,type="o", pch=21, bg="#a44f9a", 
       col="#a44f9a")
 legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
@@ -1703,7 +1703,7 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
 
 plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
      ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0,230))
+     ylim=c(0,25))
 lines(MC3_T2.5$Corrected, MC3_T2.5$qPCR_conc,type="o", pch=22, bg="#6870c8", 
       col="#6870c8")
 legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
@@ -1711,7 +1711,7 @@ legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
 
 plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
      ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0,230))
+     ylim=c(0,25))
 lines(MC3_T2.5$Buckley, MC3_T2.5$qPCR_conc,type="o", pch=22, bg="#6870c8", 
       col="#6870c8")
 legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
@@ -2329,7 +2329,9 @@ ordiellipse(p, groups=sample_data(comp_clr)$Timepoint)
 
 ## Batch PCoA
 
-Ellipses represent 80% confidence intervals around the centroid of the Timepoint
+Ellipses represent 80% confidence intervals around the centroid of the Timepoint.
+
+Data is significantly tied to the timepoint sampled (adonis2, R2=0.23, F=9.4, p<0.001) not the Treatment/MC (adonis2, R2=0.08, F=0.7, p=0.973).
 
 
 ```r
@@ -2362,11 +2364,34 @@ p=prcomp(otu)
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/pcoa_batch-1.png)<!-- -->
 
+```r
+adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment,
+        by='margin')
+```
+
+```
+## Permutation test for adonis under reduced model
+## Marginal effects of terms
+## Permutation: free
+## Number of permutations: 999
+## 
+## adonis2(formula = euc ~ sample_data(data1)$Timepoint + sample_data(data1)$Treatment, by = "margin")
+##                              Df SumOfSqs      R2      F Pr(>F)    
+## sample_data(data1)$Timepoint  1   2581.6 0.22551 9.3967  0.001 ***
+## sample_data(data1)$Treatment  5    899.0 0.07853 0.6544  0.971    
+## Residual                     29   7967.4 0.69596                  
+## Total                        35  11448.0 1.00000                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 
 
 ## Chemostat PCoA
 
-Ellipses represent 80% confidence intervals around the centroid of the Timepoint
+Ellipses represent 80% confidence intervals around the centroid of the Treatment. 
+
+Chemostat data is significantly associated with both Timepoint (adonis2, R2=0.06, F=5.5, p<0.001) and Treatment/MC (adonis2, R2=0.39, F=6.8, p<0.001).
 
 
 ```r
@@ -2381,9 +2406,39 @@ p=prcomp(otu)
   plot(p$x[,1],p$x[,2], pch = sample_data(data1)$pch,
        bg=sample_data(data1)$col,cex.lab=1.3,
        xlab= 'PCoA1 17.66%', ylab='PCoA2 12.52%',cex=1.5)
-  ordiellipse(p, groups=sample_data(data1)$Treatment)
-  
+  ordiellipse(p, groups=sample_data(data1)$Treatment,label=TRUE)
+legend(15.5,5, legend=c("MC1-C12 Chemostat",
+                            "MC2-Met Chemostat", 
+                            "MC3-Eth Chemostat",
+                            "MC4-Ace Chemostat", 
+                            "MC5-Glu Chemostat", 
+                            "MC6-Xyl Chemostat"),xpd=T,
+       pt.bg=c("gray70","#a44f9a","#6870c8",
+             "#56ae6c","#af953c","#ba4a4f"),
+       pch=23,
+       bty='n',cex=1)
 }
 ```
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/pcoa_chemo-1.png)<!-- -->
+
+```r
+adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment,
+        by='margin')
+```
+
+```
+## Permutation test for adonis under reduced model
+## Marginal effects of terms
+## Permutation: free
+## Number of permutations: 999
+## 
+## adonis2(formula = euc ~ sample_data(data1)$Timepoint + sample_data(data1)$Treatment, by = "margin")
+##                              Df SumOfSqs      R2      F Pr(>F)    
+## sample_data(data1)$Timepoint  1    679.1 0.06347 5.5055  0.001 ***
+## sample_data(data1)$Treatment  5   4222.4 0.39465 6.8461  0.001 ***
+## Residual                     47   5797.5 0.54187                  
+## Total                        53  10699.0 1.00000                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
