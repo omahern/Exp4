@@ -2378,7 +2378,7 @@ adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment,
 ## adonis2(formula = euc ~ sample_data(data1)$Timepoint + sample_data(data1)$Treatment, by = "margin")
 ##                              Df SumOfSqs      R2      F Pr(>F)    
 ## sample_data(data1)$Timepoint  1   2581.6 0.22551 9.3967  0.001 ***
-## sample_data(data1)$Treatment  5    899.0 0.07853 0.6544  0.971    
+## sample_data(data1)$Treatment  5    899.0 0.07853 0.6544  0.976    
 ## Residual                     29   7967.4 0.69596                  
 ## Total                        35  11448.0 1.00000                  
 ## ---
