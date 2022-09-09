@@ -2220,7 +2220,7 @@ d_rgn = ggplot(pd, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = Str
   scale_fill_manual(values=as.character(t(colors))) +
   geom_bar(stat = "identity", width=0.97, color='black',
            lwd=0.1) +
-  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  facet_grid(~MC, scale='free_x', space="free", shrink=TRUE) +
   labs(x=" ", y = "ASV Relative Abundance") +
   theme_bw() +
   theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
@@ -2589,7 +2589,7 @@ adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment,
 ## adonis2(formula = euc ~ sample_data(data1)$Timepoint + sample_data(data1)$Treatment, by = "margin")
 ##                              Df SumOfSqs      R2      F Pr(>F)    
 ## sample_data(data1)$Timepoint  1   2581.6 0.22551 9.3967  0.001 ***
-## sample_data(data1)$Treatment  5    899.0 0.07853 0.6544  0.974    
+## sample_data(data1)$Treatment  5    899.0 0.07853 0.6544  0.965    
 ## Residual                     29   7967.4 0.69596                  
 ## Total                        35  11448.0 1.00000                  
 ## ---
@@ -2783,7 +2783,7 @@ adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint + s
 ## adonis2(formula = gp.dist ~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint + sample_data(phyo1)$B_C, by = "margin")
 ##                              Df SumOfSqs      R2       F Pr(>F)    
 ## sample_data(phyo1)$Treatment  5   2060.8 0.12580  6.2597  0.001 ***
-## sample_data(phyo1)$Timepoint  1    351.2 0.02144  5.3335  0.003 ** 
+## sample_data(phyo1)$Timepoint  1    351.2 0.02144  5.3335  0.005 ** 
 ## sample_data(phyo1)$B_C        1    842.8 0.05145 12.7998  0.001 ***
 ## Residual                     82   5399.1 0.32959                   
 ## Total                        89  16381.4 1.00000                   
@@ -2867,7 +2867,7 @@ adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by
 ## 
 ## adonis2(formula = gp.dist ~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by = "margin")
 ##                              Df SumOfSqs      R2      F Pr(>F)   
-## sample_data(phyo1)$Treatment  5    818.1 0.04186 0.3267  0.989   
+## sample_data(phyo1)$Treatment  5    818.1 0.04186 0.3267  0.993   
 ## sample_data(phyo1)$Timepoint  1   4202.7 0.21501 8.3907  0.003 **
 ## Residual                     29  14525.5 0.74313                 
 ## Total                        35  19546.3 1.00000                 

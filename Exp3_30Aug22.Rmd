@@ -2123,7 +2123,7 @@ d_rgn = ggplot(pd, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = Str
   scale_fill_manual(values=as.character(t(colors))) +
   geom_bar(stat = "identity", width=0.97, color='black',
            lwd=0.1) +
-  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  facet_grid(~MC, scale='free_x', space="free", shrink=TRUE) +
   labs(x=" ", y = "ASV Relative Abundance") +
   theme_bw() +
   theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
