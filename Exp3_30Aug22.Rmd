@@ -2144,6 +2144,7 @@ d_rgn
 
 
 ### interactive ASV Barplot > 0.001%
+Under construction
 
 ```{r bar2, fig.width=9, fig.height=6, message=FALSE, error=FALSE, warning=FALSE,dpi=300}
 phyo_nop=subset_samples(phyo, B_C!='pond')
@@ -2194,9 +2195,9 @@ p_rgn = ggplot(dat, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = OT
   )
 p_rgn
 
-library(plotly)
-fig <- ggplotly(p_rgn)
-fig
+#library(plotly)
+#fig <- ggplotly(p_rgn)
+#fig
 ```
 
 
@@ -2260,9 +2261,9 @@ p_rgn = ggplot(dat, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = Ge
   )
 p_rgn
 
-library(plotly)
-fig <- ggplotly(p_rgn)
-fig
+#library(plotly)
+#fig <- ggplotly(p_rgn)
+#fig
 ```
 
 
