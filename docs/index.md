@@ -2183,7 +2183,7 @@ phyo
 ```
 ## phyloseq-class experiment-level object
 ## otu_table()   OTU Table:         [ 2102 taxa and 96 samples ]
-## sample_data() Sample Data:       [ 96 samples by 8 sample variables ]
+## sample_data() Sample Data:       [ 96 samples by 10 sample variables ]
 ## tax_table()   Taxonomy Table:    [ 2102 taxa by 8 taxonomic ranks ]
 ## phy_tree()    Phylogenetic Tree: [ 2102 tips and 2100 internal nodes ]
 ```
@@ -2198,7 +2198,7 @@ phyo
 ```
 ## phyloseq-class experiment-level object
 ## otu_table()   OTU Table:         [ 1921 taxa and 96 samples ]
-## sample_data() Sample Data:       [ 96 samples by 8 sample variables ]
+## sample_data() Sample Data:       [ 96 samples by 10 sample variables ]
 ## tax_table()   Taxonomy Table:    [ 1921 taxa by 8 taxonomic ranks ]
 ## phy_tree()    Phylogenetic Tree: [ 1921 tips and 1919 internal nodes ]
 ```
@@ -2515,14 +2515,17 @@ comp_clr=phyloseq(OTU,map,tax2)
 
 otu=t(otu_table(comp_clr))
 euc=vegdist(otu,'euc')
-p=prcomp(otu)
+p=prcomp(euc)
 #summary(p)
 {
 par(mar=c(7,8,1,10))
 plot(p$x[,1],p$x[,2], pch = sample_data(data1)$pch,
      bg=sample_data(data1)$col,cex.lab=1.3,
-     xlab= 'PCoA1 29.17%', ylab='PCoA2 11.24%',cex=1.5)
-legend(12,20, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
+     xlab= 'PCoA1 63.61%', ylab='PCoA2 12.26%',cex=1.5,
+     yaxt='n',xaxt='n')
+  axis(2, at = c(-40,-20,0,20,40,60))
+  axis(1,at=c(-80,-40,0,40))
+legend(60,40, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
                             "MC2-Met Batch", "MC2-Met Chemostat",
                             "MC3-Eth Batch", "MC3-Eth Chemostat",
                             "MC4-Ace Batch", "MC4-Ace Chemostat",
@@ -2550,17 +2553,17 @@ data1=subset_samples(comp_clr, B_C =="Batch")
 otu=t(otu_table(data1))
 euc=vegdist(otu,'euc')
 
-p=prcomp(otu)
+p=prcomp(euc)
 #summary(p)
 {
   par(mar=c(7,8,1,10))
   plot(p$x[,1],p$x[,2], pch = sample_data(data1)$pch,
        bg=sample_data(data1)$col,cex.lab=1.3,
-       xlab= 'PCoA1 31.54%', ylab='PCoA2 14.79%',cex=1.5)
+       xlab= 'PCoA1 54.63%', ylab='PCoA2 14.00%',cex=1.5)
   ordiellipse(p, groups=sample_data(data1)$Timepoint,
               label=FALSE)
 
-  legend(12,5, legend=c("MC1-C12 Batch",
+  legend(40,5, legend=c("MC1-C12 Batch",
                             "MC2-Met Batch", 
                             "MC3-Eth Batch",
                             "MC4-Ace Batch", 
@@ -2589,7 +2592,7 @@ adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment,
 ## adonis2(formula = euc ~ sample_data(data1)$Timepoint + sample_data(data1)$Treatment, by = "margin")
 ##                              Df SumOfSqs      R2      F Pr(>F)    
 ## sample_data(data1)$Timepoint  1   2581.6 0.22551 9.3967  0.001 ***
-## sample_data(data1)$Treatment  5    899.0 0.07853 0.6544  0.965    
+## sample_data(data1)$Treatment  5    899.0 0.07853 0.6544  0.977    
 ## Residual                     29   7967.4 0.69596                  
 ## Total                        35  11448.0 1.00000                  
 ## ---
@@ -2610,15 +2613,15 @@ data1=subset_samples(comp_clr, B_C =="Chemostat")
 otu=t(otu_table(data1))
 euc=vegdist(otu,'euc')
 
-p=prcomp(otu)
+p=prcomp(euc)
 #summary(p)
 {
   par(mar=c(7,8,1,10))
   plot(p$x[,1],p$x[,2], pch = sample_data(data1)$pch,
        bg=sample_data(data1)$col,cex.lab=1.3,
-       xlab= 'PCoA1 17.66%', ylab='PCoA2 12.52%',cex=1.5)
+       xlab= 'PCoA1 34.58%', ylab='PCoA2 15.20%',cex=1.5)
   ordiellipse(p, groups=sample_data(data1)$Treatment,label=TRUE)
-legend(15.5,5, legend=c("MC1-C12 Chemostat",
+legend(43,5, legend=c("MC1-C12 Chemostat",
                             "MC2-Met Chemostat", 
                             "MC3-Eth Chemostat",
                             "MC4-Ace Chemostat", 
@@ -2866,11 +2869,11 @@ adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by
 ## Number of permutations: 999
 ## 
 ## adonis2(formula = gp.dist ~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by = "margin")
-##                              Df SumOfSqs      R2      F Pr(>F)   
-## sample_data(phyo1)$Treatment  5    818.1 0.04186 0.3267  0.993   
-## sample_data(phyo1)$Timepoint  1   4202.7 0.21501 8.3907  0.003 **
-## Residual                     29  14525.5 0.74313                 
-## Total                        35  19546.3 1.00000                 
+##                              Df SumOfSqs      R2      F Pr(>F)    
+## sample_data(phyo1)$Treatment  5    818.1 0.04186 0.3267  0.994    
+## sample_data(phyo1)$Timepoint  1   4202.7 0.21501 8.3907  0.001 ***
+## Residual                     29  14525.5 0.74313                  
+## Total                        35  19546.3 1.00000                  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
