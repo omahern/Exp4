@@ -396,7 +396,7 @@ qpcr_buck_conc <- function(df, selection){
     geom_point(aes(colour=MC, 
                    fill = MC), size=1.3) + 
     geom_line(aes(colour=MC)) + 
-    labs(x="Buoyant Density (g/mL)", y = "Ratio of Maximum Quantity") +
+    labs(x="Buoyant Density (g/mL)", y = "RNA Concentration (ng/uL)") +
     theme_bw() +  scale_x_continuous(limits = c(1.76, 1.83)) +
     theme(axis.text = element_text(color ='black',size=6, hjust=1,vjust=1),
           axis.text.x=element_text(size=6, angle=90),
@@ -445,7 +445,7 @@ qpcr_leud_conc <- function(df, selection){
     geom_point(aes(colour=MC, 
                    fill = MC), size=1.3) + 
     geom_line(aes(colour=MC)) + 
-    labs(x="Buoyant Density (g/mL)", y = "Ratio of Maximum Quantity") +
+    labs(x="Buoyant Density (g/mL)", y = "RNA Concentration (ng/uL)") +
     theme_bw() +  scale_x_continuous(limits = c(1.76, 1.83)) +
     theme(axis.text = element_text(color ='black',size=6, hjust=1,vjust=1),
           axis.text.x=element_text(size=6, angle=90),
