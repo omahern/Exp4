@@ -18,15 +18,22 @@ knit: (function(input_file, encoding) {
 ---
 
 
-<video width="600" height="300" controls autoplay muted>
-  <source src="/Users/oliviaahern/Documents/movie.mov" type="video/mov">
+<video width="600" height="338" controls autoplay muted>
+  <source src="/Users/oliviaahern/Downloads/movie.mp4" type="video/mp4">
 </video>
+The view from inside one of our microcosms. 
 
 # Experimental Overview
 
 Full experimental information, including previous experiments and timeline, can be found at [the MCP website](http://ecosystems.mbl.edu/MEP-FoodWeb/Experiments/Exp4/index.html)
 
-RNA-SIP protocol can be found [here on github](https://omahern.github.io/RNA_SIP_Protocol/). Raw files used in this page can be found [here on github](https://github.com/omahern/Exp4/tree/main/data). 
+RNA-SIP protocol can be found [here on github](https://omahern.github.io/RNA_SIP_Protocol/). 
+
+Raw files used in this page can be found [here on github](https://github.com/omahern/Exp4/tree/main/data). 
+
+
+![Overview of experimental design. We first innoculated six chemostat and batch cultures with < 400 uM Siders Pond microbial community. These cultures had 5 different carbon substrates, with concentrations that ensured there was the same available Gibbs Free Energy from each carbon substrates One of those six cultures contained all the five carbon substrates with natural abundances of 12C. In the remaining six cultures, one of the carbon substrates was labelled with 13C, while the other four remained unlabelled. Therefore, five of the six cultures were 20% labelled in 13C. We then extracted the RNA, performed RNA-SIP fractionation, and are sequencing both the eukaryotic and bacterial community to identify trophic cascades.](/Users/oliviaahern/Documents/GitHub/Exp4/miscplotsfortalks/Picture1.png)
+
 
 
 ```{r setup, message=FALSE, error=FALSE, warning=FALSE}
@@ -50,6 +57,7 @@ library(phytools)
 ## Gas Data
 
 Full gas data for the entire experiment can be found at [the Experiment 4 highcharts website](http://ecosystems.mbl.edu/MEP-FoodWeb/Experiments/Exp4/Exp4_HighCharts.html)
+
 
 ```{r gas, fig.width=10,fig.height=8, dpi=300}
 x<-read.csv(file='/Users/oliviaahern/Documents/R/Exp4/22Apr22/Exp4_Chemostat.csv',header=TRUE)
