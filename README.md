@@ -10,12 +10,21 @@ https://omahern.github.io/RNA_SIP_Protocol/
 
 
 Under the data folder, I have the following files:
+
 atomic_C_30Aug22.csv	Atomic % 13C and corrected mm 13C 
+
 Exp4_Chemostat.csv	Gas data from Chemostat
+
 Exp4_Batch.csv		Gas data from Batch 
+
 qpcr_6Oct22.csv		RT-qPCR data from Batch 
+
 qpcr_Chemostat.csv	RT-qPCR data from Chemostat
+
 asv-table.csv		ASV table from experiment
+
 taxonomy.csv		ASV taxonomy
+
 tree.nwk		ASV phylogenetic tree
+
 map_exp4.txt		Sample mapping for ASVs 
