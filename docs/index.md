@@ -77,7 +77,7 @@ mc3O2=x$O2.MC3....
 mc4O2=x$O2.MC4....
 mc5O2=x$O2.MC5....
 mc6O2=x$O2.MC6....
-
+{
 par(mfrow=c(2,2),mar=c(5,5,1,1))
 layout(matrix(c(1,2,2,3,4,4), nrow = 2, ncol = 3, byrow = TRUE))
 
@@ -120,6 +120,7 @@ lines(timec, mc3cO2c, type='l', pch=21, col='#6870c8')
 lines(timec, mc4cO2c, type='l', pch=21, col='#56ae6c')
 lines(timec, mc5cO2c, type='l', pch=21, col='#af953c')
 lines(timec, mc6cO2c, type='l', pch=21, col='#ba4a4f')
+}
 ```
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/gas-1.png)<!-- -->
@@ -212,9 +213,9 @@ Atomic % 13C was measured from dried GFF filters. Calculations and measurements 
   lines(MC1c$TP, MC4c$Balanced_Atomic_.13C, type="o", col="#56ae6c", bg="#56ae6c", pch=21,cex=1.2)
   lines(MC1c$TP, MC5c$Balanced_Atomic_.13C, type="o", col="#af953c", bg="#af953c", pch=21,cex=1.2)
   lines(MC1c$TP, MC6c$Balanced_Atomic_.13C, type="o", col="#ba4a4f", bg="#ba4a4f", pch=21,cex=1.2)
-  #legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
-  #                          "MC5-Glu", "MC6-Xyl"), bty='n', pch =21,
-   #      pt.bg=c("gray70", "#a44f9a", "#6870c8", "#56ae6c", "#af953c", "#ba4a4f"))
+  legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
+                            "MC5-Glu", "MC6-Xyl"), bty='n', pch =21,
+         pt.bg=c("gray70", "#a44f9a", "#6870c8", "#56ae6c", "#af953c", "#ba4a4f"),ncol=2)
 
   
   plot(MC1$TP,MC1$POC.._M., type='o',  ylim=c(0,500),pch=21,bg='gray70',
@@ -261,1908 +262,308 @@ C13 peak was about 0.016 g/mL higher than the 13C peak.
 ## Batch 
 
 ```r
-read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
-dim(read)
+read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_6Oct22.csv',header=T)
 ```
 
-```
-## [1] 343  14
-```
+### Ratio of Maximum Quantity vs. Buckley Buoyant Density 
 
+Average peak 12C density for MC1-C12
 
-
-
-### Ribogreen Raw
-
-#### MC1-C12
-
-```r
-MC1_T2.5=subset(read, read$MC=="MC1" & TP =="2.5")
-MC1_T3.5=subset(read, read$MC=="MC1" & TP =="3.5")
-MC1_T4.5=subset(read, read$MC=="MC1" & TP =="4.5")
-
-
-
-## Colors
-# MC1 - gray 70
-# MC2 #a44f9a
-# MC3 #6870c8
-# MC4 #56ae6c
-# MC5 #af953c
-# MC6 #ba4a4f
-
-# C12-T2.5 and 3.5
-par(mfrow=c(1,2))
-plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-lines(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_RMAX,type="o", pch=22, bg="gray70")
-lines(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=23)
-legend("topright", legend=c("MC1-C12-T2.5", "MC1-C12-T3.5","MC1-C12-T4.5"), pch=c(21,22,23),
-       pt.bg=c("gray70", "gray70"), bty='n', cex=1)
-
-plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-     ylim=c(0,3.75))
-lines(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_conc,type="o", pch=22, bg="gray70")
-lines(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=23)
-legend("topright", legend=c("MC1-C12-T2.5", "MC1-C12-T3.5","MC1-C12-T4.5"), pch=c(21,22,23),
-       pt.bg=c("gray70", "gray70"), bty='n', cex=1)
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo1a-1.png)<!-- -->
-
-#### MC1-C12 vs. MC2-Met
-
-
+* Lueders BD and correction factor: 1.7811 +/- 0.0090 g/mL 
+* Buckley BD and correction factor: 1.7860 +/- 0.0023 g/mL
 
 
 ```r
-read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
-MC2_T2.5=subset(read, read$MC=="MC2" & TP =="2.5")
-MC2_T3.5=subset(read, read$MC=="MC2" & TP =="3.5")
-MC2_T4.5=subset(read, read$MC=="MC2" & TP =="4.5")
+qpcr=read.csv(file='/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_6Oct22.csv',
+              header=T)
+# dim(qpcr)
+qpcr_sub=subset(qpcr, Buckley > 1.74)
 
-
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-lines(MC2_T2.5$Lueders_BD, MC2_T2.5$Ribo_RMAX,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-     ylim=c(0,3.2))
-lines(MC2_T2.5$Lueders_BD, MC2_T2.5$Ribo_conc,type="o",  pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-
-plot(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-lines(MC2_T3.5$Lueders_BD, MC2_T3.5$Ribo_RMAX,type="o", pch=22, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T3.5", "MC2-Met-T3.5"), pch=c(21,22),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86))
-lines(MC2_T3.5$Lueders_BD, MC2_T3.5$Ribo_conc,type="o",  pch=22, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T3.5", "MC2-Met-T3.5"), pch=c(21,22),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-
-
-plot(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-lines(MC2_T4.5$Lueders_BD, MC2_T4.5$Ribo_RMAX,type="o", pch=22, bg="#a44f9a",
-      col="#a44f9a")
-legend("topleft", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,22),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-
-
-plot(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-     ylim=c(0,4.6))
-lines(MC2_T4.5$Lueders_BD, MC2_T4.5$Ribo_conc,type="o", pch=22, bg="#a44f9a",
-      col="#a44f9a")
-legend("topleft", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,22),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-
-
-plot(MC2_T2.5$Lueders_BD, MC2_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-     ylab="Normalized RNA Conc.", bg='#a44f9a',pch=21, xlim=c(1.76,1.86),
-     ylim=c(0,1), col="#a44f9a")
-lines(MC2_T3.5$Lueders_BD, MC2_T3.5$Ribo_RMAX,type="o", pch=22, bg="#a44f9a",
-      col="#a44f9a")
-lines(MC2_T4.5$Lueders_BD, MC2_T4.5$Ribo_RMAX,type="o", pch=23, bg="#a44f9a",
-      col="#a44f9a")
-legend("topleft", legend=c("MC2-Met-T2.5","MC2-Met-T3.5", "MC2-Met-T4.5"), pch=c(21,22,23),
-       pt.bg=c("#a44f9a", "#a44f9a"), bty='n')
-
-
-
-
-plot(MC2_T2.5$Lueders_BD, MC2_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-     ylab="RNA Conc. (ng/uL)", bg='#a44f9a',pch=21, xlim=c(1.76,1.86),
-     ylim=c(0,5), col="#a44f9a")
-lines(MC2_T3.5$Lueders_BD, MC2_T3.5$Ribo_conc,type="o", pch=22, bg="#a44f9a",
-      col="#a44f9a")
-lines(MC2_T4.5$Lueders_BD, MC2_T4.5$Ribo_conc,type="o", pch=23, bg="#a44f9a",
-      col="#a44f9a")
-legend("topleft", legend=c("MC2-Met-T2.5","MC2-Met-T3.5", "MC2-Met-T4.5"), pch=c(21,22,23),
-       pt.bg=c("#a44f9a", "#a44f9a"), bty='n')
+make_bar_relabun <- function(df, selection){
+  df_out <- df %>% 
+    filter(MC %in% c("MC1",selection))
+  ggplot(df_out, aes(x = Buckley, y = qPCR_RMAX)) +
+    scale_fill_manual(values=colls) +
+    scale_colour_manual(values=colls) +
+    facet_grid(~TP, scale='free_x', space="free", shrink=TRUE) +
+    geom_point(aes(colour=MC, 
+                   fill = MC), size=1.3) + 
+    geom_line(aes(colour=MC)) + 
+    labs(x="Buoyant Density (g/mL)", y = "Ratio of Maximum Quantity") +
+    theme_bw() +  scale_x_continuous(limits = c(1.76, 1.83)) +
+    theme(axis.text = element_text(color ='black',size=6, hjust=1,vjust=1),
+          axis.text.x=element_text(size=6, angle=90),
+          axis.title = element_text(color='black',face='bold',size=8),
+          legend.position = "right",
+          panel.grid=element_blank(),
+          legend.text = element_text(size=8),
+          legend.key.size = unit(0.25,'cm'),
+          strip.text.x = element_text(
+            size = 10, color = "black", face = "bold"),
+          strip.background = element_rect(
+            color="gray80", fill="gray97", size=1, linetype="solid"),
+          panel.spacing = unit(0.05, "lines")
+    )
 }
-```
 
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo2a-1.png)<!-- -->
 
-
-
-#### MC1-C12 vs. MC3-Eth
-
-```r
-# MC1-T2.5 and MC3-Eth-T2.5
-read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
-
-MC3_T2.5=subset(read, read$MC=="MC3" & TP =="2.5")
-MC3_T3.5=subset(read, read$MC=="MC3" & TP =="3.5")
-MC3_T4.5=subset(read, read$MC=="MC3" & TP =="4.5")
-
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-  plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC3_T2.5$Lueders_BD, MC3_T2.5$Ribo_RMAX,type="o", pch=21, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86), ylim=c(0,2.5))
-  lines(MC3_T2.5$Lueders_BD, MC3_T2.5$Ribo_conc,type="o",  pch=21, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  
-  plot(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC3_T3.5$Lueders_BD, MC3_T3.5$Ribo_RMAX,type="o", pch=22, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC3-Eth-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  plot(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC3_T3.5$Lueders_BD, MC3_T3.5$Ribo_conc,type="o",  pch=22, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC3-Eth-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC3_T4.5$Lueders_BD, MC3_T4.5$Ribo_RMAX,type="o", pch=22, bg="#6870c8",
-        col="#6870c8")
-  legend("topleft", legend=c("MC1-C12-T4.5", "MC3-Eth-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1.2))
-  lines(MC3_T4.5$Lueders_BD, MC3_T4.5$Ribo_conc,type="o", pch=22, bg="#6870c8",
-        col="#6870c8")
-  legend("topleft", legend=c("MC1-C12-T4.5", "MC3-Eth-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  
-  
-  plot(MC3_T2.5$Lueders_BD, MC3_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='#6870c8',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1), col="#6870c8")
-  lines(MC3_T3.5$Lueders_BD, MC3_T3.5$Ribo_RMAX,type="o", pch=22, bg="#6870c8",
-        col="#6870c8")
-  lines(MC3_T4.5$Lueders_BD, MC3_T4.5$Ribo_RMAX,type="o", pch=23, bg="#6870c8",
-        col="#6870c8")
-  legend("topleft", legend=c("MC3-Eth-T2.5","MC3-Eth-T3.5", "MC3-Eth-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#6870c8", "#6870c8"), bty='n')
-  
-  
-  
-  
-  plot(MC3_T2.5$Lueders_BD, MC3_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='#6870c8',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,5), col="#6870c8")
-  lines(MC3_T3.5$Lueders_BD, MC3_T3.5$Ribo_conc,type="o", pch=22, bg="#6870c8",
-        col="#6870c8")
-  lines(MC3_T4.5$Lueders_BD, MC3_T4.5$Ribo_conc,type="o", pch=23, bg="#6870c8",
-        col="#6870c8")
-  legend("topleft", legend=c("MC3-Eth-T2.5","MC3-Eth-T3.5", "MC3-Eth-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#6870c8", "#6870c8"), bty='n')
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo3a-1.png)<!-- -->
-
-#### MC1-C12 vs. MC4-Ace
-
-```r
-######
-# MC1 - T2.5 vs. MC4 - Ace 
-MC4_T2.5=subset(read, read$MC=="MC4" & TP =="2.5")
-MC4_T3.5=subset(read, read$MC=="MC4" & TP =="3.5")
-MC4_T4.5=subset(read, read$MC=="MC4" & TP =="4.5")
-
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-  plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC4_T2.5$Lueders_BD, MC4_T2.5$Ribo_RMAX,type="o", pch=21, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC4-Ace-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86), ylim=c(0,2.5))
-  lines(MC4_T2.5$Lueders_BD, MC4_T2.5$Ribo_conc,type="o",  pch=21, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC4-Ace-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  
-  plot(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC4_T3.5$Lueders_BD, MC4_T3.5$Ribo_RMAX,type="o", pch=22, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC4-Ace-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  plot(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC4_T3.5$Lueders_BD, MC4_T3.5$Ribo_conc,type="o",  pch=22, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC4-Ace-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC4_T4.5$Lueders_BD, MC4_T4.5$Ribo_RMAX,type="o", pch=22, bg="#56ae6c",
-        col="#56ae6c")
-  legend("topleft", legend=c("MC1-C12-T4.5", "MC4-Ace-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,0.7))
-  lines(MC4_T4.5$Lueders_BD, MC4_T4.5$Ribo_conc,type="o", pch=22, bg="#56ae6c",
-        col="#56ae6c")
-  legend("topleft", legend=c("MC1-C12-T4.5", "MC4-Ace-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  
-  
-  plot(MC4_T2.5$Lueders_BD, MC4_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='#56ae6c',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1), col="#56ae6c")
-  lines(MC4_T3.5$Lueders_BD, MC4_T3.5$Ribo_RMAX,type="o", pch=22, bg="#56ae6c",
-        col="#56ae6c")
-  lines(MC4_T4.5$Lueders_BD, MC4_T4.5$Ribo_RMAX,type="o", pch=23, bg="#56ae6c",
-        col="#56ae6c")
-  legend("topleft", legend=c("MC4-Ace-T2.5","MC4-Ace-T3.5", "MC4-Ace-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#56ae6c", "#56ae6c"), bty='n')
-  
-  
-  
-  
-  plot(MC4_T2.5$Lueders_BD, MC4_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='#56ae6c',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,5), col="#56ae6c")
-  lines(MC4_T3.5$Lueders_BD, MC4_T3.5$Ribo_conc,type="o", pch=22, bg="#56ae6c",
-        col="#56ae6c")
-  lines(MC4_T4.5$Lueders_BD, MC4_T4.5$Ribo_conc,type="o", pch=23, bg="#56ae6c",
-        col="#56ae6c")
-  legend("topleft", legend=c("MC4-Ace-T2.5","MC4-Ace-T3.5", "MC4-Ace-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#56ae6c", "#56ae6c"), bty='n')
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo4a-1.png)<!-- -->
-
-#### MC1-C12 vs. MC5-Glu
-
-```r
-# MC1 vs MC5 
-MC5_T2.5=subset(read, read$MC=="MC5" & TP =="2.5")
-MC5_T3.5=subset(read, read$MC=="MC5" & TP =="3.5")
-MC5_T4.5=subset(read, read$MC=="MC5" & TP =="4.5")
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-  plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC5_T2.5$Lueders_BD, MC5_T2.5$Ribo_RMAX,type="o", pch=21, bg="#af953c", 
-        col="#af953c")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC5-Glu-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86), ylim=c(0,2.5))
-  lines(MC5_T2.5$Lueders_BD, MC5_T2.5$Ribo_conc,type="o",  pch=21, bg="#af953c", 
-        col="#af953c")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC5-Glu-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  
-  plot(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC5_T3.5$Lueders_BD, MC5_T3.5$Ribo_RMAX,type="o", pch=22, bg="#af953c", 
-        col="#af953c")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC5-Glu-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  plot(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC5_T3.5$Lueders_BD, MC5_T3.5$Ribo_conc,type="o",  pch=22, bg="#af953c", 
-        col="#af953c")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC5-Glu-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC5_T4.5$Lueders_BD, MC5_T4.5$Ribo_RMAX,type="o", pch=22, bg="#af953c",
-        col="#af953c")
-  legend("topleft", legend=c("MC1-C12-T4.5", "MC5-Glu-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1))
-  lines(MC5_T4.5$Lueders_BD, MC5_T4.5$Ribo_conc,type="o", pch=22, bg="#af953c",
-        col="#af953c")
-  legend("topleft", legend=c("MC1-C12-T4.5", "MC5-Glu-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  
-  
-  plot(MC5_T2.5$Lueders_BD, MC5_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='#af953c',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1), col="#af953c")
-  lines(MC5_T3.5$Lueders_BD, MC5_T3.5$Ribo_RMAX,type="o", pch=22, bg="#af953c",
-        col="#af953c")
-  lines(MC5_T4.5$Lueders_BD, MC5_T4.5$Ribo_RMAX,type="o", pch=23, bg="#af953c",
-        col="#af953c")
-  legend("topleft", legend=c("MC5-Glu-T2.5","MC5-Glu-T3.5", "MC5-Glu-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#af953c", "#af953c"), bty='n')
-  
-  
-  
-  
-  plot(MC5_T2.5$Lueders_BD, MC5_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='#af953c',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,2.5), col="#af953c")
-  lines(MC5_T3.5$Lueders_BD, MC5_T3.5$Ribo_conc,type="o", pch=22, bg="#af953c",
-        col="#af953c")
-  lines(MC5_T4.5$Lueders_BD, MC5_T4.5$Ribo_conc,type="o", pch=23, bg="#af953c",
-        col="#af953c")
-  legend("topleft", legend=c("MC5-Glu-T2.5","MC5-Glu-T3.5", "MC5-Glu-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#af953c", "#af953c"), bty='n')
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo5a-1.png)<!-- -->
-
-#### MC1-C12 vs. MC6-Xyl
-
-```r
-MC6_T2.5=subset(read, read$MC=="MC6" & TP =="2.5")
-MC6_T3.5=subset(read, read$MC=="MC6" & TP =="3.5")
-MC6_T4.5=subset(read, read$MC=="MC6" & TP =="4.5")
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-  plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC6_T2.5$Lueders_BD, MC6_T2.5$Ribo_RMAX,type="o", pch=21, bg="#ba4a4f", 
-        col="#ba4a4f")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC6-Xyl-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  plot(MC1_T2.5$Lueders_BD, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86), ylim=c(0,2.5))
-  lines(MC6_T2.5$Lueders_BD, MC6_T2.5$Ribo_conc,type="o",  pch=21, bg="#ba4a4f", 
-        col="#ba4a4f")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC6-Xyl-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  
-  plot(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC6_T3.5$Lueders_BD, MC6_T3.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f", 
-        col="#ba4a4f")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC6-Xyl-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  plot(MC1_T3.5$Lueders_BD, MC1_T3.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC6_T3.5$Lueders_BD, MC6_T3.5$Ribo_conc,type="o",  pch=22, bg="#ba4a4f", 
-        col="#ba4a4f")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC6-Xyl-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC6_T4.5$Lueders_BD, MC6_T4.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f",
-        col="#ba4a4f")
-  legend("topleft", legend=c("MC1-C12-T4.5", "MC6-Xyl-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Lueders_BD, MC1_T4.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1.5))
-  lines(MC6_T4.5$Lueders_BD, MC6_T4.5$Ribo_conc,type="o", pch=22, bg="#ba4a4f",
-        col="#ba4a4f")
-  legend("topleft", legend=c("MC1-C12-T4.5", "MC6-Xyl-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  
-  
-  plot(MC6_T2.5$Lueders_BD, MC6_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders",
-       ylab="Normalized RNA Conc.", bg='#ba4a4f',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1), col="#ba4a4f")
-  lines(MC6_T3.5$Lueders_BD, MC6_T3.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f",
-        col="#ba4a4f")
-  lines(MC6_T4.5$Lueders_BD, MC6_T4.5$Ribo_RMAX,type="o", pch=23, bg="#ba4a4f",
-        col="#ba4a4f")
-  legend("topleft", legend=c("MC6-Xyl-T2.5","MC6-Xyl-T3.5", "MC6-Xyl-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#ba4a4f", "#ba4a4f"), bty='n')
-  
-  plot(MC6_T2.5$Lueders_BD, MC6_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Lueders",
-       ylab="RNA Conc. (ng/uL)", bg='#ba4a4f',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,2.5), col="#ba4a4f")
-  lines(MC6_T3.5$Lueders_BD, MC6_T3.5$Ribo_conc,type="o", pch=22, bg="#ba4a4f",
-        col="#ba4a4f")
-  lines(MC6_T4.5$Lueders_BD, MC6_T4.5$Ribo_conc,type="o", pch=23, bg="#ba4a4f",
-        col="#ba4a4f")
-  legend("topleft", legend=c("MC6-Xyl-T2.5","MC6-Xyl-T3.5", "MC6-Xyl-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#ba4a4f", "#ba4a4f"), bty='n')
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo6a-1.png)<!-- -->
-
-### Ribo - Buckley 
-
-#### MC1- C12
-
-
-```r
-par(mfrow=c(1,2))
-plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-lines(MC1_T3.5$Buckley, MC1_T3.5$Ribo_RMAX,type="o", pch=22, bg="gray70")
-lines(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o", bg='gray70',pch=23)
-legend("topright", legend=c("MC1-C12-T2.5", "MC1-C12-T3.5","MC1-C12-T4.5"), pch=c(21,22,23),
-       pt.bg=c("gray70", "gray70"), bty='n', cex=1)
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-     ylim=c(0,3.75))
-lines(MC1_T3.5$Buckley, MC1_T3.5$Ribo_conc,type="o", pch=22, bg="gray70")
-lines(MC1_T4.5$Buckley, MC1_T4.5$Ribo_conc,type="o",  bg='gray70',pch=23)
-legend("topright", legend=c("MC1-C12-T2.5", "MC1-C12-T3.5","MC1-C12-T4.5"), pch=c(21,22,23),
-       pt.bg=c("gray70", "gray70"), bty='n', cex=1)
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo1b-1.png)<!-- -->
-#### MC1-C12- vs. MC2-Met
-
-```r
-read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
-MC2_T2.5=subset(read, read$MC=="MC2" & TP =="2.5")
-MC2_T3.5=subset(read, read$MC=="MC2" & TP =="3.5")
-MC2_T4.5=subset(read, read$MC=="MC2" & TP =="4.5")
-
-
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC2_T2.5$Buckley, MC2_T2.5$Ribo_RMAX,type="o", pch=21, bg="#a44f9a", 
-        col="#a44f9a")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#a44f9a"), bty='n')
-  
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,3.2))
-  lines(MC2_T2.5$Buckley, MC2_T2.5$Ribo_conc,type="o",  pch=21, bg="#a44f9a", 
-        col="#a44f9a")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#a44f9a"), bty='n')
-  
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC2_T3.5$Buckley, MC2_T3.5$Ribo_RMAX,type="o", pch=22, bg="#a44f9a", 
-        col="#a44f9a")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC2-Met-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#a44f9a"), bty='n')
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC2_T3.5$Buckley, MC2_T3.5$Ribo_conc,type="o",  pch=22, bg="#a44f9a", 
-        col="#a44f9a")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC2-Met-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#a44f9a"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC2_T4.5$Buckley, MC2_T4.5$Ribo_RMAX,type="o", pch=22, bg="#a44f9a",
-        col="#a44f9a")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#a44f9a"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,4.6))
-  lines(MC2_T4.5$Buckley, MC2_T4.5$Ribo_conc,type="o", pch=22, bg="#a44f9a",
-        col="#a44f9a")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#a44f9a"), bty='n')
-  
-  
-  
-  plot(MC2_T2.5$Buckley, MC2_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='#a44f9a',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1), col="#a44f9a")
-  lines(MC2_T3.5$Buckley, MC2_T3.5$Ribo_RMAX,type="o", pch=22, bg="#a44f9a",
-        col="#a44f9a")
-  lines(MC2_T4.5$Buckley, MC2_T4.5$Ribo_RMAX,type="o", pch=23, bg="#a44f9a",
-        col="#a44f9a")
-  legend("topright", legend=c("MC2-Met-T2.5","MC2-Met-T3.5", "MC2-Met-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#a44f9a", "#a44f9a"), bty='n')
-  
-  
-  
-  
-  plot(MC2_T2.5$Buckley, MC2_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='#a44f9a',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,5), col="#a44f9a")
-  lines(MC2_T3.5$Buckley, MC2_T3.5$Ribo_conc,type="o", pch=22, bg="#a44f9a",
-        col="#a44f9a")
-  lines(MC2_T4.5$Buckley, MC2_T4.5$Ribo_conc,type="o", pch=23, bg="#a44f9a",
-        col="#a44f9a")
-  legend("topright", legend=c("MC2-Met-T2.5","MC2-Met-T3.5", "MC2-Met-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#a44f9a", "#a44f9a"), bty='n')
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo2b-1.png)<!-- -->
-
-
-
-#### MC1-C12 vs. MC3-Eth
-
-```r
-# MC1-T2.5 and MC3-Eth-T2.5
-read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
-
-MC3_T2.5=subset(read, read$MC=="MC3" & TP =="2.5")
-MC3_T3.5=subset(read, read$MC=="MC3" & TP =="3.5")
-MC3_T4.5=subset(read, read$MC=="MC3" & TP =="4.5")
-
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC3_T2.5$Buckley, MC3_T2.5$Ribo_RMAX,type="o", pch=21, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86), ylim=c(0,2.5))
-  lines(MC3_T2.5$Buckley, MC3_T2.5$Ribo_conc,type="o",  pch=21, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC3_T3.5$Buckley, MC3_T3.5$Ribo_RMAX,type="o", pch=22, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC3-Eth-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC3_T3.5$Buckley, MC3_T3.5$Ribo_conc,type="o",  pch=22, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC3-Eth-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC3_T4.5$Buckley, MC3_T4.5$Ribo_RMAX,type="o", pch=22, bg="#6870c8",
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC3-Eth-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1.2))
-  lines(MC3_T4.5$Buckley, MC3_T4.5$Ribo_conc,type="o", pch=22, bg="#6870c8",
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC3-Eth-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  
-  
-  plot(MC3_T2.5$Buckley, MC3_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='#6870c8',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1), col="#6870c8")
-  lines(MC3_T3.5$Buckley, MC3_T3.5$Ribo_RMAX,type="o", pch=22, bg="#6870c8",
-        col="#6870c8")
-  lines(MC3_T4.5$Buckley, MC3_T4.5$Ribo_RMAX,type="o", pch=23, bg="#6870c8",
-        col="#6870c8")
-  legend("topright", legend=c("MC3-Eth-T2.5","MC3-Eth-T3.5", "MC3-Eth-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#6870c8", "#6870c8"), bty='n')
-  
-  
-  
-  
-  plot(MC3_T2.5$Buckley, MC3_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='#6870c8',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,5), col="#6870c8")
-  lines(MC3_T3.5$Buckley, MC3_T3.5$Ribo_conc,type="o", pch=22, bg="#6870c8",
-        col="#6870c8")
-  lines(MC3_T4.5$Buckley, MC3_T4.5$Ribo_conc,type="o", pch=23, bg="#6870c8",
-        col="#6870c8")
-  legend("topright", legend=c("MC3-Eth-T2.5","MC3-Eth-T3.5", "MC3-Eth-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#6870c8", "#6870c8"), bty='n')
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo3b-1.png)<!-- -->
-
-#### MC1-C12 vs. MC4-Ace
-
-```r
-######
-# MC1 - T2.5 vs. MC4 - Ace 
-MC4_T2.5=subset(read, read$MC=="MC4" & TP =="2.5")
-MC4_T3.5=subset(read, read$MC=="MC4" & TP =="3.5")
-MC4_T4.5=subset(read, read$MC=="MC4" & TP =="4.5")
-
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC4_T2.5$Buckley, MC4_T2.5$Ribo_RMAX,type="o", pch=21, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC4-Ace-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86), ylim=c(0,2.5))
-  lines(MC4_T2.5$Buckley, MC4_T2.5$Ribo_conc,type="o",  pch=21, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC4-Ace-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC4_T3.5$Buckley, MC4_T3.5$Ribo_RMAX,type="o", pch=22, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC4-Ace-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC4_T3.5$Buckley, MC4_T3.5$Ribo_conc,type="o",  pch=22, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC4-Ace-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC4_T4.5$Buckley, MC4_T4.5$Ribo_RMAX,type="o", pch=22, bg="#56ae6c",
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC4-Ace-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,0.7))
-  lines(MC4_T4.5$Buckley, MC4_T4.5$Ribo_conc,type="o", pch=22, bg="#56ae6c",
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC4-Ace-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  
-  
-  plot(MC4_T2.5$Buckley, MC4_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='#56ae6c',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1), col="#56ae6c")
-  lines(MC4_T3.5$Buckley, MC4_T3.5$Ribo_RMAX,type="o", pch=22, bg="#56ae6c",
-        col="#56ae6c")
-  lines(MC4_T4.5$Buckley, MC4_T4.5$Ribo_RMAX,type="o", pch=23, bg="#56ae6c",
-        col="#56ae6c")
-  legend("topright", legend=c("MC4-Ace-T2.5","MC4-Ace-T3.5", "MC4-Ace-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#56ae6c", "#56ae6c"), bty='n')
-  
-  
-  
-  
-  plot(MC4_T2.5$Buckley, MC4_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='#56ae6c',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,5), col="#56ae6c")
-  lines(MC4_T3.5$Buckley, MC4_T3.5$Ribo_conc,type="o", pch=22, bg="#56ae6c",
-        col="#56ae6c")
-  lines(MC4_T4.5$Buckley, MC4_T4.5$Ribo_conc,type="o", pch=23, bg="#56ae6c",
-        col="#56ae6c")
-  legend("topright", legend=c("MC4-Ace-T2.5","MC4-Ace-T3.5", "MC4-Ace-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#56ae6c", "#56ae6c"), bty='n')
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo4b-1.png)<!-- -->
-
-#### MC1-C12 vs. MC5-Glu
-
-```r
-# MC1 vs MC5 
-MC5_T2.5=subset(read, read$MC=="MC5" & TP =="2.5")
-MC5_T3.5=subset(read, read$MC=="MC5" & TP =="3.5")
-MC5_T4.5=subset(read, read$MC=="MC5" & TP =="4.5")
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC5_T2.5$Buckley, MC5_T2.5$Ribo_RMAX,type="o", pch=21, bg="#af953c", 
-        col="#af953c")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC5-Glu-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86), ylim=c(0,2.5))
-  lines(MC5_T2.5$Buckley, MC5_T2.5$Ribo_conc,type="o",  pch=21, bg="#af953c", 
-        col="#af953c")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC5-Glu-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC5_T3.5$Buckley, MC5_T3.5$Ribo_RMAX,type="o", pch=22, bg="#af953c", 
-        col="#af953c")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC5-Glu-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC5_T3.5$Buckley, MC5_T3.5$Ribo_conc,type="o",  pch=22, bg="#af953c", 
-        col="#af953c")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC5-Glu-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC5_T4.5$Buckley, MC5_T4.5$Ribo_RMAX,type="o", pch=22, bg="#af953c",
-        col="#af953c")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC5-Glu-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1))
-  lines(MC5_T4.5$Buckley, MC5_T4.5$Ribo_conc,type="o", pch=22, bg="#af953c",
-        col="#af953c")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC5-Glu-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#af953c"), bty='n')
-  
-  
-  
-  plot(MC5_T2.5$Buckley, MC5_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='#af953c',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1), col="#af953c")
-  lines(MC5_T3.5$Buckley, MC5_T3.5$Ribo_RMAX,type="o", pch=22, bg="#af953c",
-        col="#af953c")
-  lines(MC5_T4.5$Buckley, MC5_T4.5$Ribo_RMAX,type="o", pch=23, bg="#af953c",
-        col="#af953c")
-  legend("topright", legend=c("MC5-Glu-T2.5","MC5-Glu-T3.5", "MC5-Glu-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#af953c", "#af953c"), bty='n')
-  
-  
-  
-  
-  plot(MC5_T2.5$Buckley, MC5_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='#af953c',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,2.5), col="#af953c")
-  lines(MC5_T3.5$Buckley, MC5_T3.5$Ribo_conc,type="o", pch=22, bg="#af953c",
-        col="#af953c")
-  lines(MC5_T4.5$Buckley, MC5_T4.5$Ribo_conc,type="o", pch=23, bg="#af953c",
-        col="#af953c")
-  legend("topright", legend=c("MC5-Glu-T2.5","MC5-Glu-T3.5", "MC5-Glu-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#af953c", "#af953c"), bty='n')
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo5b-1.png)<!-- -->
-
-#### MC1-C12 vs. MC6-Xyl
-
-```r
-MC6_T2.5=subset(read, read$MC=="MC6" & TP =="2.5")
-MC6_T3.5=subset(read, read$MC=="MC6" & TP =="3.5")
-MC6_T4.5=subset(read, read$MC=="MC6" & TP =="4.5")
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC6_T2.5$Buckley, MC6_T2.5$Ribo_RMAX,type="o", pch=21, bg="#ba4a4f", 
-        col="#ba4a4f")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC6-Xyl-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86), ylim=c(0,2.5))
-  lines(MC6_T2.5$Buckley, MC6_T2.5$Ribo_conc,type="o",  pch=21, bg="#ba4a4f", 
-        col="#ba4a4f")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC6-Xyl-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC6_T3.5$Buckley, MC6_T3.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f", 
-        col="#ba4a4f")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC6-Xyl-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC6_T3.5$Buckley, MC6_T3.5$Ribo_conc,type="o",  pch=22, bg="#ba4a4f", 
-        col="#ba4a4f")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC6-Xyl-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.86))
-  lines(MC6_T4.5$Buckley, MC6_T4.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f",
-        col="#ba4a4f")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC6-Xyl-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1.5))
-  lines(MC6_T4.5$Buckley, MC6_T4.5$Ribo_conc,type="o", pch=22, bg="#ba4a4f",
-        col="#ba4a4f")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC6-Xyl-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#ba4a4f"), bty='n')
-  
-  
-  
-  plot(MC6_T2.5$Buckley, MC6_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='#ba4a4f',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,1), col="#ba4a4f")
-  lines(MC6_T3.5$Buckley, MC6_T3.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f",
-        col="#ba4a4f")
-  lines(MC6_T4.5$Buckley, MC6_T4.5$Ribo_RMAX,type="o", pch=23, bg="#ba4a4f",
-        col="#ba4a4f")
-  legend("topright", legend=c("MC6-Xyl-T2.5","MC6-Xyl-T3.5", "MC6-Xyl-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#ba4a4f", "#ba4a4f"), bty='n')
-  
-  plot(MC6_T2.5$Buckley, MC6_T2.5$Ribo_conc,type="o", xlab="Buoyant Density - Buckley",
-       ylab="RNA Conc. (ng/uL)", bg='#ba4a4f',pch=21, xlim=c(1.76,1.86),
-       ylim=c(0,2.5), col="#ba4a4f")
-  lines(MC6_T3.5$Buckley, MC6_T3.5$Ribo_conc,type="o", pch=22, bg="#ba4a4f",
-        col="#ba4a4f")
-  lines(MC6_T4.5$Buckley, MC6_T4.5$Ribo_conc,type="o", pch=23, bg="#ba4a4f",
-        col="#ba4a4f")
-  legend("topright", legend=c("MC6-Xyl-T2.5","MC6-Xyl-T3.5", "MC6-Xyl-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#ba4a4f", "#ba4a4f"), bty='n')
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo6b-1.png)<!-- -->
-
-### Ribo Correct Both
-#### MC1-C12 vs. MC2-Met
-
-```r
-read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
-MC2_T2.5=subset(read, read$MC=="MC2" & TP =="2.5")
-MC2_T3.5=subset(read, read$MC=="MC2" & TP =="3.5")
-MC2_T4.5=subset(read, read$MC=="MC2" & TP =="4.5")
-MC1_T4.5=subset(read, read$MC=="MC1" & TP == "4.5")
-MC1_T2.5=subset(read, read$MC=="MC1" & TP == "2.5")
-MC1_T3.5=subset(read, read$MC=="MC1" & TP == "3.5")
-
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-plot(MC1_T2.5$Corrected, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc. (ribogreen)", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC2_T2.5$Corrected, MC2_T2.5$Ribo_RMAX,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC2_T2.5$Buckley, MC2_T2.5$Ribo_RMAX,type="o",  pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-
-plot(MC1_T3.5$Corrected, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC2_T3.5$Corrected, MC2_T3.5$Ribo_RMAX,type="o", pch=22, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T3.5", "MC2-Met-T3.5"), pch=c(21,22),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC2_T3.5$Buckley, MC2_T3.5$Ribo_RMAX,type="o",  pch=22, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T3.5", "MC2-Met-T3.5"), pch=c(21,22),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-
-plot(MC1_T4.5$Corrected, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc. ", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC2_T4.5$Corrected, MC2_T4.5$Ribo_RMAX,type="o", pch=22, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,22),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC2_T4.5$Buckley, MC2_T4.5$Ribo_RMAX,type="o",  pch=22, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,22),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-
-plot(MC2_T2.5$Corrected, MC2_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='#a44f9a',pch=21, xlim=c(1.735,1.85),
-     col="#a44f9a")
-lines(MC2_T3.5$Corrected, MC2_T3.5$Ribo_RMAX,type="o", pch=22, bg="#a44f9a", 
-      col="#a44f9a")
-lines(MC2_T4.5$Corrected, MC2_T4.5$Ribo_RMAX,type="o", pch=23, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC2-Met-T2.5", "MC2-Met-T3.5", "MC2-Met-T4.5"), pch=c(21,22,23),
-       pt.bg=c("#a44f9a", "#a44f9a","#a44f9a"), bty='n')
-
-plot(MC2_T2.5$Buckley, MC2_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='#a44f9a',pch=21, xlim=c(1.735,1.85),
-     col="#a44f9a")
-lines(MC2_T3.5$Buckley, MC2_T3.5$Ribo_RMAX,type="o", pch=22, bg="#a44f9a", 
-      col="#a44f9a")
-lines(MC2_T4.5$Buckley, MC2_T4.5$Ribo_RMAX,type="o", pch=23, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC2-Met-T2.5", "MC2-Met-T3.5", "MC2-Met-T4.5"), pch=c(21,22,23),
-       pt.bg=c("#a44f9a", "#a44f9a","#a44f9a"), bty='n')
-
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo2-1.png)<!-- -->
-
-
-
-#### MC1-C12 vs. MC3-Eth
-
-```r
-# MC1-T2.5 and MC3-Eth-T2.5
-read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
-MC3_T2.5=subset(read, read$MC=="MC3" & TP =="2.5")
-MC3_T3.5=subset(read, read$MC=="MC3" & TP =="3.5")
-MC3_T4.5=subset(read, read$MC=="MC3" & TP =="4.5")
-MC1_T4.5=subset(read, read$MC=="MC1" & TP == "4.5")
-MC1_T2.5=subset(read, read$MC=="MC1" & TP == "2.5")
-MC1_T3.5=subset(read, read$MC=="MC1" & TP == "3.5")
-
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-  plot(MC1_T2.5$Corrected, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-  lines(MC3_T2.5$Corrected, MC3_T2.5$Ribo_RMAX,type="o", pch=21, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-  lines(MC3_T2.5$Buckley, MC3_T2.5$Ribo_RMAX,type="o",  pch=21, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  
-  plot(MC1_T3.5$Corrected, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-  lines(MC3_T3.5$Corrected, MC3_T3.5$Ribo_RMAX,type="o", pch=22, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC3-Eth-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-  lines(MC3_T3.5$Buckley, MC3_T3.5$Ribo_RMAX,type="o",  pch=22, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC3-Eth-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  
-  plot(MC1_T4.5$Corrected, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-  lines(MC3_T4.5$Corrected, MC3_T4.5$Ribo_RMAX,type="o", pch=22, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC3-Eth-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-  lines(MC3_T4.5$Buckley, MC3_T4.5$Ribo_RMAX,type="o",  pch=22, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC3-Eth-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#6870c8"), bty='n')
-  
-  
-  plot(MC3_T2.5$Corrected, MC3_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-       ylab="Normalized RNA Conc.", bg='#6870c8',pch=21, xlim=c(1.735,1.85),
-       col="#6870c8")
-  lines(MC3_T3.5$Corrected, MC3_T3.5$Ribo_RMAX,type="o", pch=22, bg="#6870c8", 
-        col="#6870c8")
-  lines(MC3_T4.5$Corrected, MC3_T4.5$Ribo_RMAX,type="o", pch=23, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC3-Eth-T2.5", "MC3-Eth-T3.5", "MC3-Eth-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#6870c8", "#6870c8","#6870c8"), bty='n')
-  
-  plot(MC3_T2.5$Buckley, MC3_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc. ", bg='#6870c8',pch=21, xlim=c(1.735,1.85),
-       col="#6870c8")
-  lines(MC3_T3.5$Buckley, MC3_T3.5$Ribo_RMAX,type="o", pch=22, bg="#6870c8", 
-        col="#6870c8")
-  lines(MC3_T4.5$Buckley, MC3_T4.5$Ribo_RMAX,type="o", pch=23, bg="#6870c8", 
-        col="#6870c8")
-  legend("topright", legend=c("MC3-Eth-T2.5", "MC3-Eth-T3.5", "MC3-Eth-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#6870c8", "#6870c8","#6870c8"), bty='n')
-  
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo3-1.png)<!-- -->
-
-#### MC1-C12 vs. MC4-Ace
-
-```r
-######
-# MC1 - T2.5 vs. MC4 - Ace 
-MC4_T2.5=subset(read, read$MC=="MC4" & TP =="2.5")
-MC4_T3.5=subset(read, read$MC=="MC4" & TP =="3.5")
-MC4_T4.5=subset(read, read$MC=="MC4" & TP =="4.5")
-
-
-{
-  par(mar=c(5,5,1,1),mfrow=c(4,2))
-  plot(MC1_T2.5$Corrected, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.74,1.84))
-  lines(MC4_T2.5$Corrected, MC4_T2.5$Ribo_RMAX,type="o", pch=21, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC4-Ace-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.74,1.84))
-  lines(MC4_T2.5$Buckley, MC4_T2.5$Ribo_RMAX,type="o",  pch=21, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T2.5", "MC4-Ace-T2.5"), pch=c(21,21),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  
-  plot(MC1_T3.5$Corrected, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.74,1.84))
-  lines(MC4_T3.5$Corrected, MC4_T3.5$Ribo_RMAX,type="o", pch=22, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC4-Ace-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.74,1.84))
-  lines(MC4_T3.5$Buckley, MC4_T3.5$Ribo_RMAX,type="o",  pch=22, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T3.5", "MC4-Ace-T3.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  
-  plot(MC1_T4.5$Corrected, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.74,1.84))
-  lines(MC4_T4.5$Corrected, MC4_T4.5$Ribo_RMAX,type="o", pch=22, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC4-Ace-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.74,1.84))
-  lines(MC4_T4.5$Buckley, MC4_T4.5$Ribo_RMAX,type="o",  pch=22, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC1-C12-T4.5", "MC4-Ace-T4.5"), pch=c(21,22),
-         pt.bg=c("gray70", "#56ae6c"), bty='n')
-  
-  
-  plot(MC4_T2.5$Corrected, MC4_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-       ylab="Normalized RNA Conc.", bg='#56ae6c',pch=21, xlim=c(1.74,1.84),
-       col="#56ae6c")
-  lines(MC4_T3.5$Corrected, MC4_T3.5$Ribo_RMAX,type="o", pch=22, bg="#56ae6c", 
-        col="#56ae6c")
-  lines(MC4_T4.5$Corrected, MC4_T4.5$Ribo_RMAX,type="o", pch=23, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC4-Ace-T2.5", "MC4-Ace-T3.5", "MC4-Ace-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#56ae6c", "#56ae6c","#56ae6c"), bty='n')
-  
-  plot(MC4_T2.5$Buckley, MC4_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-       ylab="Normalized RNA Conc.", bg='#56ae6c',pch=21, xlim=c(1.74,1.84),
-       col="#56ae6c")
-  lines(MC4_T3.5$Buckley, MC4_T3.5$Ribo_RMAX,type="o", pch=22, bg="#56ae6c", 
-        col="#56ae6c")
-  lines(MC4_T4.5$Buckley, MC4_T4.5$Ribo_RMAX,type="o", pch=23, bg="#56ae6c", 
-        col="#56ae6c")
-  legend("topright", legend=c("MC4-Ace-T2.5", "MC4-Ace-T3.5", "MC4-Ace-T4.5"), pch=c(21,22,23),
-         pt.bg=c("#56ae6c", "#56ae6c","#56ae6c"), bty='n')
-  
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo4-1.png)<!-- -->
-
-#### MC1-C12 vs. MC5-Glu
-
-```r
-# MC1 vs MC5 
-MC5_T2.5=subset(read, read$MC=="MC5" & TP =="2.5")
-MC5_T3.5=subset(read, read$MC=="MC5" & TP =="3.5")
-MC5_T4.5=subset(read, read$MC=="MC5" & TP =="4.5")
-
-
-{
-par(mar=c(5,5,1,1),mfrow=c(3,2))
-
-plot(MC1_T2.5$Corrected, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.7, 1.83))
-lines(MC5_T2.5$Corrected, MC5_T2.5$Ribo_RMAX,type="o", pch=21, bg="#af953c",
-      col="#af953c")
-legend("topright", legend=c("MC1-C12-T2.5", "MC5-Glu-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.7, 1.83))
-lines(MC5_T2.5$Buckley, MC5_T2.5$Ribo_RMAX,type="o", pch=21, bg="#af953c",
-      col="#af953c")
-legend("topright", legend=c("MC1-C12-T2.5", "MC5-Glu-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
-
-
-plot(MC1_T3.5$Corrected, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.7, 1.83))
-lines(MC5_T3.5$Corrected, MC5_T3.5$Ribo_RMAX,type="o", pch=21, bg="#af953c",
-      col="#af953c")
-legend("topright", legend=c("MC1-C12-T3.5", "MC5-Glu-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
-
-plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.7, 1.83))
-lines(MC5_T3.5$Buckley, MC5_T3.5$Ribo_RMAX,type="o", pch=21, bg="#af953c",
-      col="#af953c")
-legend("topright", legend=c("MC1-C12-T3.5", "MC5-Glu-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
-
-
-plot(MC5_T2.5$Corrected, MC5_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='#af953c',pch=21, xlim=c(1.7, 1.83),
-     col="#af953c")
-lines(MC5_T3.5$Corrected, MC5_T3.5$Ribo_RMAX,type="o", pch=22, bg="#af953c",
-      col="#af953c")
-legend("topright", legend=c("MC5-Glu-T2.5", "MC5-Glu-T3.5"), pch=c(21,22),
-       pt.bg=c("#af953c", "#af953c"), bty='n', cex=0.9)
-
-plot(MC5_T2.5$Buckley, MC5_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='#af953c',pch=21, xlim=c(1.7, 1.83),
-     col="#af953c")
-lines(MC5_T3.5$Buckley, MC5_T3.5$Ribo_RMAX,type="o", pch=22, bg="#af953c",
-      col="#af953c")
-legend("topright", legend=c("MC5-Glu-T2.5", "MC5-Glu-T3.5"), pch=c(21,22),
-       pt.bg=c("#af953c", "#af953c"), bty='n', cex=0.9)
-
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo5-1.png)<!-- -->
-
-#### MC1-C12 vs. MC6-Xyl
-
-```r
-MC6_T2.5=subset(read, read$MC=="MC6" & TP =="2.5")
-MC6_T3.5=subset(read, read$MC=="MC6" & TP =="3.5")
-MC6_T4.5=subset(read, read$MC=="MC6" & TP =="4.5")
-
-{
-par(mar=c(5,5,1,1),mfrow=c(3,2))
-plot(MC1_T2.5$Corrected, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.7, 1.83))
-lines(MC6_T2.5$Corrected, MC6_T2.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f",
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T2.5", "MC6-Xyl-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.7, 1.83))
-lines(MC6_T2.5$Buckley, MC6_T2.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f",
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T2.5", "MC6-Xyl-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
-
-
-plot(MC1_T3.5$Corrected, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.7, 1.84))
-lines(MC6_T3.5$Corrected, MC6_T3.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f",
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T3.5", "MC6-Xyl-T3.5"), pch=c(21,22),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
-
-plot(MC1_T3.5$Buckley, MC1_T3.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.75, 1.85))
-lines(MC6_T3.5$Buckley, MC6_T3.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f",
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T3.5", "MC6-Xyl-T3.5"), pch=c(21,22),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
-
-plot(MC6_T2.5$Corrected, MC6_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='#ba4a4f',pch=21, xlim=c(1.7, 1.84),
-     col="#ba4a4f")
-lines(MC6_T3.5$Corrected, MC6_T3.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f",
-      col="#ba4a4f")
-legend("topright", legend=c("MC6-Xyl-T2.5", "MC6-Xyl-T3.5"), pch=c(21,22),
-       pt.bg=c("#ba4a4f", "#ba4a4f"), bty='n', cex=0.9)
-
-plot(MC6_T2.5$Buckley, MC6_T2.5$Ribo_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='#ba4a4f',pch=21, xlim=c(1.75, 1.85), 
-     col="#ba4a4f")
-lines(MC6_T3.5$Buckley, MC6_T3.5$Ribo_RMAX,type="o", pch=22, bg="#ba4a4f",
-      col="#ba4a4f")
-legend("topright", legend=c("MC6-Xyl-T2.5", "MC6-Xyl-T3.5"), pch=c(21,22),
-       pt.bg=c("#ba4a4f", "#ba4a4f"), bty='n', cex=0.9)
-
-
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribo6-1.png)<!-- -->
-
-#### Fig for talk 
-
-```r
-{
-par(mar=c(5,5,1,1))
-plot(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o", xlab="Buoyant Density (g/mL)",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.76,1.84), ylim=c(0,1),
-     yaxt='n',xaxt='n', cex.lab=1.2, bty='n',cex=1.4)
-rect(xleft=1.787, xright=1.794, ybottom=0, ytop=1.03, col= rgb(0.9960784,0.9411765,0.2745098,alpha=0.8),lty=1, lwd=0)
-#rect(xleft=1.807990115-0.0035, xright=1.807990115+0.0035, ybottom=0, ytop=1.03, col= rgb(0.5529412,0.08627451,0.08627451,alpha=0.7),lty=1, lwd=0)
-rect(xleft=1.807990115-0.0035, xright=1.807990115+0.0035, ybottom=0, ytop=1.03, col= rgb(0.9058824,0.1803922,0.1803922,alpha=0.3),lty=1, lwd=0)
-
-lines(MC1_T4.5$Buckley, MC1_T4.5$Ribo_RMAX,type="o",  pch=21, bg="gray70",cex=1.4)
-axis(1,at=c(1.76,1.78,1.80,1.82,1.84), lwd=1)
-axis(2,at=c(0,0.25,0.5,0.75,1),lwd=1)
-lines(MC2_T4.5$Buckley, MC2_T4.5$Ribo_RMAX,type="o",  pch=21, bg="#a44f9a", 
-      col="black",cex=1.4)
-lines(MC2_T4.5$Buckley, MC2_T4.5$Ribo_RMAX,type="o",  pch=21, bg="#a44f9a", 
-      col="black",cex=1.4)
-legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/ribome-1.png)<!-- -->
-
-### qRT PCR
-#### C12 T2.5, 3.5, & 4.5
-
-```r
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected", xlim=c(1.7, 1.83),
-     ylab="Normalized RNA Conc", bg='gray70',pch=21)
-lines(MC1_T3.5$Corrected, MC1_T3.5$qPCR_RMAX,type="o", pch=22, bg="gray70", 
-      col="black")
-lines(MC1_T4.5$Corrected, MC1_T4.5$qPCR_RMAX,type="o", pch=23, bg="gray70", 
-      col="black")
-legend("topright", legend=c("MC1-C12-T2.5", "MC1-C12-T3.5", "MC1-C12-T4.5"), pch=c(21,22,23),
-       pt.bg="gray70", bty='n')
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley", xlim=c(1.73, 1.85),
-     ylab="Normalized RNA Conc", bg='gray70',pch=21)
-lines(MC1_T3.5$Buckley, MC1_T3.5$qPCR_RMAX,type="o", pch=22, bg="gray70", 
-      col="black")
-lines(MC1_T4.5$Buckley, MC1_T4.5$qPCR_RMAX,type="o", pch=23, bg="gray70", 
-      col="black")
-legend("topright", legend=c("MC1-C12-T2.5", "MC1-C12-T3.5","MC1-C12-T3.5"), pch=c(21,22,23),
-       pt.bg="gray70", bty='n')
-
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected", xlim=c(1.7, 1.83),ylim=c(0,20),
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21)
-lines(MC1_T3.5$Corrected, MC1_T3.5$qPCR_conc,type="o", pch=22, bg="gray70", 
-      col="black")
-lines(MC1_T4.5$Corrected, MC1_T4.5$qPCR_conc,type="o", pch=23, bg="gray70", 
-      col="black")
-legend("topright", legend=c("MC1-C12-T2.5", "MC1-C12-T3.5", "MC1-C12-T4.5"), pch=c(21,22,23),
-       pt.bg="gray70", bty='n')
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley", xlim=c(1.73, 1.85),
-     ylim=c(0,20),
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21)
-lines(MC1_T3.5$Buckley, MC1_T3.5$qPCR_conc,type="o", pch=22, bg="gray70", 
-      col="black")
-lines(MC1_T4.5$Buckley, MC1_T4.5$qPCR_conc,type="o", pch=23, bg="gray70", 
-      col="black")
-legend("topright", legend=c("MC1-C12-T2.5", "MC1-C12-T3.5","MC1-C12-T3.5"), pch=c(21,22,23),
-       pt.bg="gray70", bty='n')
-
-}
+colls=c('gray50',"#a44f9a")
+m2=make_bar_relabun(qpcr_sub, "MC2")
+mm=make_bar_relabun(qpcr_sub, "MC2")
+
+colls=c('gray50',"#6870c8")
+m3=make_bar_relabun(qpcr_sub, "MC3")
+colls=c('gray50',"#56ae6c")
+m4=make_bar_relabun(qpcr_sub, "MC4")
+colls=c('gray50',"#af953c")
+m5=make_bar_relabun(qpcr_sub, "MC5")
+colls=c('gray50',"#ba4a4f")
+m6=make_bar_relabun(qpcr_sub, "MC6")
+library(cowplot)
+plot_grid(m2,m3,m4,m5,m6,aligh='hv',ncol=1)
 ```
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_a-1.png)<!-- -->
-#### T2.5
 
+### Ratio of Maximum Quantity vs. Leuders Buoyant Density 
 
-##### MC1-C12 vs. MC2-Met
-
-```r
-read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_30Aug22.csv',header=T)
-
-MC2_T2.5=subset(read, read$MC=="MC2" & TP =="2.5")
-MC2_T3.5=subset(read, read$MC=="MC2" & TP =="3.5")
-MC2_T4.5=subset(read, read$MC=="MC2" & TP =="4.5")
-MC1_T4.5=subset(read, read$MC=="MC1" & TP == "4.5")
-MC1_T2.5=subset(read, read$MC=="MC1" & TP == "2.5")
-MC1_T3.5=subset(read, read$MC=="MC1" & TP == "3.5")
-MC3_T2.5=subset(read, read$MC=="MC3" & TP =="2.5")
-MC3_T3.5=subset(read, read$MC=="MC3" & TP =="3.5")
-MC3_T4.5=subset(read, read$MC=="MC3" & TP =="4.5")
-MC4_T2.5=subset(read, read$MC=="MC4" & TP =="2.5")
-MC4_T3.5=subset(read, read$MC=="MC4" & TP =="3.5")
-MC4_T4.5=subset(read, read$MC=="MC4" & TP =="4.5")
-MC5_T2.5=subset(read, read$MC=="MC5" & TP =="2.5")
-MC5_T3.5=subset(read, read$MC=="MC5" & TP =="3.5")
-MC5_T4.5=subset(read, read$MC=="MC5" & TP =="4.5")
-MC6_T2.5=subset(read, read$MC=="MC6" & TP =="2.5")
-MC6_T3.5=subset(read, read$MC=="MC6" & TP =="3.5")
-MC6_T4.5=subset(read, read$MC=="MC6" & TP =="4.5")
-
-
-
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC2_T2.5$Corrected, MC2_T2.5$qPCR_RMAX,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC2_T2.5$Buckley, MC2_T2.5$qPCR_RMAX,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0.00001,20))
-lines(MC2_T2.5$Corrected, MC2_T2.5$qPCR_conc,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0.00001,20))
-lines(MC2_T2.5$Buckley, MC2_T2.5$qPCR_conc,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T2.5", "MC2-Met-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_1-1.png)<!-- -->
-
-
-##### MC1-C12 vs. MC3-Eth
 
 
 ```r
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC3_T2.5$Corrected, MC3_T2.5$qPCR_RMAX,type="o", pch=22, bg="#6870c8", 
-      col="#6870c8")
-legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#6870c8"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC3_T2.5$Buckley, MC3_T2.5$qPCR_RMAX,type="o", pch=22, bg="#6870c8", 
-      col="#6870c8")
-legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#6870c8"), bty='n', cex=0.9)
-
-
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0,25))
-lines(MC3_T2.5$Corrected, MC3_T2.5$qPCR_conc,type="o", pch=22, bg="#6870c8", 
-      col="#6870c8")
-legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#6870c8"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0,25))
-lines(MC3_T2.5$Buckley, MC3_T2.5$qPCR_conc,type="o", pch=22, bg="#6870c8", 
-      col="#6870c8")
-legend("topright", legend=c("MC1-C12-T2.5", "MC3-Eth-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#6870c8"), bty='n', cex=0.9)
+qpcr_leud_rmax <- function(df, selection){
+  df_out <- df %>% 
+    filter(MC %in% c("MC1",selection))
+  ggplot(df_out, aes(x = Corrected, y = qPCR_RMAX)) +
+    scale_fill_manual(values=colls) +
+    scale_colour_manual(values=colls) +
+    facet_grid(~TP, scale='free_x', space="free", shrink=TRUE) +
+    geom_point(aes(colour=MC, 
+                   fill = MC), size=1.3) + 
+    geom_line(aes(colour=MC)) + 
+    labs(x="Buoyant Density (g/mL)", y = "Ratio of Maximum Quantity") +
+    theme_bw() +  scale_x_continuous(limits = c(1.76, 1.83)) +
+    theme(axis.text = element_text(color ='black',size=6, hjust=1,vjust=1),
+          axis.text.x=element_text(size=6, angle=90),
+          axis.title = element_text(color='black',face='bold',size=8),
+          legend.position = "right",
+          panel.grid=element_blank(),
+          legend.text = element_text(size=8),
+          legend.key.size = unit(0.25,'cm'),
+          strip.text.x = element_text(
+            size = 10, color = "black", face = "bold"),
+          strip.background = element_rect(
+            color="gray80", fill="gray97", size=1, linetype="solid"),
+          panel.spacing = unit(0.05, "lines")
+    )
 }
+
+
+colls=c('gray50',"#a44f9a")
+m2=qpcr_leud_rmax(qpcr_sub, "MC2")
+colls=c('gray50',"#6870c8")
+m3=qpcr_leud_rmax(qpcr_sub, "MC3")
+colls=c('gray50',"#56ae6c")
+m4=qpcr_leud_rmax(qpcr_sub, "MC4")
+colls=c('gray50',"#af953c")
+m5=qpcr_leud_rmax(qpcr_sub, "MC5")
+colls=c('gray50',"#ba4a4f")
+m6=qpcr_leud_rmax(qpcr_sub, "MC6")
+
+plot_grid(m2,m3,m4,m5,m6,aligh='hv',ncol=1)
 ```
 
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_2-1.png)<!-- -->
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_b-1.png)<!-- -->
 
+### RNA Concentration vs. Buckley Buoyant Density 
 
-##### MC1-C12 vs. MC4-Ace
-
-```r
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC4_T2.5$Corrected, MC4_T2.5$qPCR_RMAX,type="o", pch=22, bg="#56ae6c", 
-      col="#56ae6c")
-legend("topright", legend=c("MC1-C12-T2.5", "MC4-Ace-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#56ae6c"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC4_T2.5$Buckley, MC4_T2.5$qPCR_RMAX,type="o", pch=22, bg="#56ae6c", 
-      col="#56ae6c")
-legend("topright", legend=c("MC1-C12-T2.5", "MC4-Ace-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#56ae6c"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC4_T2.5$Corrected, MC4_T2.5$qPCR_conc,type="o", pch=22, bg="#56ae6c", 
-      col="#56ae6c")
-legend("topright", legend=c("MC1-C12-T2.5", "MC4-Ace-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#56ae6c"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC4_T2.5$Buckley, MC4_T2.5$qPCR_conc,type="o", pch=22, bg="#56ae6c", 
-      col="#56ae6c")
-legend("topright", legend=c("MC1-C12-T2.5", "MC4-Ace-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#56ae6c"), bty='n', cex=0.9)
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_3-1.png)<!-- -->
-
-
-##### MC1 vs. MC5 - Redo Spin
-
-REDO SPIN
 
 
 ```r
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC5_T2.5$Corrected, MC5_T2.5$qPCR_RMAX,type="o", pch=22, bg="#af953c", 
-      col="#af953c")
-legend("topright", legend=c("MC1-C12-T2.5", "MC5-Glu-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC5_T2.5$Buckley, MC5_T2.5$qPCR_RMAX,type="o", pch=22, bg="#af953c", 
-      col="#af953c")
-legend("topright", legend=c("MC1-C12-T2.5", "MC5-Glu-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
-
-
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0,7.25))
-lines(MC5_T2.5$Corrected, MC5_T2.5$qPCR_conc,type="o", pch=22, bg="#af953c", 
-      col="#af953c")
-legend("topright", legend=c("MC1-C12-T2.5", "MC5-Glu-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0,7.25))
-lines(MC5_T2.5$Buckley, MC5_T2.5$qPCR_conc,type="o", pch=22, bg="#af953c", 
-      col="#af953c")
-legend("topright", legend=c("MC1-C12-T2.5", "MC5-Glu-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
+qpcr_buck_conc <- function(df, selection){
+  df_out <- df %>% 
+    filter(MC %in% c("MC1",selection))
+  ggplot(df_out, aes(x = Buckley, y = qPCR_conc)) +
+    scale_fill_manual(values=colls) +
+    scale_colour_manual(values=colls) +
+    facet_grid(~TP, scale='free_x', space="free", shrink=TRUE) +
+    geom_point(aes(colour=MC, 
+                   fill = MC), size=1.3) + 
+    geom_line(aes(colour=MC)) + 
+    labs(x="Buoyant Density (g/mL)", y = "Ratio of Maximum Quantity") +
+    theme_bw() +  scale_x_continuous(limits = c(1.76, 1.83)) +
+    theme(axis.text = element_text(color ='black',size=6, hjust=1,vjust=1),
+          axis.text.x=element_text(size=6, angle=90),
+          axis.title = element_text(color='black',face='bold',size=8),
+          legend.position = "right",
+          panel.grid=element_blank(),
+          legend.text = element_text(size=8),
+          legend.key.size = unit(0.25,'cm'),
+          strip.text.x = element_text(
+            size = 10, color = "black", face = "bold"),
+          strip.background = element_rect(
+            color="gray80", fill="gray97", size=1, linetype="solid"),
+          panel.spacing = unit(0.05, "lines")
+    )
 }
+
+
+colls=c('gray50',"#a44f9a")
+m2=qpcr_buck_conc(qpcr_sub, "MC2")
+colls=c('gray50',"#6870c8")
+m3=qpcr_buck_conc(qpcr_sub, "MC3")
+colls=c('gray50',"#56ae6c")
+m4=qpcr_buck_conc(qpcr_sub, "MC4")
+colls=c('gray50',"#af953c")
+m5=qpcr_buck_conc(qpcr_sub, "MC5")
+colls=c('gray50',"#ba4a4f")
+m6=qpcr_buck_conc(qpcr_sub, "MC6")
+
+plot_grid(m2,m3,m4,m5,m6,aligh='hv',ncol=1)
 ```
 
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_4-1.png)<!-- -->
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_a_c-1.png)<!-- -->
 
 
+### RNA Concentration vs. Leuders Buoyant Density 
 
-##### MC1 vs. MC6 - Redo Spin 
-REDO SPIN
-
-```r
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC6_T2.5$Corrected, MC6_T2.5$qPCR_RMAX,type="o", pch=22, bg="#ba4a4f", 
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T2.5", "MC6-Xyl-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85))
-lines(MC6_T2.5$Buckley, MC6_T2.5$qPCR_RMAX,type="o", pch=22, bg="#ba4a4f", 
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T2.5", "MC6-Xyl-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Corrected, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0, 40))
-lines(MC6_T2.5$Corrected, MC6_T2.5$qPCR_conc,type="o", pch=22, bg="#ba4a4f", 
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T2.5", "MC6-Xyl-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
-
-plot(MC1_T2.5$Buckley, MC1_T2.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21, xlim=c(1.735,1.85),
-     ylim=c(0, 40))
-lines(MC6_T2.5$Buckley, MC6_T2.5$qPCR_conc,type="o", pch=22, bg="#ba4a4f", 
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T2.5", "MC6-Xyl-T2.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_5-1.png)<!-- -->
-
-
-#### T3.5 - redo C12 qRT PCR
-
-##### MC1-C12 vs. MC2-Met -Redo qRT PCR
 
 
 ```r
-read=read.csv('/Users/oliviaahern/Documents/R/Exp4/25Aug22/qpcr_1Sept22.csv',header=T)
-
-MC2_T2.5=subset(read, read$MC=="MC2" & TP =="2.5")
-MC2_T3.5=subset(read, read$MC=="MC2" & TP =="3.5")
-MC2_T4.5=subset(read, read$MC=="MC2" & TP =="4.5")
-MC1_T4.5=subset(read, read$MC=="MC1" & TP == "4.5")
-MC1_T2.5=subset(read, read$MC=="MC1" & TP == "2.5")
-MC1_T3.5=subset(read, read$MC=="MC1" & TP == "3.5")
-MC3_T2.5=subset(read, read$MC=="MC3" & TP =="2.5")
-MC3_T3.5=subset(read, read$MC=="MC3" & TP =="3.5")
-MC3_T4.5=subset(read, read$MC=="MC3" & TP =="4.5")
-MC4_T2.5=subset(read, read$MC=="MC4" & TP =="2.5")
-MC4_T3.5=subset(read, read$MC=="MC4" & TP =="3.5")
-MC4_T4.5=subset(read, read$MC=="MC4" & TP =="4.5")
-MC5_T2.5=subset(read, read$MC=="MC5" & TP =="2.5")
-MC5_T3.5=subset(read, read$MC=="MC5" & TP =="3.5")
-MC5_T4.5=subset(read, read$MC=="MC5" & TP =="4.5")
-MC6_T2.5=subset(read, read$MC=="MC6" & TP =="2.5")
-MC6_T3.5=subset(read, read$MC=="MC6" & TP =="3.5")
-MC6_T4.5=subset(read, read$MC=="MC6" & TP =="4.5")
-
-
-
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T3.5$Corrected, MC1_T3.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc", bg='gray70',pch=21)
-lines(MC2_T3.5$Corrected, MC2_T3.5$qPCR_RMAX,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T3.5", "MC2-Met-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T3.5$Buckley, MC1_T3.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc", bg='gray70',pch=21)
-lines(MC2_T3.5$Buckley, MC2_T3.5$qPCR_RMAX,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T3.5", "MC2-Met-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T3.5$Corrected, MC1_T3.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, 
-     ylim=c(0.00001,20))
-lines(MC2_T3.5$Corrected, MC2_T3.5$qPCR_conc,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T3.5", "MC2-Met-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T3.5$Buckley, MC1_T3.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, 
-     ylim=c(0.00001,20))
-lines(MC2_T3.5$Buckley, MC2_T3.5$qPCR_conc,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T3.5", "MC2-Met-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
+qpcr_leud_conc <- function(df, selection){
+  df_out <- df %>% 
+    filter(MC %in% c("MC1",selection))
+  ggplot(df_out, aes(x = Corrected, y = qPCR_conc)) +
+    scale_fill_manual(values=colls) +
+    scale_colour_manual(values=colls) +
+    facet_grid(~TP, scale='free_x', space="free", shrink=TRUE) +
+    geom_point(aes(colour=MC, 
+                   fill = MC), size=1.3) + 
+    geom_line(aes(colour=MC)) + 
+    labs(x="Buoyant Density (g/mL)", y = "Ratio of Maximum Quantity") +
+    theme_bw() +  scale_x_continuous(limits = c(1.76, 1.83)) +
+    theme(axis.text = element_text(color ='black',size=6, hjust=1,vjust=1),
+          axis.text.x=element_text(size=6, angle=90),
+          axis.title = element_text(color='black',face='bold',size=8),
+          legend.position = "right",
+          panel.grid=element_blank(),
+          legend.text = element_text(size=8),
+          legend.key.size = unit(0.25,'cm'),
+          strip.text.x = element_text(
+            size = 10, color = "black", face = "bold"),
+          strip.background = element_rect(
+            color="gray80", fill="gray97", size=1, linetype="solid"),
+          panel.spacing = unit(0.05, "lines")
+    )
 }
+
+
+colls=c('gray50',"#a44f9a")
+m2=qpcr_leud_conc(qpcr_sub, "MC2")
+colls=c('gray50',"#6870c8")
+m3=qpcr_leud_conc(qpcr_sub, "MC3")
+colls=c('gray50',"#56ae6c")
+m4=qpcr_leud_conc(qpcr_sub, "MC4")
+colls=c('gray50',"#af953c")
+m5=qpcr_leud_conc(qpcr_sub, "MC5")
+colls=c('gray50',"#ba4a4f")
+m6=qpcr_leud_conc(qpcr_sub, "MC6")
+
+plot_grid(m2,m3,m4,m5,m6,aligh='hv',ncol=1)
 ```
 
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_1a-1.png)<!-- -->
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_a_d-1.png)<!-- -->
 
 
+## Chemostat RT-qPCR
 
-
-##### MC1 vs. MC3 - Redo Spin
+#### Ratio of Maximum Quantity vs. Buckley Buoyant Density 
 
 
 ```r
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T3.5$Corrected, MC1_T3.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21)
-lines(MC3_T3.5$Corrected, MC3_T3.5$qPCR_RMAX,type="o", pch=22, bg="#6870c8", 
-      col="#6870c8")
-legend("topright", legend=c("MC1-C12-T3.5", "MC3-Eth-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#6870c8"), bty='n', cex=0.9)
+qpcr_chemo=read.csv(file='/Users/oliviaahern/Documents/R/Exp4/Dec22/qpcr_chemostat.csv',
+              header=T)
+qpcr_chemo_sub=subset(qpcr_chemo, Buckley > 1.74)
 
-plot(MC1_T3.5$Buckley, MC1_T3.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21)
-lines(MC3_T3.5$Buckley, MC3_T3.5$qPCR_RMAX,type="o", pch=22, bg="#6870c8", 
-      col="#6870c8")
-legend("topright", legend=c("MC1-C12-T3.5", "MC3-Eth-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#6870c8"), bty='n', cex=0.9)
-
-
-plot(MC1_T3.5$Corrected, MC1_T3.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21,
-     ylim=c(0,20))
-lines(MC3_T3.5$Corrected, MC3_T3.5$qPCR_conc,type="o", pch=22, bg="#6870c8", 
-      col="#6870c8")
-legend("topright", legend=c("MC1-C12-T3.5", "MC3-Eth-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#6870c8"), bty='n', cex=0.9)
-
-plot(MC1_T3.5$Buckley, MC1_T3.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, 
-     ylim=c(0,20))
-lines(MC3_T3.5$Buckley, MC3_T3.5$qPCR_conc,type="o", pch=22, bg="#6870c8", 
-      col="#6870c8")
-legend("topright", legend=c("MC1-C12-T3.5", "MC3-Eth-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#6870c8"), bty='n', cex=0.9)
-}
+colls=c('gray50',"#a44f9a")
+m2=make_bar_relabun(qpcr_chemo_sub, "MC2")
+colls=c('gray50',"#6870c8")
+m3=make_bar_relabun(qpcr_chemo_sub, "MC3")
+colls=c('gray50',"#56ae6c")
+m4=make_bar_relabun(qpcr_chemo_sub, "MC4")
+colls=c('gray50',"#af953c")
+m5=make_bar_relabun(qpcr_chemo_sub, "MC5")
+colls=c('gray50',"#ba4a4f")
+m6=make_bar_relabun(qpcr_chemo_sub, "MC6")
+library(cowplot)
+plot_grid(m2,m3,m4,m5,m6,aligh='hv',ncol=1)
 ```
 
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_2a-1.png)<!-- -->
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_chemo_BRMAX-1.png)<!-- -->
 
 
-
-
-##### MC1-C12 vs. MC4-Ace
-
-```r
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T3.5$Corrected, MC1_T3.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21)
-lines(MC4_T3.5$Corrected, MC4_T3.5$qPCR_RMAX,type="o", pch=22, bg="#56ae6c", 
-      col="#56ae6c")
-legend("topright", legend=c("MC1-C12-T3.5", "MC4-Ace-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#56ae6c"), bty='n', cex=0.9)
-
-plot(MC1_T3.5$Buckley, MC1_T3.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21)
-lines(MC4_T3.5$Buckley, MC4_T3.5$qPCR_RMAX,type="o", pch=22, bg="#56ae6c", 
-      col="#56ae6c")
-legend("topright", legend=c("MC1-C12-T3.5", "MC4-Ace-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#56ae6c"), bty='n', cex=0.9)
-
-plot(MC1_T3.5$Corrected, MC1_T3.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21)
-lines(MC4_T3.5$Corrected, MC4_T3.5$qPCR_conc,type="o", pch=22, bg="#56ae6c", 
-      col="#56ae6c")
-legend("topright", legend=c("MC1-C12-T3.5", "MC4-Ace-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#56ae6c"), bty='n', cex=0.9)
-
-plot(MC1_T3.5$Buckley, MC1_T3.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21)
-lines(MC4_T3.5$Buckley, MC4_T3.5$qPCR_conc,type="o", pch=22, bg="#56ae6c", 
-      col="#56ae6c")
-legend("topright", legend=c("MC1-C12-T3.5", "MC4-Ace-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#56ae6c"), bty='n', cex=0.9)
-}
-```
-
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_3a-1.png)<!-- -->
-
-
-##### MC1-C12 vs. MC5-Glu - Redo qRT PCR
+#### Ratio of Maximum Quantity vs. Leuders Buoyant Density 
 
 
 ```r
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T3.5$Corrected, MC1_T3.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21)
-lines(MC5_T3.5$Corrected, MC5_T3.5$qPCR_RMAX,type="o", pch=22, bg="#af953c", 
-      col="#af953c")
-legend("topright", legend=c("MC1-C12-T3.5", "MC5-Glu-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
+colls=c('gray50',"#a44f9a")
+m2=qpcr_leud_rmax(qpcr_chemo_sub, "MC2")
+colls=c('gray50',"#6870c8")
+m3=qpcr_leud_rmax(qpcr_chemo_sub, "MC3")
+colls=c('gray50',"#56ae6c")
+m4=qpcr_leud_rmax(qpcr_chemo_sub, "MC4")
+colls=c('gray50',"#af953c")
+m5=qpcr_leud_rmax(qpcr_chemo_sub, "MC5")
+colls=c('gray50',"#ba4a4f")
+m6=qpcr_leud_rmax(qpcr_chemo_sub, "MC6")
 
-plot(MC1_T3.5$Buckley, MC1_T3.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21)
-lines(MC5_T3.5$Buckley, MC5_T3.5$qPCR_RMAX,type="o", pch=22, bg="#af953c", col="#af953c")
-legend("topright", legend=c("MC1-C12-T3.5", "MC5-Glu-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
-
-plot(MC1_T3.5$Corrected, MC1_T3.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21)
-lines(MC5_T3.5$Corrected, MC5_T3.5$qPCR_conc,type="o", pch=22, bg="#af953c", 
-      col="#af953c")
-legend("topright", legend=c("MC1-C12-T3.5", "MC5-Glu-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
-
-plot(MC1_T3.5$Buckley, MC1_T3.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21)
-lines(MC5_T3.5$Buckley, MC5_T3.5$qPCR_conc,type="o", pch=22, bg="#af953c", 
-      col="#af953c")
-legend("topright", legend=c("MC1-C12-T3.5", "MC5-Glu-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#af953c"), bty='n', cex=0.9)
-}
+plot_grid(m2,m3,m4,m5,m6,aligh='hv',ncol=1)
 ```
 
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_4a-1.png)<!-- -->
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_chemo_LRMAX-1.png)<!-- -->
 
 
+#### RNA Concentration vs. Buckley Buoyant Density 
 
-##### MC1-C12 vs. MC6-Xyl - redo qRT PCR
 
 
 ```r
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T3.5$Corrected, MC1_T3.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21)
-lines(MC6_T3.5$Corrected, MC6_T3.5$qPCR_RMAX,type="o", pch=22, bg="#ba4a4f", 
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T3.5", "MC6-Xyl-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
+colls=c('gray50',"#a44f9a")
+m2=qpcr_buck_conc(qpcr_chemo_sub, "MC2")
+colls=c('gray50',"#6870c8")
+m3=qpcr_buck_conc(qpcr_chemo_sub, "MC3")
+colls=c('gray50',"#56ae6c")
+m4=qpcr_buck_conc(qpcr_chemo_sub, "MC4")
+colls=c('gray50',"#af953c")
+m5=qpcr_buck_conc(qpcr_chemo_sub, "MC5")
+colls=c('gray50',"#ba4a4f")
+m6=qpcr_buck_conc(qpcr_chemo_sub, "MC6")
 
-plot(MC1_T3.5$Buckley, MC1_T3.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21)
-lines(MC6_T3.5$Buckley, MC6_T3.5$qPCR_RMAX,type="o", pch=22, bg="#ba4a4f", 
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T3.5", "MC6-Xyl-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
-
-plot(MC1_T3.5$Corrected, MC1_T3.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21)
-
-lines(MC6_T3.5$Corrected, MC6_T3.5$qPCR_conc,type="o", pch=22, bg="#ba4a4f", 
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T3.5", "MC6-Xyl-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
-
-plot(MC1_T3.5$Buckley, MC1_T3.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc.", bg='gray70',pch=21)
-lines(MC6_T3.5$Buckley, MC6_T3.5$qPCR_conc,type="o", pch=22, bg="#ba4a4f", 
-      col="#ba4a4f")
-legend("topright", legend=c("MC1-C12-T3.5", "MC6-Xyl-T3.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#ba4a4f"), bty='n', cex=0.9)
-}
+plot_grid(m2,m3,m4,m5,m6,aligh='hv',ncol=1)
 ```
 
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_5a-1.png)<!-- -->
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_chemo_BRNA-1.png)<!-- -->
 
 
+#### RNA Concentration vs. Leuders Buoyant Density 
 
-#### T4.5 
-
-##### MC1-C12 vs. MC2-Met - redo qRT PCR
 
 
 ```r
-{
-par(mfrow=c(2,2), mar=c(5,5,1,1))
-plot(MC1_T4.5$Corrected, MC1_T4.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="Normalized RNA Conc", bg='gray70',pch=21)
-lines(MC2_T4.5$Corrected, MC2_T4.5$qPCR_RMAX,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
+colls=c('gray50',"#a44f9a")
+m2=qpcr_leud_conc(qpcr_chemo_sub, "MC2")
+colls=c('gray50',"#6870c8")
+m3=qpcr_leud_conc(qpcr_chemo_sub, "MC3")
+colls=c('gray50',"#56ae6c")
+m4=qpcr_leud_conc(qpcr_chemo_sub, "MC4")
+colls=c('gray50',"#af953c")
+m5=qpcr_leud_conc(qpcr_chemo_sub, "MC5")
+colls=c('gray50',"#ba4a4f")
+m6=qpcr_leud_conc(qpcr_chemo_sub, "MC6")
 
-plot(MC1_T4.5$Buckley, MC1_T4.5$qPCR_RMAX,type="o", xlab="Buoyant Density - Buckley",
-     ylab="Normalized RNA Conc", bg='gray70',pch=21)
-lines(MC2_T4.5$Buckley, MC2_T4.5$qPCR_RMAX,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T4.5$Corrected, MC1_T4.5$qPCR_conc,type="o", xlab="Buoyant Density - Lueders Corrected",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21, 
-     ylim=c(0.00001,10))
-lines(MC2_T4.5$Corrected, MC2_T4.5$qPCR_conc,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-
-plot(MC1_T4.5$Buckley, MC1_T4.5$qPCR_conc,type="o", xlab="Buoyant Density - Buckley",
-     ylab="RNA Conc. (ng/uL)", bg='gray70',pch=21,
-     ylim=c(0.00001,10))
-lines(MC2_T4.5$Buckley, MC2_T4.5$qPCR_conc,type="o", pch=21, bg="#a44f9a", 
-      col="#a44f9a")
-legend("topright", legend=c("MC1-C12-T4.5", "MC2-Met-T4.5"), pch=c(21,21),
-       pt.bg=c("gray70", "#a44f9a"), bty='n')
-}
+plot_grid(m2,m3,m4,m5,m6,aligh='hv',ncol=1)
 ```
 
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_1c-1.png)<!-- -->
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/qpcr_chemo_LRNA-1.png)<!-- -->
 
 # 16S Community Data
 
@@ -2304,6 +705,23 @@ p_rgn
 ```
 
 
+### ASV Greater than 5%
+
+```r
+x<-read.csv(file='/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/otu_tab_abund.csv',header=TRUE,row.names=1)
+OTU = otu_table(x, taxa_are_rows=T)
+k=c(0,0,0,0,0,0,0.5,0,0,0,0,0,0,0,0,0.75,0,0,0,0,0,0.5,0,0,0,0,0,0,0,0,0.75,0,0,0,0,0,0.5,0,0,0,0,0,0,0,0,0.75,0,0,0,0,0,0.5,0,0,0,0,0,0,0,0,0.75,0,0,0,0,0,0.5,0,0,0,0,0,0,0,0,0.75,0,0,0,0,0,0.5,0,0,0,0,0,0,0,0)
+c2=c('gray70','#4cc65a','#e78eb9','#4c902c','#87bb37','#914574','#886b2c','#bb6da1','#e273d2','#934993','#d4a771','#627037','#dd9f54','#e18c2b','#b344b8','#bf88da','#9662dc','#b17235','#9f4c28','#e68061','#82bf6f','#817bd6','#c5392e','#4b71e5','#4d65a5','#a3ae68','#df7f81','#48b1da','#4fc2b3','#52a27c','#a14d51','#d7408e','#e03e5d','#2b6f4d','#b6395d','#49c385','#b1b23a','#cca333','#3f8747')
+legs=c('Other','Gammaproteobacteria RS62 marine group ASV 05c57','Bacteroidia Sphingobacteriales ASV 093af','Bacteroidia uncultured ASV 095f9','Gammaproteobacteria Marinomonas ASV 0be80','Alphaproteobacteria Rhizobium ASV 0d102','Gammaproteobacteria  ASV 0e8b3','Alphaproteobacteria Marivita ASV 0ed10','Verrucomicrobiae Diplosphaera ASV 1a969','Alphaproteobacteria Rhizobium ASV 2db5b','Gammaproteobacteria Methyloversatilis ASV 3cd78','Gammaproteobacteria Aeromonas ASV 3fd6c','Gammaproteobacteria Vibrio ASV 46b34','Alphaproteobacteria Hyphomonas ASV 67ca5','Bacteroidia Cryomorphaceae ASV 696c1','Gammaproteobacteria Hydrogenophaga ASV 6f94b','Gammaproteobacteria Methylotenera ASV 72ceb','Alphaproteobacteria Rhodobacteraceae ASV 7744d','Gammaproteobacteria Cellvibrio ASV 78ba2','Campylobacteria Arcobacter ASV 7b5c2','Alphaproteobacteria Rhodobacteraceae ASV 7e7d9','Alphaproteobacteria Azospirillum ASV 88fc6','Alphaproteobacteria Rhizobium ASV 923fc','Gammaproteobacteria Xanthomonadaceae ASV 96c75','Gammaproteobacteria Rhodocyclaceae ASV 9906c','Gammaproteobacteria Methylotenera ASV c4deb','Alphaproteobacteria Hyphomonas ASV c7d5a','Alphaproteobacteria  ASV c896f','Bacteroidia Cryomorphaceae ASV cae83','Alphaproteobacteria Pseudorhodobacter ASV daa79','Gammaproteobacteria Methylotenera ASV dfa40','Gammaproteobacteria Methylophilus ASV e96be','Gammaproteobacteria Zoogloea ASV efc35','Alphaproteobacteria Rhodobacteraceae ASV f19ba','Gammaproteobacteria Oceanobacter ASV f7e8d','Bacteroidia NS11-12 marine group ASV fbc54','Bacteroidia Candidatus Aquirestis ASV fbc59','Gammaproteobacteria Methylophilus ASV fc169','Campylobacteria Arcobacter ASV fe8ec')
+par(mar=c(15,5,2,1))
+barplot(OTU, las=2, cex.names=0.5, col=c2,space=k,
+        ylab="ASV Relative Abundance")
+box(which='plot')
+legend(0,-12, ncol=3,
+       bty='n',xpd=T, pch=22, pt.bg=c2, legend=legs,cex=0.6)
+```
+
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/bar_joe-1.png)<!-- -->
 
 
 ### interactive Genera Barplot
@@ -2439,7 +857,7 @@ dim(input)
 
 ```r
 d.subset <- codaSeq.filter(input, 
-                           samples.by.row=T,min.reads=2,min.prop =0.0001)
+                        samples.by.row=T,min.reads=2,min.prop =0.0001)
 
 dim(d.subset)
 ```
@@ -2485,6 +903,14 @@ ordiellipse(p, groups=sample_data(comp_clr)$Timepoint)
 Transform data - remove ASVs that are less than 0.01% of total dataset and minimum reads of 2. 
 Aitchinson's distance - Euclidean distance of centered log ratio data. 
 
+Variables influencing distance matrix:
+
+* Treatment (AKA MC) R2 = 0.07573, F = 1.7734, p =0.007
+* Timepoint R2 = 0.01842, F = 2.1569, p = 0.038
+* Batch or Chemostat R2 = 0.04348, F = 3.4599, p = 0.007
+* POC R2 = 0.05118, F = 5.5874, p = 0.001
+* Atomic %13C R2 = 0.02144, F = 2.3410, p = 0.027
+
 
 ```r
 data1=subset_samples(phyo, Treatment !="Pond")
@@ -2498,13 +924,13 @@ dim(input)
 
 ```r
 d.subset <- codaSeq.filter(input, 
-                           samples.by.row=T,min.reads=2,min.prop =0.0001)
+                           samples.by.row=T,min.reads=2,min.prop =0.00001)
 
 dim(d.subset)
 ```
 
 ```
-## [1] 748  94
+## [1] 1326   94
 ```
 
 ```r
@@ -2540,6 +966,38 @@ ordiellipse(p, groups=sample_data(comp_clr)$Timepoint)
 ```
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/pcoa_nopond-1.png)<!-- -->
+
+```r
+sub=subset_samples(comp_clr, POC !="NA")
+
+otu=t(otu_table(sub))
+euc=vegdist(otu,'euc')
+set.seed(1234)
+adonis2(euc~ sample_data(sub)$Treatment + sample_data(sub)$Timepoint + sample_data(sub)$B_C + sample_data(sub)$POC + sample_data(sub)$Atomic_C, by='margin', permutations = 9999)
+```
+
+```
+## Permutation test for adonis under reduced model
+## Marginal effects of terms
+## Permutation: free
+## Number of permutations: 9999
+## 
+## adonis2(formula = euc ~ sample_data(sub)$Treatment + sample_data(sub)$Timepoint + sample_data(sub)$B_C + sample_data(sub)$POC + sample_data(sub)$Atomic_C, permutations = 9999, by = "margin")
+##                            Df SumOfSqs      R2      F Pr(>F)    
+## sample_data(sub)$Treatment  5   2209.8 0.07555 1.6902 0.0060 ** 
+## sample_data(sub)$Timepoint  1    535.7 0.01831 2.0488 0.0351 *  
+## sample_data(sub)$B_C        1    831.9 0.02844 3.1816 0.0031 ** 
+## sample_data(sub)$POC        1   1078.2 0.03686 4.1232 0.0005 ***
+## sample_data(sub)$Atomic_C   1    717.5 0.02453 2.7441 0.0082 ** 
+## Residual                   62  16212.1 0.55424                  
+## Total                      71  29251.0 1.00000                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+#adonis2(euc~  sample_data(sub)$Timepoint + sample_data(sub)$B_C + sample_data(sub)$POC + sample_data(sub)$Atomic_C, by='margin', permutations = 9999, strata=sample_data(sub)$Treatment)
+```
 
 #### Batch PCoA
 
@@ -2579,8 +1037,8 @@ p=prcomp(euc)
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/pcoa_batch-1.png)<!-- -->
 
 ```r
-adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment,
-        by='margin')
+adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment + sample_data(data1)$POC + sample_data(data1)$Atomic_C,
+        by='margin', perm=999)
 ```
 
 ```
@@ -2589,12 +1047,14 @@ adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment,
 ## Permutation: free
 ## Number of permutations: 999
 ## 
-## adonis2(formula = euc ~ sample_data(data1)$Timepoint + sample_data(data1)$Treatment, by = "margin")
+## adonis2(formula = euc ~ sample_data(data1)$Timepoint + sample_data(data1)$Treatment + sample_data(data1)$POC + sample_data(data1)$Atomic_C, permutations = 999, by = "margin")
 ##                              Df SumOfSqs      R2      F Pr(>F)    
-## sample_data(data1)$Timepoint  1   2581.6 0.22551 9.3967  0.001 ***
-## sample_data(data1)$Treatment  5    899.0 0.07853 0.6544  0.977    
-## Residual                     29   7967.4 0.69596                  
-## Total                        35  11448.0 1.00000                  
+## sample_data(data1)$Timepoint  1   1647.7 0.12289 6.3448  0.001 ***
+## sample_data(data1)$Treatment  5   1343.5 0.10020 1.0347  0.395    
+## sample_data(data1)$POC        1   1490.0 0.11113 5.7374  0.001 ***
+## sample_data(data1)$Atomic_C   1    183.6 0.01370 0.7071  0.718    
+## Residual                     27   7011.8 0.52297                  
+## Total                        35  13407.5 1.00000                  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -2632,29 +1092,11 @@ legend(43,5, legend=c("MC1-C12 Chemostat",
        pch=23,
        bty='n',cex=1)
 }
-```
 
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/pcoa_chemo-1.png)<!-- -->
 
-```r
-adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment,
-        by='margin')
-```
-
-```
-## Permutation test for adonis under reduced model
-## Marginal effects of terms
-## Permutation: free
-## Number of permutations: 999
-## 
-## adonis2(formula = euc ~ sample_data(data1)$Timepoint + sample_data(data1)$Treatment, by = "margin")
-##                              Df SumOfSqs      R2      F Pr(>F)    
-## sample_data(data1)$Timepoint  1    679.1 0.06347 5.5055  0.001 ***
-## sample_data(data1)$Treatment  5   4222.4 0.39465 6.8461  0.001 ***
-## Residual                     47   5797.5 0.54187                  
-## Total                        53  10699.0 1.00000                  
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment + sample_data(data1)$POC + sample_data(data1)$Atomic_C,
+        by='margin', perm=999)
+anosim(euc, sample_data(data1)$Timepoint)
 ```
 
 ### Phylogenetic Distance (philr)
@@ -2663,14 +1105,46 @@ adonis2(euc~sample_data(data1)$Timepoint + sample_data(data1)$Treatment,
 
 ```r
 library(philr)
+# filter low abudnace
+library(CoDaSeq)
+library(compositions)
+input=t(data.frame(otu_table(phyo)))
+dim(input)
+```
 
-GP <- transform_sample_counts(phyo, function(x) x+1)
+```
+## [1]   96 1921
+```
+
+```r
+d.subset <- codaSeq.filter(input, 
+                        samples.by.row=T,min.reads=2,min.prop =0.0001)
+
+dim(d.subset)
+```
+
+```
+## [1] 1145   96
+```
+
+```r
+log_rats <- (compositions::clr(t(d.subset)))
+OTU=otu_table(t(log_rats),taxa_are_rows = T)
+comp_clr=phyloseq(OTU,map,tax2)
+
+tax=data.frame(tax_table(comp_clr))
+otus=tax$Strain
+my_subset <- subset(otu_table(phyo), rownames(otu_table(phyo)) %in% otus)
+new_physeq <- merge_phyloseq(my_subset, tax_table(phyo), sample_data(phyo), phy_tree(phyo))
+
+
+GP <- transform_sample_counts(new_physeq, function(x) x+1)
 phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
 name.balance(phy_tree(GP), tax_table(GP), 'n1')
 ```
 
 ```
-## [1] "Species_/Kingdom_Bacteria"
+## [1] "Strain_31041e0311df2ecb7962b142422de261/Kingdom_Bacteria"
 ```
 
 ```r
@@ -2694,7 +1168,7 @@ p <- prcomp(gp.dist)
 par(mar=c(7,8,1,10))
 plot(p$x[,1],p$x[,2], pch = sample_data(phyo)$pch,
      bg=sample_data(phyo)$col,cex.lab=1.3,
-     xlab= 'PCoA1 79.27%', ylab='PCoA2 9.19%',cex=1.5)
+     xlab= 'PCoA1 78.92%', ylab='PCoA2 9.00%',cex=1.5)
 legend(80,45, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
                             "MC2-Met Batch", "MC2-Met Chemostat",
                             "MC3-Eth Batch", "MC3-Eth Chemostat",
@@ -2719,15 +1193,48 @@ legend(80,45, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
 
 Samples significantly tied to 
 
-* Treatment (aka MC) R2 = 0.16, F = 6.26, p < 0.001
-* Timepoint R2 = 0.021, F = 5.33, p = 0.007
-* Batch or Chemostat R2 = 0.05, F=12.80, p < 0.001
+* Treatment (aka MC) R2 = 0.06269, F = 2.6671, p = 0.007
+* Timepoint R2 = 0.01441, F = 3.0641, p = 0.046
+* Batch or Chemostat R2 = 0.02973, F = 6.3246, p = 0.005
+* POC (uM) R2 = 0.01730, F = 3.6802, p = 0.027
+* Atomic %13C R2 = 0.02860, F = 6.0829, p = 0.004
 
 
 ```r
 phyo1=subset_samples(phyo, B_C !="Pond")
+input=t(data.frame(otu_table(phyo1)))
+dim(input)
+```
 
-GP <- transform_sample_counts(phyo1, function(x) x+1)
+```
+## [1]   90 1921
+```
+
+```r
+d.subset <- codaSeq.filter(input, 
+                        samples.by.row=T,min.reads=2,min.prop =0.00001)
+
+dim(d.subset)
+```
+
+```
+## [1] 1272   90
+```
+
+```r
+log_rats <- (compositions::clr(t(d.subset)))
+OTU=otu_table(t(log_rats),taxa_are_rows = T)
+comp_clr=phyloseq(OTU,map,tax2)
+
+tax=data.frame(tax_table(comp_clr))
+otus=tax$Strain
+my_subset <- subset(otu_table(phyo1), rownames(otu_table(phyo1)) %in% otus)
+new_physeq <- merge_phyloseq(my_subset, tax_table(phyo1), sample_data(phyo1), phy_tree(phyo1))
+
+
+
+
+GP <- transform_sample_counts(new_physeq, function(x) x+1)
 phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
 name.balance(phy_tree(GP), tax_table(GP), 'n1')
 ```
@@ -2757,8 +1264,8 @@ p <- prcomp(gp.dist)
 par(mar=c(7,8,1,10))
 plot(p$x[,1],p$x[,2], pch = sample_data(phyo1)$pch,
      bg=sample_data(phyo1)$col,cex.lab=1.3,
-     xlab= 'PCoA1 78.84%', ylab='PCoA2 9.93%',cex=1.5)
-legend(80,45, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
+     xlab= 'PCoA1 77.59%', ylab='PCoA2 10.00%',cex=1.5)
+legend(120,45, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
                             "MC2-Met Batch", "MC2-Met Chemostat",
                             "MC3-Eth Batch", "MC3-Eth Chemostat",
                             "MC4-Ace Batch", "MC4-Ace Chemostat",
@@ -2768,13 +1275,36 @@ legend(80,45, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
              "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f"),
        pch=c(21,23,21,23,21,23,21,23,21,23,21,23),
        bty='n',cex=1)
+ordiellipse(p, groups=sample_data(phyo1)$Timepoint)
 }
 ```
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/pcoa_phil2-1.png)<!-- -->
 
 ```r
-adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint + sample_data(phyo1)$B_C, by='margin')
+sub=subset_samples(phyo1, POC!="NA")
+GP <- transform_sample_counts(sub, function(x) x+1)
+phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
+name.balance(phy_tree(GP), tax_table(GP), 'n1')
+```
+
+```
+## [1] "Species_/Kingdom_Bacteria"
+```
+
+```r
+otu.table <- t(otu_table(GP))
+treefr <- phy_tree(GP)
+metadata <- sample_data(GP)
+tax <- tax_table(GP)
+
+gp.philr <- philr(otu.table, treefr, 
+                  part.weights='enorm.x.gm.counts', 
+                  ilr.weights='blw.sqrt')
+gp.dist <- dist(gp.philr, method="euclidean")
+
+set.seed(1234)
+adonis2(gp.dist~ sample_data(sub)$Treatment + sample_data(sub)$Timepoint + sample_data(sub)$B_C + sample_data(sub)$POC + sample_data(sub)$Atomic_C, by='margin', permutations = 999)
 ```
 
 ```
@@ -2783,15 +1313,21 @@ adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint + s
 ## Permutation: free
 ## Number of permutations: 999
 ## 
-## adonis2(formula = gp.dist ~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint + sample_data(phyo1)$B_C, by = "margin")
-##                              Df SumOfSqs      R2       F Pr(>F)    
-## sample_data(phyo1)$Treatment  5   2060.8 0.12580  6.2597  0.001 ***
-## sample_data(phyo1)$Timepoint  1    351.2 0.02144  5.3335  0.005 ** 
-## sample_data(phyo1)$B_C        1    842.8 0.05145 12.7998  0.001 ***
-## Residual                     82   5399.1 0.32959                   
-## Total                        89  16381.4 1.00000                   
+## adonis2(formula = gp.dist ~ sample_data(sub)$Treatment + sample_data(sub)$Timepoint + sample_data(sub)$B_C + sample_data(sub)$POC + sample_data(sub)$Atomic_C, permutations = 999, by = "margin")
+##                            Df SumOfSqs      R2      F Pr(>F)   
+## sample_data(sub)$Treatment  5    959.0 0.06269 2.6671  0.007 **
+## sample_data(sub)$Timepoint  1    220.3 0.01441 3.0641  0.046 * 
+## sample_data(sub)$B_C        1    454.8 0.02973 6.3246  0.005 **
+## sample_data(sub)$POC        1    264.6 0.01730 3.6802  0.027 * 
+## sample_data(sub)$Atomic_C   1    437.4 0.02860 6.0829  0.004 **
+## Residual                   62   4458.5 0.29147                 
+## Total                      71  15296.5 1.00000                 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+# adonis2(formula = gp.dist ~ sample_data(sub)$Timepoint + sample_data(sub)$B_C + sample_data(sub)$POC + sample_data(sub)$Atomic_C, permutations = 999, by = "margin", strata = sample_data(sub)$Treatment)
 ```
 
 
@@ -2801,13 +1337,15 @@ adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint + s
 
 Samples significantly tied to 
 
-* Treatment (aka MC) R2 = 0.04, F = 0.3267, p = 0.99
-* Timepoint R2 = 0.21501, F = 8.3907, p = 0.002
+* Treatment (aka MC) R2 = 0.04936, F = 0.7705, p = 0.710
+* Timepoint R2 = 0.11537, F = 9.0043, p = 0.002
+* POC (uM) R2 = 0.25811, F = 20.1457, p = 0.001
+* Atomic %13C R2 = 0.01423, F = 1.1105, p = 0.333
 
 
 
 ```r
-phyo1=subset_samples(phyo, B_C =="Batch")
+phyo1=subset_samples(new_physeq, B_C =="Batch")
 
 GP <- transform_sample_counts(phyo1, function(x) x+1)
 phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
@@ -2839,7 +1377,7 @@ p <- prcomp(gp.dist)
   par(mar=c(7,8,1,10))
   plot(p$x[,1],p$x[,2], pch = sample_data(phyo1)$pch,
        bg=sample_data(phyo1)$col,cex.lab=1.3,
-       xlab= 'PCoA1 64.96%', ylab='PCoA2 18.17%',cex=1.5)
+       xlab= 'PCoA1 62.21%', ylab='PCoA2 19.91%',cex=1.5)
   ordiellipse(p, groups=sample_data(phyo1)$Timepoint,
               label=TRUE, cex=1.5)
 
@@ -2859,7 +1397,8 @@ p <- prcomp(gp.dist)
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/pcoa_phil3-1.png)<!-- -->
 
 ```r
-adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by='margin')
+set.seed(1234)
+adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint + sample_data(phyo1)$POC + sample_data(phyo1)$Atomic_C, by='margin', permutations = 999)
 ```
 
 ```
@@ -2868,12 +1407,14 @@ adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by
 ## Permutation: free
 ## Number of permutations: 999
 ## 
-## adonis2(formula = gp.dist ~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by = "margin")
-##                              Df SumOfSqs      R2      F Pr(>F)    
-## sample_data(phyo1)$Treatment  5    818.1 0.04186 0.3267  0.994    
-## sample_data(phyo1)$Timepoint  1   4202.7 0.21501 8.3907  0.001 ***
-## Residual                     29  14525.5 0.74313                  
-## Total                        35  19546.3 1.00000                  
+## adonis2(formula = gp.dist ~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint + sample_data(phyo1)$POC + sample_data(phyo1)$Atomic_C, permutations = 999, by = "margin")
+##                              Df SumOfSqs      R2       F Pr(>F)    
+## sample_data(phyo1)$Treatment  5   1016.8 0.05178  0.8473  0.615    
+## sample_data(phyo1)$Timepoint  1   1974.2 0.10053  8.2250  0.002 ** 
+## sample_data(phyo1)$POC        1   5464.1 0.27823 22.7652  0.001 ***
+## sample_data(phyo1)$Atomic_C   1    289.4 0.01473  1.2056  0.282    
+## Residual                     27   6480.6 0.32999                   
+## Total                        35  19638.7 1.00000                   
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -2884,24 +1425,21 @@ adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by
 
 Samples significantly tied to 
 
-* Treatment (aka MC) R2 = 0.58701, F = 16.814, p = 0.001
-* Timepoint R2 = 0.08482, F = 12.148, p = 0.001
+* Timepoint R2 = 0.07368, F = 3.2076, p = 0.021
+* Treatment (AKA MC) R2 = 0.12729, F = 1.1083, p = 0.362
+* POC (uM) R2 = 0.01347, F = 0.5866, p = 0.603
+* Atomic %13C R2 = 0.13386, F = 5.8276, p = 0.003
+
 
 
 
 ```r
-phyo1=subset_samples(phyo, B_C =="Chemostat")
+phyo1=subset_samples(new_physeq, B_C =="Chemostat")
 
 GP <- transform_sample_counts(phyo1, function(x) x+1)
 phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
 name.balance(phy_tree(GP), tax_table(GP), 'n1')
-```
 
-```
-## [1] "Species_/Kingdom_Bacteria"
-```
-
-```r
 otu.table <- t(otu_table(GP))
 treefr <- phy_tree(GP)
 metadata <- sample_data(GP)
@@ -2919,9 +1457,9 @@ p <- prcomp(gp.dist)
   par(mar=c(7,8,1,10))
   plot(p$x[,1],p$x[,2], pch = sample_data(data1)$pch,
        bg=sample_data(data1)$col,cex.lab=1.3,
-       xlab= 'PCoA1 53.93%', ylab='PCoA2 24.54%',cex=1.5)
+       xlab= 'PCoA1 62.23%', ylab='PCoA2 17.52%',cex=1.5)
   ordiellipse(p, groups=sample_data(data1)$Treatment,label=TRUE)
-legend(85,50, legend=c("MC1-C12 Chemostat",
+legend(180,50, legend=c("MC1-C12 Chemostat",
                             "MC2-Met Chemostat", 
                             "MC3-Eth Chemostat",
                             "MC4-Ace Chemostat", 
@@ -2932,26 +1470,22 @@ legend(85,50, legend=c("MC1-C12 Chemostat",
        pch=23,
        bty='n',cex=1)
 }
-```
 
-![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/pcoa_phil4-1.png)<!-- -->
 
-```r
-adonis2(gp.dist~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by='margin')
-```
+sub=subset_samples(phyo1, POC!="NA")
+GP <- transform_sample_counts(sub, function(x) x+1)
+phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
+name.balance(phy_tree(GP), tax_table(GP), 'n1')
 
-```
-## Permutation test for adonis under reduced model
-## Marginal effects of terms
-## Permutation: free
-## Number of permutations: 999
-## 
-## adonis2(formula = gp.dist ~ sample_data(phyo1)$Treatment + sample_data(phyo1)$Timepoint, by = "margin")
-##                              Df SumOfSqs      R2      F Pr(>F)    
-## sample_data(phyo1)$Treatment  5  12134.8 0.58701 16.814  0.001 ***
-## sample_data(phyo1)$Timepoint  1   1753.5 0.08482 12.148  0.001 ***
-## Residual                     47   6784.0 0.32817                  
-## Total                        53  20672.3 1.00000                  
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+otu.table <- t(otu_table(GP))
+treefr <- phy_tree(GP)
+metadata <- sample_data(GP)
+tax <- tax_table(GP)
+
+gp.philr <- philr(otu.table, treefr, 
+                  part.weights='enorm.x.gm.counts', 
+                  ilr.weights='blw.sqrt')
+gp.dist <- dist(gp.philr, method="euclidean")
+set.seed(1234)
+adonis2(gp.dist~ sample_data(sub)$Treatment + sample_data(sub)$Timepoint + sample_data(sub)$POC + sample_data(sub)$Atomic_C, by='margin', permutations = 999)
 ```
