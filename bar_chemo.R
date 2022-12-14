@@ -80,6 +80,6 @@ colls=c('gray50',"#ba4a4f")
 m6=make_bar_relabun(qpcr_sub, "MC6")
 
 library(cowplot)
-pdf(file='bd_data_chemo.pdf', width=4,height=12)
+pdf(file='bd_data_chemo.pdf', width=6,height=12)
 plot_grid(m2,m3,m4,m5,m6,aligh='hv',ncol=1)
 dev.off()
