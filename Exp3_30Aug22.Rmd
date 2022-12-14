@@ -18,7 +18,24 @@ knit: (function(input_file, encoding) {
 ---
 
 
+
+
+# Experimental Overview
+
 Full experimental information, including previous experiments and timeline, can be found at [the MCP website](http://ecosystems.mbl.edu/MEP-FoodWeb/Experiments/Exp4/index.html)
+
+<video width="320" height="240" controls>
+  <source src="/Users/oliviaahern/Movies/chemo.mp4" type="video/mp4">
+</video>
+
+
+The habitability of Earth is maintained in part by the actions of microscopic organisms that continuously breakdown dead organic material and recycle the chemical elements needed by all living organisms. The Earth's microbiome, as it is also known as, consists of bacteria and archaea as well as protists and viruses that prey upon them. The complex and dynamic milieu of interacting microscopic organisms can be difficult to disentangle and understand because as many as a billion bacteria and archaea, and 10 billion viruses, can be found in a liter of water or a gram of soil. Recent advances in molecular biology are beginning to allow scientists to determine which microscopic organisms are present in an environmental sample, as well as how population numbers change over time and what the organisms are doing, such as consuming carbon dioxide from the atmosphere. To understand and predict how microbial communities respond to environmental changes, or how they can be used in biotechnology, energy production or remediation of pollution, scientists construct mathematical models. Properly representing all the microbial interactions in extremely diverse microscopic worlds in a mathematical model is a great challenge. Researchers for this project have developed a novel modeling approach, which exploits a theory that argues complex systems - ones that can be assembled in many different ways - will likely arrange and organize themselves to maximize their consumption of usable energy, such as found in food or sunlight. The theory, known as maximum entropy production (MEP), also predicts how microscopic communities should be structured; that is, who eats whom. To test the theory, researchers will use laboratory microcosms combined with molecular biological techniques to determine the structure of natural microbial communities and compare them to predictions made by the model.
+
+Preliminary modeling results based on the MEP theory show that microbial food webs constructed of strong predator-prey chains are effective at utilizing resources and dissipating free energy, while highly connected generalist food webs prevent effective use of resources and do not locate MEP solutions. The hypothesis that microbial communities organize to form strongly coupled predator-prey chains that are weakly interconnected will be tested with laboratory chemostats inoculated with natural microbial communities. Food web structure will be assessed with stable isotope probing techniques and the active consumers and their predators identified by sequencing of the labeled community. The results from the experiments will not only facilitate development of Darwin-based MEP models, but will also contribute significantly to our theoretical understanding of how microbial communities organize to facilitate the dissipation of available free energy as well as to advance consumer-resource theory for microbial systems that are the foundation of all ecosystems.
+
+
+
+
 
 
 ```{r setup, message=FALSE, error=FALSE, warning=FALSE}
@@ -148,25 +165,25 @@ MC5c=subset(read2,MC=="MC5")
 MC6c=subset(read2,MC=="MC6")
 
 {par(mar=c(5,5,1,1), mfrow=c(1,2))
-plot(MC1$TP,MC1$mm_atomic_C, type='o',  ylim=c(0,10542.03827),pch=21,bg='gray70',
+plot(MC1$TP,MC1$Balanced_Atomic_.13C, type='o',  ylim=c(0,10542.03827),pch=21,bg='gray70',
      xlab="Time (days)", ylab="Atomic %13C", cex=1.5, cex.lab=1.4)
-lines(MC1$TP, MC2$mm_atomic_C, type="o", col="#a44f9a", bg="#a44f9a", pch=21,cex=1.5)
-lines(MC1$TP, MC3$mm_atomic_C, type="o", col="#6870c8", bg="#6870c8", pch=21,cex=1.5)
-lines(MC1$TP, MC4$mm_atomic_C, type="o", col="#56ae6c", bg="#56ae6c", pch=21,cex=1.5)
-lines(MC1$TP, MC5$mm_atomic_C, type="o", col="#af953c", bg="#af953c", pch=21,cex=1.5)
-lines(MC1$TP, MC6$mm_atomic_C, type="o", col="#ba4a4f", bg="#ba4a4f", pch=21,cex=1.5)
+lines(MC1$TP, MC2$Balanced_Atomic_.13C, type="o", col="#a44f9a", bg="#a44f9a", pch=21,cex=1.5)
+lines(MC1$TP, MC3$Balanced_Atomic_.13C, type="o", col="#6870c8", bg="#6870c8", pch=21,cex=1.5)
+lines(MC1$TP, MC4$Balanced_Atomic_.13C, type="o", col="#56ae6c", bg="#56ae6c", pch=21,cex=1.5)
+lines(MC1$TP, MC5$Balanced_Atomic_.13C, type="o", col="#af953c", bg="#af953c", pch=21,cex=1.5)
+lines(MC1$TP, MC6$Balanced_Atomic_.13C, type="o", col="#ba4a4f", bg="#ba4a4f", pch=21,cex=1.5)
 legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
                           "MC5-Glu", "MC6-Xyl"), bty='n', pch =21,
        pt.bg=c("gray70", "#a44f9a", "#6870c8", "#56ae6c", "#af953c", "#ba4a4f"))
 
 
-plot(MC1c$TP,MC1c$mm_atomic_C, type='o',  ylim=c(0,13424.45736),pch=21,bg='gray70',
+plot(MC1c$TP,MC1c$Balanced_Atomic_.13C, type='o',  ylim=c(0,13424.45736),pch=21,bg='gray70',
      xlab="Time (days)", ylab="Atomic %13C", cex=1.5, cex.lab=1.4)
-lines(MC1c$TP, MC2c$mm_atomic_C, type="o", col="#a44f9a", bg="#a44f9a", pch=21,cex=1.5)
-lines(MC1c$TP, MC3c$mm_atomic_C, type="o", col="#6870c8", bg="#6870c8", pch=21,cex=1.5)
-lines(MC1c$TP, MC4c$mm_atomic_C, type="o", col="#56ae6c", bg="#56ae6c", pch=21,cex=1.5)
-lines(MC1c$TP, MC5c$mm_atomic_C, type="o", col="#af953c", bg="#af953c", pch=21,cex=1.5)
-lines(MC1c$TP, MC6c$mm_atomic_C, type="o", col="#ba4a4f", bg="#ba4a4f", pch=21,cex=1.5)
+lines(MC1c$TP, MC2c$Balanced_Atomic_.13C, type="o", col="#a44f9a", bg="#a44f9a", pch=21,cex=1.5)
+lines(MC1c$TP, MC3c$Balanced_Atomic_.13C, type="o", col="#6870c8", bg="#6870c8", pch=21,cex=1.5)
+lines(MC1c$TP, MC4c$Balanced_Atomic_.13C, type="o", col="#56ae6c", bg="#56ae6c", pch=21,cex=1.5)
+lines(MC1c$TP, MC5c$Balanced_Atomic_.13C, type="o", col="#af953c", bg="#af953c", pch=21,cex=1.5)
+lines(MC1c$TP, MC6c$Balanced_Atomic_.13C, type="o", col="#ba4a4f", bg="#ba4a4f", pch=21,cex=1.5)
 legend('topleft',legend=c("MC1-C12", "MC2-Met", "MC3-Eth", "MC4-Ace",
                           "MC5-Glu", "MC6-Xyl"), bty='n', pch =21,
        pt.bg=c("gray70", "#a44f9a", "#6870c8", "#56ae6c", "#af953c", "#ba4a4f"))

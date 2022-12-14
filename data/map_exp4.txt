@@ -1,0 +1,97 @@
+#OTU ID	Treatment	MC	B_C	TP	col	pch	Timepoint	POC	Atomic_C
+C12TB0	Control	MC1-C12	Batch	0	gray70	21	0.5	85.6881417	1.06850048
+C12TB1	Control	MC1-C12	Batch	1	gray70	21	1.5	101.4536852	1.06655396
+C12TB2	Control	MC1-C12	Batch	2	gray70	21	2.5	334.607826	1.08
+C12TB3	Control	MC1-C12	Batch	3	gray70	21	3.5	265.1851852	1.09
+C12TB4	Control	MC1-C12	Batch	4	gray70	21	4.5	147.9487179	1.08366246
+C12TB5	Control	MC1-C12	Batch	5	gray70	21	5.5	114.1238923	1.08089575
+C12TC0	Control	MC1-C12	Chemostat	0	gray70	23	33.5	946.2980309	1.14657334
+C12TC1	Control	MC1-C12	Chemostat	1	gray70	23	34.5	752.7935042	1.13
+C12TC2	Control	MC1-C12	Chemostat	2	gray70	23	35.5	739.129544	1.11
+C12TC3	Control	MC1-C12	Chemostat	3	gray70	23	36.5	784.4796828	1.1
+C12TC4	Control	MC1-C12	Chemostat	4	gray70	23	37.5		
+C12TC5	Control	MC1-C12	Chemostat	5	gray70	23	38.5		
+C12TC7	Control	MC1-C12	Chemostat	7	gray70	23	40.5	696.4336903	1.11
+C12TC10	Control	MC1-C12	Chemostat	10	gray70	23	43.5		
+C12TC14	Control	MC1-C12	Chemostat	14	gray70	23	47.5	306.9109699	1.1
+C12T18	Control	MC1-C12	NA	18	gray70	24	18		
+C12T25	Control	MC1-C12	NA	25	gray70	24	25		
+MetTB0	Methanol	MC2-Met	Batch	0	#a44f9a	21	0.5	90.44265803	1.072215994
+MetTB1	Methanol	MC2-Met	Batch	1	#a44f9a	21	1.5	155.3097682	1.328808049
+MetTB2	Methanol	MC2-Met	Batch	2	#a44f9a	21	2.5	431.5602013	1.890011035
+MetTB3	Methanol	MC2-Met	Batch	3	#a44f9a	21	3.5	250.7016944	6.984599822
+MetTB4	Methanol	MC2-Met	Batch	4	#a44f9a	21	4.5	206.7877125	19.16179869
+MetTB5	Methanol	MC2-Met	Batch	5	#a44f9a	21	5.5	187.2422338	14.09588495
+MetTC0	Methanol	MC2-Met	Chemostat	0	#a44f9a	23	33.5	447.325825	1.817064394
+MetTC1	Methanol	MC2-Met	Chemostat	1	#a44f9a	23	34.5	403.7377055	3.215427959
+MetTC2	Methanol	MC2-Met	Chemostat	2	#a44f9a	23	35.5	397.9248023	3.800805705
+MetTC3	Methanol	MC2-Met	Chemostat	3	#a44f9a	23	36.5	370.077379	5.110523386
+MetTC4	Methanol	MC2-Met	Chemostat	4	#a44f9a	23	37.5		
+MetTC5	Methanol	MC2-Met	Chemostat	5	#a44f9a	23	38.5		
+MetTC7	Methanol	MC2-Met	Chemostat	7	#a44f9a	23	40.5	438.5997719	8.451207329
+MetTC10	Methanol	MC2-Met	Chemostat	10	#a44f9a	23	43.5		
+MetTC14	Methanol	MC2-Met	Chemostat	14	#a44f9a	23	47.5	384.5588768	13.22113666
+EthTB0	Ethanol	MC3-Eth	Batch	0	#6870c8	21	0.5	93.60393587	1.076452766
+EthTB1	Ethanol	MC3-Eth	Batch	1	#6870c8	21	1.5	114.5977343	1.629226512
+EthTB2	Ethanol	MC3-Eth	Batch	2	#6870c8	21	2.5	440.7930147	14.46305077
+EthTB3	Ethanol	MC3-Eth	Batch	3	#6870c8	21	3.5	331.0374665	13.74541242
+EthTB4	Ethanol	MC3-Eth	Batch	4	#6870c8	21	4.5	211.1395196	11.52157254
+EthTB5	Ethanol	MC3-Eth	Batch	5	#6870c8	21	5.5	212.2098795	10.13279914
+EthTC0	Ethanol	MC3-Eth	Chemostat	0	#6870c8	23	33.5	676.6585125	2.152270269
+EthTC1	Ethanol	MC3-Eth	Chemostat	1	#6870c8	23	34.5	608.8939416	9.982626159
+EthTC2	Ethanol	MC3-Eth	Chemostat	2	#6870c8	23	35.5	559.9316196	12.45637285
+EthTC3	Ethanol	MC3-Eth	Chemostat	3	#6870c8	23	36.5	493.0613292	13.0965147
+EthTC4	Ethanol	MC3-Eth	Chemostat	4	#6870c8	23	37.5		
+EthTC5	Ethanol	MC3-Eth	Chemostat	5	#6870c8	23	38.5		
+EthTC7	Ethanol	MC3-Eth	Chemostat	7	#6870c8	23	40.5	455.8980423	16.80701078
+EthTC10	Ethanol	MC3-Eth	Chemostat	10	#6870c8	23	43.5		
+EthTC14	Ethanol	MC3-Eth	Chemostat	14	#6870c8	23	47.5	356.9527315	14.25423589
+AceTB0	Acetate	MC4-Ace	Batch	0	#56ae6c	21	0.5	79.30595287	1.287858797
+AceTB1	Acetate	MC4-Ace	Batch	1	#56ae6c	21	1.5	182.0638352	2.754455191
+AceTB2	Acetate	MC4-Ace	Batch	2	#56ae6c	21	2.5	425.9370055	18.02143244
+AceTB3	Acetate	MC4-Ace	Batch	3	#56ae6c	21	3.5	294.6147686	18.27215569
+AceTB4	Acetate	MC4-Ace	Batch	4	#56ae6c	21	4.5	347.8718234	11.83007424
+AceTB5	Acetate	MC4-Ace	Batch	5	#56ae6c	21	5.5	257.6074535	12.14673214
+AceTC0	Acetate	MC4-Ace	Chemostat	0	#56ae6c	23	33.5	849.2667207	2.897644028
+AceTC1	Acetate	MC4-Ace	Chemostat	1	#56ae6c	23	34.5	932.9337086	9.268536534
+AceTC2	Acetate	MC4-Ace	Chemostat	2	#56ae6c	23	35.5	818.1667695	11.66670168
+AceTC3	Acetate	MC4-Ace	Chemostat	3	#56ae6c	23	36.5	754.1340993	12.82862774
+AceTC4	Acetate	MC4-Ace	Chemostat	4	#56ae6c	23	37.5		
+AceTC5	Acetate	MC4-Ace	Chemostat	5	#56ae6c	23	38.5		
+AceTC7	Acetate	MC4-Ace	Chemostat	7	#56ae6c	23	40.5	618.7718613	14.46916978
+AceTC10	Acetate	MC4-Ace	Chemostat	10	#56ae6c	23	43.5		
+AceTC14	Acetate	MC4-Ace	Chemostat	14	#56ae6c	23	47.5	806.8459324	15.57159461
+GluTB0	Glucose	MC5-Glu	Batch	0	#af953c	21	0.5	68.54032924	1.764497055
+GluTB1	Glucose	MC5-Glu	Batch	1	#af953c	21	1.5	136.9201561	2.741581403
+GluTB2	Glucose	MC5-Glu	Batch	2	#af953c	21	2.5	428.7777777	27.31805719
+GluTB3	Glucose	MC5-Glu	Batch	3	#af953c	21	3.5	306.9102998	20.72567665
+GluTB4	Glucose	MC5-Glu	Batch	4	#af953c	21	4.5	310.0510184	16.42021114
+GluTB5	Glucose	MC5-Glu	Batch	5	#af953c	21	5.5	217.1481135	9.761341304
+GluTC0	Glucose	MC5-Glu	Chemostat	0	#af953c	23	33.5	714.9351314	2.191716598
+GluTC1	Glucose	MC5-Glu	Chemostat	1	#af953c	23	34.5	633.3579819	13.65446259
+GluTC2	Glucose	MC5-Glu	Chemostat	2	#af953c	23	35.5	727.9982526	16.10429641
+GluTC3	Glucose	MC5-Glu	Chemostat	3	#af953c	23	36.5	628.9607489	20.11581805
+GluTC4	Glucose	MC5-Glu	Chemostat	4	#af953c	23	37.5		
+GluTC5	Glucose	MC5-Glu	Chemostat	5	#af953c	23	38.5		
+GluTC7	Glucose	MC5-Glu	Chemostat	7	#af953c	23	40.5	338.35403	24.43746273
+GluTC10	Glucose	MC5-Glu	Chemostat	10	#af953c	23	43.5		
+GluTC14	Glucose	MC5-Glu	Chemostat	14	#af953c	23	47.5	516.2342253	21.17929396
+GluT18	Glucose	MC5-Glu	NA	18	#af953c	22	18		
+GluT25	Glucose	MC5-Glu	NA	25	#af953c	22	25		
+XylTB0	Xylose	MC6-Xyl	Batch	0	#ba4a4f	21	0.5	107.8358881	1.731055484
+XylTB1	Xylose	MC6-Xyl	Batch	1	#ba4a4f	21	1.5	111.0714538	1.800801688
+XylTB2	Xylose	MC6-Xyl	Batch	2	#ba4a4f	21	2.5	366.5707563	9.811330159
+XylTB3	Xylose	MC6-Xyl	Batch	3	#ba4a4f	21	3.5	308.2154551	23.12392895
+XylTB4	Xylose	MC6-Xyl	Batch	4	#ba4a4f	21	4.5	290.9817195	13.54861516
+XylTB5	Xylose	MC6-Xyl	Batch	5	#ba4a4f	21	5.5	208.8018072	15.31833043
+XylTC0	Xylose	MC6-Xyl	Chemostat	0	#ba4a4f	23	33.5	453.826906	2.751365754
+XylTC1	Xylose	MC6-Xyl	Chemostat	1	#ba4a4f	23	34.5	488.5821551	18.16448708
+XylTC2	Xylose	MC6-Xyl	Chemostat	2	#ba4a4f	23	35.5	665.2456115	15.5434831
+XylTC3	Xylose	MC6-Xyl	Chemostat	3	#ba4a4f	23	36.5	494.1053936	16.20357604
+XylTC4	Xylose	MC6-Xyl	Chemostat	4	#ba4a4f	23	37.5		
+XylTC5	Xylose	MC6-Xyl	Chemostat	5	#ba4a4f	23	38.5		
+XylTC7	Xylose	MC6-Xyl	Chemostat	7	#ba4a4f	23	40.5	441.0632015	19.37689322
+XylTC10	Xylose	MC6-Xyl	Chemostat	10	#ba4a4f	23	43.5		
+XylTC14	Xylose	MC6-Xyl	Chemostat	14	#ba4a4f	23	47.5	720.7613745	17.63349963
+Pond1	Pond	NA	NA	0	black	24	NA		
+Pond2	Pond	NA	NA	0	black	24	NA		
