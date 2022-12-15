@@ -583,7 +583,10 @@ plot_grid(m2,m3,m4,m5,m6,aligh='hv',ncol=1)
 
 # 16S Community Data
 
-These were sequenced on a 2x250 bp MiSeq run with [Bacterial V4V5 primers 515F/926R at the Bay Paul Center](https://vamps2.mbl.edu/resources/primers)
+These were sequenced on a 2x250 bp MiSeq run with [Bacterial V4V5 primers 518F/926R at the Bay Paul Center](https://vamps2.mbl.edu/resources/primers)
+
+  + Forward Primer (518F) CCAGCAGCYGCGGTAAN
+  + Reverse Primers (926R) CCGTCAATTCNTTTRAGT CCGTCAATTTCTTTGAGT CCGTCTATTCCTTTGANT (mixed 8:1:1)
 
 ## Code
 
@@ -595,7 +598,10 @@ Where my code is in poseidon:
 (base) [olivia.ahern@poseidon-l2 26Aug22]$ cat run_dada2.sh
     
 ```    
-    
+
+
+My batch script. Note I had to make a consensus sequence for 926R.
+
 ```   
 #!/bin/bash
 #SBATCH --partition=compute
