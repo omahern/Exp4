@@ -583,6 +583,80 @@ plot_grid(m2,m3,m4,m5,m6,aligh='hv',ncol=1)
 
 # 16S Community Data
 
+These were sequenced on a 2x250 bp MiSeq run with [Bacterial V4V5 primers 515F/926R at the Bay Paul Center](https://vamps2.mbl.edu/resources/primers)
+
+## Code
+
+Below is the code that I made using [tutorials from Sarah Hu's github page](https://github.com/shu251/tagseq-qiime2-snakemake)
+
+Where my code is in poseidon: 
+```
+(base) [olivia.ahern@poseidon-l2 26Aug22]$ cd /vortexfs1/scratch/olivia.ahern/26Aug22
+(base) [olivia.ahern@poseidon-l2 26Aug22]$ cat run_dada2.sh
+    
+```    
+    
+```   
+#!/bin/bash
+#SBATCH --partition=compute
+#SBATCH --ntasks=1
+#SBATCH --mem=20gb
+#SBATCH --cpus-per-task=20
+#SBATCH --time=10:35:00
+
+module load anaconda/5.1
+source activate qiime2-2018.8
+
+echo finding sequnces
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path manifest.txt \
+    --output-path paired-end-demux.qza \
+    --input-format PairedEndFastqManifestPhred33
+
+echo trimming
+qiime cutadapt trim-paired \
+    --i-demultiplexed-sequences paired-end-demux.qza \
+    --p-cores 18 \
+    --p-front-f CCAGCAGCYGCGGTAAN \
+    --p-front-r CCGTCNATTNNTTTNANT \
+    --p-error-rate 0.4 \
+    --p-overlap 3 \
+    --o-trimmed-sequences paired-end-demux-trimmed.qza
+
+echo merging and clustering
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs paired-end-demux-trimmed.qza \
+    --p-n-threads 20 \
+    --p-trunc-q 2 \
+    --p-trunc-len-f 220 \
+    --p-trunc-len-r 190 \
+    --p-max-ee 2 \
+    --p-n-reads-learn 1000000 \
+    --p-chimera-method consensus \
+    --o-table ASVs3/asv_table.qza \
+    --o-representative-sequences ASVs3/rep-seqs.qza \
+    --o-denoising-stats ASVs3/stats-dada2.qza
+
+echo classifying taxa
+qiime feature-classifier classify-sklearn \
+    --i-classifier ../21Oct21/tagseq-qiime2-snakemake/silva_all.qza \
+    --i-reads ASVs3/rep-seqs.qza \
+    --o-classification ASVs3/asv_tax_sklearn.qza
+
+cd ASVs3
+qiime tools export --input-path asv_table.qza \
+    --output-path asv_table
+
+biom convert -i asv_table/feature-table.biom -o asv_table/asv-table.tsv --to-tsv
+
+qiime tools export  --input-path asv_tax_sklearn.qza --output-path asv_tax_dir
+
+
+```    
+
+
+## Input data 
 
 ```r
 library(phyloseq)
