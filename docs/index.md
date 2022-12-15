@@ -8,7 +8,7 @@ output:
     toc_depth: 6
     code_folding: hide
     number_sections: false
-    theme: cosmo
+    theme: lumen
 
 knit: (function(input_file, encoding) {
   out_dir <- 'docs';
@@ -264,9 +264,7 @@ Atomic % 13C was measured from dried GFF filters. Calculations and measurements 
 
 # SIP Spins
 
-SIP gradients were setup using a CsTFA gradient centered at ~1.80 g/mL, formamide, and between 750-500 ng of RNA. Samples were spun using an ultracentrifuge spinning at 65,000 rpm at 20C for 65 hours. 
-
-Correction factors include Lueder's Buoyant density (Lueders et al, 2010) and the [Buckley Lab RNA SIP protocol](https://github.com/buckleylab/Buckley_Lab_SIP_project_protocols/blob/master/RNA_SIP/RNA_SIP.md).
+SIP gradients were setup using a CsTFA gradient centered at ~1.80 g/mL, formamide, and between 750-500 ng of RNA. Full experimental protocol can be foound [on my github page](https://omahern.github.io/RNA_SIP_Protocol/#RNA_Extraction).
 
 Standard deviation between SIP runs (as of Sept 9th, 2022) were:
 
