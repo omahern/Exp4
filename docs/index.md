@@ -923,7 +923,36 @@ d_rgn
 
 ![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/cbar5-1.png)<!-- -->
 
+### Some Stats
 
+
+```r
+OTU=otu_table(phyo)
+
+# calculate no. asvs
+s=specnumber(t(OTU))
+
+# calculate Pielou's evenness index 
+H <- diversity(t(OTU))
+J <- H/log(s)
+
+{par(mar=c(4,4,1,1),mfrow=c(1,2))
+b=barplot(s,las=2,horiz=T, col='gray50',xlab='No. ASVs', yaxt='n')
+box(which='plot')
+mtext(side=2, at=b, text=colnames(OTU),las=2,cex=0.5,adj=1.1)
+
+
+barplot(J, las=2,horiz=T,yaxt='n', col='gray30',
+        xlim=c(0,1),xlab="Pielous Index")
+box(which='plot')
+mtext(side=2, at=b, text=colnames(OTU),las=2,cex=0.5,adj=1.1)
+}
+```
+
+![](/Users/oliviaahern/Documents/GitHub/Exp4/docs/index_files/figure-html/alphastats-1.png)<!-- -->
+
+
+Assessing alpha diversity using species number and Pielou’s Evenness Index (ranges from 0 - uneven to 1 totally even).
 
 ## Beta Diversity 
 
