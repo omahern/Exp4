@@ -12,8 +12,8 @@ make_bar_relabun <- function(df, selection){
     scale_fill_manual(values=c('gray50',"#a44f9a")) +
     scale_colour_manual(values=c("gray50", "#a44f9a")) +
     facet_grid(~TP, scale='free_x', space="free", shrink=TRUE) +
-    geom_point(aes(colour=factor(MC), 
-                   fill = factor(MC)), size=2) + 
+    #geom_point(aes(colour=factor(MC), 
+      #             fill = factor(MC)), size=2) + 
     geom_line(aes(colour=factor(MC))) + 
     labs(x="Buoyant Density", y = "Ratio of Maximum Quantity") +
     theme_bw() +  scale_x_continuous(limits = c(1.76, 1.83)) +
@@ -45,9 +45,9 @@ make_bar_relabun <- function(df, selection){
     scale_fill_manual(values=colls) +
     scale_colour_manual(values=colls) +
     facet_grid(~TP, scale='free_x', space="free", shrink=TRUE) +
-    geom_point(aes(colour=MC, 
-                   fill = MC), size=1.1) + 
-    geom_line(aes(colour=MC)) + 
+   # geom_point(aes(colour=MC, 
+      #             fill = MC), size=1.1) + 
+    geom_line(aes(colour=MC),size=1.1) + 
     labs(x="Buoyant Density (g/mL)", y = "Ratio of Maximum Quantity") +
     theme_bw() +  scale_x_continuous(limits = c(1.76, 1.83)) +
     theme(axis.text = element_text(color ='black',size=6, hjust=1,vjust=1),
@@ -290,8 +290,10 @@ sub <- function(df, selection){
 f=sub(qpcr_sub, "MC2")    
 eth=sub(qpcr_sub, "MC3")    
 ace=sub(qpcr_sub, "MC4") 
+glu=sub(qpcr_sub, "MC5") 
+xyl=sub(qpcr_sub, "MC6") 
 
-par(mfrow=c(5,6), mar=c(2,2,1,1))
+par(mfrow=c(5,6), mar=c(0.5,0.5,0.5,0.5))
 {plot(subset(f,MC=="MC1" & TP=="36.5")$Buckley, subset(f, MC=="MC1" & TP=="36.5")$qPCR_RMAX,
      type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
 lines(subset(f,MC=="MC2" & TP=="36.5")$Buckley, subset(f, MC=="MC2" & TP=="36.5")$qPCR_RMAX,
@@ -408,4 +410,81 @@ axis(2, at=c(0,0.5,1))
         col="#56ae6c",lwd=1.4)
   axis(2, at=c(0,0.5,1))
   }
+
+
+# glu
+
+{plot(subset(glu,MC=="MC1" & TP=="36.5")$Buckley, subset(glu, MC=="MC1" & TP=="36.5")$qPCR_RMAX,
+      type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(glu,MC=="MC5" & TP=="36.5")$Buckley, subset(glu, MC=="MC5" & TP=="36.5")$qPCR_RMAX,
+        col="#af953c",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+  
+  plot(subset(glu,MC=="MC1" & TP=="37.5")$Buckley, subset(glu, MC=="MC1" & TP=="37.5")$qPCR_RMAX,
+       type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(glu,MC=="MC5" & TP=="37.5")$Buckley, subset(glu, MC=="MC5" & TP=="37.5")$qPCR_RMAX,
+        col="#af953c",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+  
+  plot(subset(glu,MC=="MC1" & TP=="38.5")$Buckley, subset(glu, MC=="MC1" & TP=="38.5")$qPCR_RMAX,
+       type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(glu,MC=="MC5" & TP=="38.5")$Buckley, subset(glu, MC=="MC5" & TP=="38.5")$qPCR_RMAX,
+        col="#af953c",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+  
+  plot(subset(glu,MC=="MC1" & TP=="40.5")$Buckley, subset(glu, MC=="MC1" & TP=="40.5")$qPCR_RMAX,
+       type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(glu,MC=="MC5" & TP=="40.5")$Buckley, subset(glu, MC=="MC5" & TP=="40.5")$qPCR_RMAX,
+        col="#af953c",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+  
+  plot(subset(glu,MC=="MC1" & TP=="43.5")$Buckley, subset(glu, MC=="MC1" & TP=="43.5")$qPCR_RMAX,
+       type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(glu,MC=="MC5" & TP=="43.5")$Buckley, subset(glu, MC=="MC5" & TP=="43.5")$qPCR_RMAX,
+        col="#af953c",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+  plot(subset(glu,MC=="MC1" & TP=="47.5")$Buckley, subset(glu, MC=="MC1" & TP=="47.5")$qPCR_RMAX,
+       type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(glu,MC=="MC5" & TP=="47.5")$Buckley, subset(glu, MC=="MC5" & TP=="47.5")$qPCR_RMAX,
+        col="#af953c",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+}
+
+
+## xyl
+{plot(subset(xyl,MC=="MC1" & TP=="36.5")$Buckley, subset(xyl, MC=="MC1" & TP=="36.5")$qPCR_RMAX,
+      type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(xyl,MC=="MC6" & TP=="36.5")$Buckley, subset(xyl, MC=="MC6" & TP=="36.5")$qPCR_RMAX,
+        col="#ba4a4f",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+  
+  plot(subset(xyl,MC=="MC1" & TP=="37.5")$Buckley, subset(xyl, MC=="MC1" & TP=="37.5")$qPCR_RMAX,
+       type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(xyl,MC=="MC6" & TP=="37.5")$Buckley, subset(xyl, MC=="MC6" & TP=="37.5")$qPCR_RMAX,
+        col="#ba4a4f",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+  
+  plot(subset(xyl,MC=="MC1" & TP=="38.5")$Buckley, subset(xyl, MC=="MC1" & TP=="38.5")$qPCR_RMAX,
+       type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(xyl,MC=="MC6" & TP=="38.5")$Buckley, subset(xyl, MC=="MC6" & TP=="38.5")$qPCR_RMAX,
+        col="#ba4a4f",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+  
+  plot(subset(xyl,MC=="MC1" & TP=="40.5")$Buckley, subset(xyl, MC=="MC1" & TP=="40.5")$qPCR_RMAX,
+       type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(xyl,MC=="MC6" & TP=="40.5")$Buckley, subset(xyl, MC=="MC6" & TP=="40.5")$qPCR_RMAX,
+        col="#ba4a4f",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+  
+  plot(subset(xyl,MC=="MC1" & TP=="43.5")$Buckley, subset(xyl, MC=="MC1" & TP=="43.5")$qPCR_RMAX,
+       type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(xyl,MC=="MC6" & TP=="43.5")$Buckley, subset(xyl, MC=="MC6" & TP=="43.5")$qPCR_RMAX,
+        col="#ba4a4f",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+  plot(subset(xyl,MC=="MC1" & TP=="47.5")$Buckley, subset(xyl, MC=="MC1" & TP=="47.5")$qPCR_RMAX,
+       type='l', xlab="", ylab="", xlim =c(1.76,1.83),lwd=1.4,yaxt='n')
+  lines(subset(xyl,MC=="MC6" & TP=="47.5")$Buckley, subset(xyl, MC=="MC6" & TP=="47.5")$qPCR_RMAX,
+        col="#ba4a4f",lwd=1.4)
+  axis(2, at=c(0,0.5,1))
+}
 

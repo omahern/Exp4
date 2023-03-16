@@ -1,0 +1,1633 @@
+---
+title: "Test Plate"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_folding: hide
+    number_sections: false
+    theme: lumen
+
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+---
+
+
+Data from the test plate from IMR using "Universal Primers" from Parada et al, 2016. I followed the pipeline from [Jesse McNichols](https://github.com/jcmcnch/eASV-pipeline-for-515Y-926R) and the [Fuhrman lab protocols page](https://www.protocols.io/private/C0F9404AB3DAEC96683F142351CEF59C?step=1).
+
+Questions: 
+
++ How many reads do we get per sample?
++ Is there a relationship between cDNA concentration and No. of Reads?
++ How many reads are prokaryotic and eukaryotic? 
++ What do the eukaryotic communities look like?
++ What do my T0 communities look like compared to other Siders Pond data? 
+
+
+
+# Raw Reads
+```{r raw-seqs}
+read=read.csv(file='/Users/oliviaahern/Documents/GitHub/TestPlate/raw_seqs.csv',header=T,row.names=1)
+data=data.frame(read[,7:8])
+#barplot(data$Raw)
+```
+
+## No. Reads Community Samples
+
+Same input for cDNA for all community samples (25ng into 20 uL reaction).
+
+```{r raw-community, fig.width=5, fig.height=7,dpi=300}
+
+sub=subset(read, Frac_Comm=="Comm")
+par(mar=c(5,5,0,1))
+barplot(sub$Raw,las=2,names.arg = row.names(sub),horiz=T,cex.names=0.5,log='x', 
+        xlab="Log10 No. Raw Reads")
+
+
+```
+
+## No. Reads Fractions 
+
+Fractions had different RNA inputs, so different cDNA concentrations
+
+```{r raw-frac,  fig.width=5, fig.height=7, dpi=300}
+
+sub=subset(read, Frac_Comm=="Frac")
+par(mar=c(5,5,0,1))
+barplot(sub$Raw,las=2,names.arg = row.names(sub),horiz=T,cex.names=0.5,log='x', 
+        xlab="Log No. Raw Reads")
+
+```
+
+## No. Reads vs. cDNA Conc. 
+
+No real correlation between cDNA/RNA concentration and the number of reads per sample. 
+
+```{r raw-cDNA, fig.width=4, fig.height=4, dpi=300}
+plot(log10(sub$Raw), sub$Frac.RNA, xlab='Log10 No. of Raw Reads', ylab='cDNA concentration (ng/uL)', pch =21, bg='black')
+
+```
+
+
+## % Proks, Euks, + Cyano
+
+Percent abundance of prokaryotic, eukaryotic, and cyanobacterial reads after sorting raw sequences based on hits to Silva and PR2 databases
+
+On average, 1.8% of the total sequences were Eukaryotes
+
+### Community % Proks, Euks, + Cyano
+On average 0.46% of the raw reads were eukaryotes, so about 163/47,000 reads. 
+
+
+```{r  seqs-bins, fig.width=5, fig.height=7, dpi=300}
+reads=read.csv(file='/Users/oliviaahern/Documents/GitHub/TestPlate/pct_euk_bact.csv',header=T,row.names=1)
+dim(reads)
+data1=data.frame(reads[,13:15])
+
+sub=subset(reads, F_C=="Comm")
+data1=data.frame(sub[,13:15])
+
+
+par(mar=c(7,5,1,1),xpd=T)
+barplot(as.matrix(t(data1)),las=2,names.arg = row.names(sub),horiz=T,cex.names=0.5,
+        xlab="% Abundance", col=c('firebrick','forestgreen','navy'),space=0)
+box(which='plot')
+legend(0,-10, legend=c("Prok", "Cyano", "Euks"), pch =22, pt.bg=c("navy", 'forestgreen','firebrick'),
+       bty='n', ncol=3)
+```
+
+
+### Fractions % Proks, Euks + Cyanos
+On average, 3.4% of the fractionated sequences were eukaryotes, so about 806/24,000 reads.
+
+Percentage of total raw reads that match to prokaryotic, eukarytoic, or cyanobacterial databases. The samples that don't reach to 100 did not have matches to the databases, therefore we can assume they are probably chimera.s 
+
+```{r  seqs-bins2, fig.width=5, fig.height=7, dpi=300}
+
+sub=subset(reads, F_C=="Frac")
+data1=data.frame(sub[,13:15])
+barplot(as.matrix(t(data1)),las=2,names.arg = row.names(sub),horiz=T,cex.names=0.5,
+        xlab="% Abundance", col=c('navy','forestgreen','firebrick'),space=0)
+box(which='plot')
+legend(0,-10, legend=c("Prok", "Cyano", "Euks"), pch =22, pt.bg=c("firebrick", 'forestgreen','navy'),
+       bty='n', ncol=3)
+
+```
+
+
+
+# 18S sequences
+
+Total of 110 unique ASVs. 
+
+
+## read in data
+
+```{r}
+library(phyloseq)
+x<-read.csv(file='/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/IMR_Jan2023/18S/feature-table.biom.csv',header=TRUE,row.names=1)
+OTU = otu_table(x, taxa_are_rows=T)
+taxa<-read.csv(file="/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/IMR_Jan2023/18S/taxonomy.csv",header=TRUE,row.names=1)
+t<-as.matrix(taxa)
+tax2<-tax_table(t)
+map<-import_qiime_sample_data("/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/IMR_Jan2023/18S/map.txt")
+#tree=read.tree("/Users/ahern/R/trophic_cascades/mc2/4Nov21/ASVs/tree.nwk")
+phyo = phyloseq(OTU, tax2, map)
+phyo
+```
+
+
+## overall ASV diversity
+
+After QC - Average of 340 euk reads/sample + 3.4 ASVs per sample overall 
+
++ Community samples: avg 91 reads/sample + 2 ASVs/sample
++ Fractions: avg 600 reads/sample + 4 ASVs per sample 
+
+
+```{r 18s-asv, fig.width=9, fig.height=7, dpi=300}
+library(ggplot2)
+#phyo_abund=subset_samples(phyo, Comm_Frac=="Comm")
+phyo_abund=transform_sample_counts(phyo, function(x) x/sum(x))
+pd <- psmelt(phyo_abund)
+
+
+#colors=randomcoloR::randomColor(110)
+#write_rds(colors, 'colors_class.rds')
+colors=readRDS('/Users/oliviaahern/Documents/GitHub/TestPlate/colors_class_18s.rds')
+library(grid)
+#palette(as.character(t(colors)))
+d_rgn = ggplot(pd, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = ASV)) +
+  scale_fill_manual(values=as.character(t(colors))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "Class Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+       legend.position = "none")
+        
+d_rgn
+
+```
+
+
+## overall ASV diversity w/o Fungi
+
+
+```{r 18s-asv-nof, fig.width=9, message=FALSE, error=FALSE, warning=FALSE, fig.height=7, dpi=300}
+phy=subset_taxa(phyo, Class!="Fungi")
+#phyo_abund=subset_samples(phyo, Comm_Frac=="Comm")
+phyo_abund=transform_sample_counts(phy, function(x) x/sum(x))
+pd <- psmelt(phyo_abund)
+
+
+
+
+#colors=randomcoloR::randomColor(110)
+#write_rds(colors, 'colors_class.rds')
+colors=readRDS('/Users/oliviaahern/Documents/GitHub/TestPlate/colors_class_18s.rds')
+library(grid)
+#palette(as.character(t(colors)))
+d_rgn = ggplot(pd, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = Class)) +
+  scale_fill_manual(values=as.character(t(colors))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "Class Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+       legend.position = "bottom",
+        panel.grid=element_blank(),
+        strip.text.x = element_text(
+          size = 10, color = "black", face = "bold"),
+       legend.text = element_text(size=6),
+        legend.key.size = unit(0.25, 'cm')
+        #strip.background = element_rect(
+        #  color="white", fill="white", size=1, linetype="solid"),
+       # panel.spacing = unit(0.05, "lines"))
+)
+        
+d_rgn
+
+#sub=subset_samples(phyo_abund, Comm_Frac=="Frac")
+#write.csv(otu_table(sub),'18S_nofungi.csv')
+
+#write.csv(tax_table(sub),'18S_nofungi_tax.csv')
+
+
+```
+
+
+## ASVs in fractions
+
+*Note that the bar on the right is the heaviest of the fraction.*
+
+We can begin to see differences in abundance at the heavier vs. lighter fractions with even a few 18S samples
+
+```{r 18s-asvs-frac, fig.width=9, fig.height=7, dpi=300}
+sub=subset_samples(phyo_abund, Comm_Frac=="Frac")
+
+control <- subset_samples(sub,SampleID == "Ace.TB5.1" | SampleID == "Ace.TB5.4" | SampleID == "Ace.TB5.5" | SampleID == "Ace.TB5.15" | SampleID == "C12.TB5.7" | SampleID == "C12.TB5.11" | SampleID == "Met.TB5.3" | SampleID == "Met.TB5.9" | SampleID == "Met.TB5.10" | SampleID == "Met.TB5.12")
+
+pd <- psmelt(control)
+
+#colors=randomcoloR::randomColor(110)
+#write_rds(colors, 'colors_class.rds')
+colors=readRDS('/Users/oliviaahern/Documents/GitHub/TestPlate/colors_class_18s.rds')
+library(grid)
+#palette(as.character(t(colors)))
+d_rgn = ggplot(pd, aes(x = reorder(Sample, Buoyant_density), y = Abundance, fill = Class)) +
+  scale_fill_manual(values=as.character(t(colors))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "Class Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+       legend.position = "bottom",
+        panel.grid=element_blank(),
+        strip.text.x = element_text(
+          size = 10, color = "black", face = "bold"),
+       legend.text = element_text(size=6),
+        legend.key.size = unit(0.25, 'cm')
+        #strip.background = element_rect(
+        #  color="white", fill="white", size=1, linetype="solid"),
+       # panel.spacing = unit(0.05, "lines"))
+)
+        
+d_rgn
+```
+
+
+## My T0 Community vs. Old Siders Data, Phyla level
+
+Relatively the same, except my data does not have any unknowns, potentially due to under sequencing. 
+
+Sequencing Depth (seqs/sample): 
+
++ MC T0s 		6.9 ± 18.4
++ Axial 		2,810
++ Siders 		41,361 ± 5,659
+
+Note: Opisthokonta is Fungi 
+
+```{r mvsarah, fig.height=6, fig.width=6, dpi=300}
+
+#colors=randomcoloR::randomColor(110)
+#write_rds(colors, 'colors_class.rds')
+colors <- c("#bfd3e6","#fa9fb5", "#74c476", "#fc8d59", "#807dba", "#238443","#e31a1c", "#ec7014", "#969696")
+
+read=read.csv(file='/Users/oliviaahern/Documents/GitHub/Exp4/controlotu.csv',header=T,row.names=1)
+colors <- c("#bfd3e6","#fa9fb5", "#74c476", "#fc8d59", "#807dba", "#238443","#e31a1c", "#ec7014", "#969696")
+
+par(mar=c(15,5,1,10),xpd=T)
+barplot(as.matrix(read), las=2, col = colors, space =0,
+        ylab="% Relative Abundance")
+box(which='plot')
+legend(8,.9, legend=row.names(read), pch=22,
+       pt.bg=colors, bty='n')
+
+```
+
+# 16S Data
+
+
+Total of 1,632 ASVs, 1,608 ASVs if you get rid of Mitochondria and chloroplasts. 
+
+```{r}
+library(phyloseq)
+x<-read.csv(file='/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/IMR_Jan2023/16S/feature-table.biom.csv',header=TRUE,row.names=1)
+OTU = otu_table(x, taxa_are_rows=T)
+taxa<-read.csv(file="/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/IMR_Jan2023/16S/taxonomy_16s.csv",header=TRUE,row.names=1)
+t<-as.matrix(taxa)
+tax2<-tax_table(t)
+map<-import_qiime_sample_data("/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/IMR_Jan2023/18S/map.txt")
+library(ape)
+tree=read.tree("/Users/oliviaahern/Documents/MBL_WHOI/Trophic_Cascades/Experiment4/Sequences/IMR_Jan2023/16S/tree.nwk")
+phyo_raw = phyloseq(OTU, tax2, map,tree)
+phyo1 = subset_taxa(phyo_raw, !Order==" Chloroplast")
+phyo2 = subset_taxa(phyo1, !Family==" Mitochondria")
+phyo=phyo2
+```
+
+
+## Class Relative Abundance
+
+### Community Class Relative Abundance
+
+```{r 16s-comm-class, fig.width=10,fig.height=8, dpi=300, warning=FALSE, error=FALSE, message=FALSE}
+
+agg=tax_glom(phyo2, taxrank="Class")
+
+t=transform_sample_counts(agg, function(x) x/sum(x))
+sub=subset_samples(t, Comm_Frac=="Comm")
+phyo_abund=subset_samples(t, Comm_Frac=="Comm")
+
+pd <- psmelt(phyo_abund)
+
+
+#colors=randomcoloR::randomColor(52)
+#write_rds(colors, 'colors_class.rds')
+colors=readRDS('/Users/oliviaahern/Documents/GitHub/TestPlate/colors_class.rds')
+library(grid)
+#palette(as.character(t(colors)))
+d_rgn = ggplot(pd, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = Class)) +
+  scale_fill_manual(values=as.character(t(colors))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "Class Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+       legend.position = "bottom",
+        panel.grid=element_blank(),
+        strip.text.x = element_text(
+          size = 10, color = "black", face = "bold"),
+       legend.text = element_text(size=6),
+        legend.key.size = unit(0.25, 'cm')
+        #strip.background = element_rect(
+        #  color="white", fill="white", size=1, linetype="solid"),
+       # panel.spacing = unit(0.05, "lines"))
+)
+d_rgn
+```
+
+
+
+### Fraction Class Relative Abundance
+
+Two samples did not amplify: 
+
++ Ace-TB5-2
++ Met-TB5-4
+
+```{r 16s-class-frac, fig.width=10,fig.height=8, dpi=300,  warning=FALSE, error=FALSE, message=FALSE}
+phyo_abund=subset_samples(t, Comm_Frac=="Frac")
+
+pd <- psmelt(phyo_abund)
+
+
+#colors=randomcoloR::randomColor(52)
+library(grid)
+#palette(as.character(t(colors)))
+d_rgn = ggplot(pd, aes(x = reorder(Sample, Buoyant_density), y = Abundance, fill = Class)) +
+  scale_fill_manual(values=as.character(t(colors))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "Class Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+       legend.position = "bottom",
+        panel.grid=element_blank(),
+        strip.text.x = element_text(
+          size = 10, color = "black", face = "bold"),
+       legend.text = element_text(size=6),
+        legend.key.size = unit(0.25, 'cm')
+        #strip.background = element_rect(
+        #  color="white", fill="white", size=1, linetype="solid"),
+       # panel.spacing = unit(0.05, "lines"))
+)
+d_rgn
+```
+
+### Fractions Top Classes No Repeats
+
+Most Frequent Classes: 
+
++ Gammaproteobacteria 90%
++ Bacteroidia 84%
++ Alphaproteobacteria 81%
++ Desulfuromonadia 65%
++ Campylobacteria 58%
+
+
+
+```{r 16s-classes, fig.width=8,fig.height=8}
+read1=read.csv(file='/Users/oliviaahern/Documents/GitHub/TestPlate/fracs_class.csv',header=T,row.names=1)
+
+data=data.frame(t(read1))
+control=subset(data, Treatment=="Control")
+meth=subset(data, Treatment=="Methanol")
+acetate=subset(data,Treatment=="Acetate")
+
+
+{
+par(mar=c(5,5,1,1),mfrow=c(2,2))
+plot(control$BD, control$Gammaproteobacteria,
+     type='o', pch=21,col='gray70', bg='gray90', ylim=c(0,1), xlim=c(1.76, 1.83),
+     xlab="Buoyant Density", ylab="% Abundance Gammaproteobacteria")
+lines(meth$BD, meth$Gammaproteobacteria,
+      type="o", col='#a44f9a', pch=21,
+      bg="#a44f9a")
+lines(acetate$BD, acetate$Gammaproteobacteria,
+      type="o", pch=21, bg="#56ae6c", col="#56ae6c")
+legend(1.76,.3, legend=c("Control", "Methanol", "Acetate"), text.col=c('gray70',"#a44f9a","#56ae6c"), bty='n')
+
+
+
+plot(control$BD, control$Campylobacteria,
+     type='o', pch=21,col='gray70', bg='gray90', ylim=c(0,1), xlim=c(1.76, 1.83),xlab="Buoyant Density", ylab="% Abundance Campylobacteria")
+lines(meth$BD, meth$Campylobacteria,
+      type="o", col='#a44f9a', pch=21,
+      bg="#a44f9a")
+lines(acetate$BD, acetate$Campylobacteria,
+      type="o", pch=21, bg="#56ae6c", col="#56ae6c")
+
+
+plot(control$BD, control$Alphaproteobacteria,
+     type='o', pch=21,col='gray70', bg='gray90', ylim=c(0,1), xlim=c(1.76, 1.83),xlab="Buoyant Density", ylab="% Abundance Alphaproteobacteria")
+lines(meth$BD, meth$Alphaproteobacteria,
+      type="o", col='#a44f9a', pch=21,
+      bg="#a44f9a")
+lines(acetate$BD, acetate$Alphaproteobacteria,
+      type="o", pch=21, bg="#56ae6c", col="#56ae6c")
+
+
+plot(control$BD, control$Bacteroidia,
+     type='o', pch=21,col='gray70', bg='gray90', ylim=c(0,1), xlim=c(1.76, 1.83),xlab="Buoyant Density", ylab="% Abundance Bacteroidia")
+lines(meth$BD, meth$Bacteroidia,
+      type="o", col='#a44f9a', pch=21,
+      bg="#a44f9a")
+lines(acetate$BD, acetate$Bacteroidia,
+      type="o", pch=21, bg="#56ae6c", col="#56ae6c")
+
+}
+
+```
+
+## ASV Class Relative Abundance
+
+
+### Community ASV Relative Abundance
+```{r 16s-asv-class, fig.width=10,fig.height=8, dpi=300, warning=FALSE, error=FALSE, message=FALSE}
+
+abund=transform_sample_counts(phyo, function(x) x/sum(x))
+phyo_abund=subset_samples(abund, Comm_Frac=="Comm")
+
+pd <- psmelt(phyo_abund)
+
+
+#colors=randomcoloR::randomColor(1610)
+#write_rds(colors, 'colors_class.rds')
+colors=readRDS('/Users/oliviaahern/Documents/GitHub/TestPlate/colors_class.rds')
+colors_asv=c('gray70', colors)
+library(grid)
+#palette(as.character(t(colors)))
+d_rgn = ggplot(pd, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = Class)) +
+  scale_fill_manual(values=as.character(t(colors_asv))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "Class Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+legend.position = "bottom",
+        panel.grid=element_blank(),
+        strip.text.x = element_text(
+          size = 10, color = "black", face = "bold"),
+       legend.text = element_text(size=6),
+        legend.key.size = unit(0.25, 'cm')
+        #strip.background = element_rect(
+        #  color="white", fill="white", size=1, linetype="solid"),
+       # panel.spacing = unit(0.05, "lines"))
+)
+d_rgn
+```
+
+
+
+### Fraction ASV Relative Abundance
+
+
+
+```{r 16s-asv-class-frac, fig.width=10,fig.height=8, dpi=300, warning=FALSE, error=FALSE, message=FALSE}
+
+abund=transform_sample_counts(phyo, function(x) x/sum(x))
+phyo_abund=subset_samples(abund, Comm_Frac=="Frac")
+
+pd <- psmelt(phyo_abund)
+
+
+#colors=randomcoloR::randomColor(1610)
+#write_rds(colors, 'colors_class.rds')
+colors=readRDS('/Users/oliviaahern/Documents/GitHub/TestPlate/colors_class.rds')
+colors_asv=c('gray70', colors)
+library(grid)
+#palette(as.character(t(colors)))
+d_rgn = ggplot(pd, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = Class)) +
+  scale_fill_manual(values=as.character(t(colors_asv))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "Class Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+legend.position = "bottom",
+        panel.grid=element_blank(),
+        strip.text.x = element_text(
+          size = 10, color = "black", face = "bold"),
+       legend.text = element_text(size=6),
+        legend.key.size = unit(0.25, 'cm')
+        #strip.background = element_rect(
+        #  color="white", fill="white", size=1, linetype="solid"),
+       # panel.spacing = unit(0.05, "lines"))
+)
+d_rgn
+```
+
+### Most Frequent ASVs in Fractions
+Most Frequent ASVs
+
++ 16e2e2408cedf8f9faae33004fb5eaa2 Gammaproteobacteria Aeromonas 83%
++ X4785f91e7f34f642ba5880ff1f2e7526 Gammaproteobacteria Cellvibrio 70%
++ ddb2bf017eeb122792d652cc207cb3b0 Bacteroidia Bacteroidetes/Chlorobi 70%
++ X639b8d71f6806556291f6114837ecc41 Gammaproteobacteria Methylotenera 67%
++ X72043b4ee056432fd25f465446b2ff27 Gammaproteobacteria Methylotenera 67%
++ d1c8f7b6346015d2d94b7db3e6250ffc Alphaproteobacteria Rhodobacteraceae 65%
+
+#### Abundance in Community 
+
+
+```{r 16s-comm-asv-abund, fig.height=8, fig.width=8}
+
+phyo_abund=transform_sample_counts(phyo, function(x) x/sum(x))
+comm1=subset_samples(phyo_abund, Comm_Frac=="Comm")
+
+s=subset_taxa(comm1, strain=="16e2e2408cedf8f9faae33004fb5eaa2" | strain=="4785f91e7f34f642ba5880ff1f2e7526" | strain=="ddb2bf017eeb122792d652cc207cb3b0" | strain=="639b8d71f6806556291f6114837ecc41" |
+strain=="72043b4ee056432fd25f465446b2ff27" |  strain =="d1c8f7b6346015d2d94b7db3e6250ffc")
+
+
+pd <- psmelt(s)
+
+
+
+colors_asv=c("#801900",
+"#ffc77e",
+"#525b00",
+"#b8c636",
+"#013c9e",
+"#dc74e6")
+library(grid)
+#palette(as.character(t(colors)))
+d_rgn = ggplot(pd, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = strain)) +
+  scale_fill_manual(values=as.character(t(colors_asv))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "Class Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+legend.position = "bottom",
+        panel.grid=element_blank(),
+        strip.text.x = element_text(
+          size = 10, color = "black", face = "bold"),
+       legend.text = element_text(size=6),
+        legend.key.size = unit(0.25, 'cm')
+        #strip.background = element_rect(
+        #  color="white", fill="white", size=1, linetype="solid"),
+       # panel.spacing = unit(0.05, "lines"))
+)
+d_rgn
+
+```
+
+#### Fractions ASV vs. Buoyant Density
+
+Some facts to note
+
++ [Cellvibrio can grow off of Xylose and glucose, but not Acetate](https://www.microbiologyresearch.org/content/journal/ijsem/10.1099/ijs.0.02271-0). Also Cellivibrio used to be Pseudomonas
++ [The "Chlorobi" strain matched perfectly on blast to Saccharicrinis aurantiacus strain HQYD1 16S](https://www.ncbi.nlm.nih.gov/nucleotide/NR_156071.1?report=genbank&log$=nuclalign&blast_rank=1&RID=0PTR50JD01N) which was isolated from a sea squirt and can [use glucose and xylose as carbon sources](https://bacdive.dsmz.de/strain/133336)
++ [Methyloterna strain 1 matched to Methylotenera versatilis 301, a facultative anaerobe, mesophilic, bacterium isolated from freshwater sediment with 366/374 98% identity  ](https://bacdive.dsmz.de/strain/23100)
++ [Methyloterna strain 2 matched to Methylotenera versatilis 301, a facultative anaerobe, mesophilic, bacterium isolated from freshwater sediment with 100% identity  ](https://bacdive.dsmz.de/strain/23100)
++ The Rhodobacter strain matched to [Cypionkella sinensis strain Y1R2-4 16S which can use Xylose, Glucose, and Acetate as C sources](https://bacdive.dsmz.de/strain/141057)
+
+```{r 16s-frac-asv-abund, fig.height=8, fig.width=8}
+
+read1=read.csv(file='/Users/oliviaahern/Documents/GitHub/TestPlate/16S_asv_subset.csv',header=T,row.names=1)
+
+control=subset(read1, Treatment=="Control")
+meth=subset(read1, Treatment=="Methanol")
+acetate=subset(read1,Treatment=="Acetate")
+
+
+{
+par(mar=c(5,5,1,1),mfrow=c(2,3))
+plot(control$BD, control$X16e2e2408cedf8f9faae33004fb5eaa2,
+     type='o', pch=21,col='gray70', bg='gray90', ylim=c(0,1), xlim=c(1.76, 1.83),
+     xlab="Buoyant Density", ylab="% Abundance Aeromonas")
+lines(meth$BD, meth$X16e2e2408cedf8f9faae33004fb5eaa2,
+      type="o", col='#a44f9a', pch=21,
+      bg="#a44f9a")
+lines(acetate$BD, acetate$X16e2e2408cedf8f9faae33004fb5eaa2,
+      type="o", pch=21, bg="#56ae6c", col="#56ae6c")
+legend(1.76,.8, legend=c("Control", "Methanol", "Acetate"), text.col=c('gray70',"#a44f9a","#56ae6c"), bty='n')
+
+plot(control$BD, control$X4785f91e7f34f642ba5880ff1f2e7526,
+     type='o', pch=21,col='gray70', bg='gray90', ylim=c(0,1), xlim=c(1.76, 1.83),
+     xlab="Buoyant Density", ylab="% Abundance Cellvibrio")
+lines(meth$BD, meth$X4785f91e7f34f642ba5880ff1f2e7526,
+      type="o", col='#a44f9a', pch=21,
+      bg="#a44f9a")
+lines(acetate$BD, acetate$X4785f91e7f34f642ba5880ff1f2e7526,
+      type="o", pch=21, bg="#56ae6c", col="#56ae6c")
+legend(1.76,.8, legend=c("Control", "Methanol", "Acetate"), text.col=c('gray70',"#a44f9a","#56ae6c"), bty='n')
+
+
+plot(control$BD, control$ddb2bf017eeb122792d652cc207cb3b0,
+     type='o', pch=21,col='gray70', bg='gray90', ylim=c(0,1), xlim=c(1.76, 1.83),
+     xlab="Buoyant Density", ylab="% Abundance Chlorobi")
+lines(meth$BD, meth$ddb2bf017eeb122792d652cc207cb3b0,
+      type="o", col='#a44f9a', pch=21,
+      bg="#a44f9a")
+lines(acetate$BD, acetate$ddb2bf017eeb122792d652cc207cb3b0,
+      type="o", pch=21, bg="#56ae6c", col="#56ae6c")
+legend(1.76,.8, legend=c("Control", "Methanol", "Acetate"), text.col=c('gray70',"#a44f9a","#56ae6c"), bty='n')
+
+plot(control$BD, control$X639b8d71f6806556291f6114837ecc41,
+     type='o', pch=21,col='gray70', bg='gray90', ylim=c(0,1), xlim=c(1.76, 1.83),
+     xlab="Buoyant Density", ylab="% Abundance Methylotenera 1")
+lines(meth$BD, meth$X639b8d71f6806556291f6114837ecc41,
+      type="o", col='#a44f9a', pch=21,
+      bg="#a44f9a")
+lines(acetate$BD, acetate$X639b8d71f6806556291f6114837ecc41,
+      type="o", pch=21, bg="#56ae6c", col="#56ae6c")
+legend(1.76,.8, legend=c("Control", "Methanol", "Acetate"), text.col=c('gray70',"#a44f9a","#56ae6c"), bty='n')
+
+
+plot(control$BD, control$X72043b4ee056432fd25f465446b2ff27,
+     type='o', pch=21,col='gray70', bg='gray90', ylim=c(0,1), xlim=c(1.76, 1.83),
+     xlab="Buoyant Density", ylab="% Abundance Methylotenera 2")
+lines(meth$BD, meth$X72043b4ee056432fd25f465446b2ff27,
+      type="o", col='#a44f9a', pch=21,
+      bg="#a44f9a")
+lines(acetate$BD, acetate$X72043b4ee056432fd25f465446b2ff27,
+      type="o", pch=21, bg="#56ae6c", col="#56ae6c")
+legend(1.76,.8, legend=c("Control", "Methanol", "Acetate"), text.col=c('gray70',"#a44f9a","#56ae6c"), bty='n')
+
+plot(control$BD, control$d1c8f7b6346015d2d94b7db3e6250ffc,
+     type='o', pch=21,col='gray70', bg='gray90', ylim=c(0,1), xlim=c(1.76, 1.83),
+     xlab="Buoyant Density", ylab="% Abundance Rhodobacter")
+lines(meth$BD, meth$d1c8f7b6346015d2d94b7db3e6250ffc,
+      type="o", col='#a44f9a', pch=21,
+      bg="#a44f9a")
+lines(acetate$BD, acetate$d1c8f7b6346015d2d94b7db3e6250ffc,
+      type="o", pch=21, bg="#56ae6c", col="#56ae6c")
+legend(1.76,.8, legend=c("Control", "Methanol", "Acetate"), text.col=c('gray70',"#a44f9a","#56ae6c"), bty='n')
+}
+```
+
+
+## Fractions w/ multiple cycles
+
+### Alpha Diversity 
+
+#### Species Number 
+```{r 16s-repeats1, fig.width=10,fig.height=8, dpi=300, warning=FALSE, error=FALSE, message=FALSE}
+
+sub=subset_samples(phyo, Repeats=="Yes")
+otu=otu_table(sub)
+library(vegan)
+spec=specnumber(t(otu))
+
+par(mar=c(5,10,1,1))
+barplot(spec, horiz=T, las=2, xlab='No. of Species')
+box(which='plot')
+```
+
+#### Species Number vs. Cycles
+
+There appears to be PCR bias in the nested PCR.
+
+
+```{r 16s-repeatsa, fig.width=5,fig.height=5, dpi=300, warning=FALSE, error=FALSE, message=FALSE}
+
+cycles=c(25,35,40,50,55,25,35,40,50,55,25,35,40,50,55)
+{par(mar=c(5,5,1,1))
+plot(cycles, spec, pch=21, bg='black', 
+     xlab="No. of PCR Cycles", ylab="No. of Species")}
+```
+
+### Class Level/ASV
+
+```{r 16s-repeats, fig.width=10,fig.height=8, dpi=300, warning=FALSE, error=FALSE, message=FALSE}
+
+abund=transform_sample_counts(phyo, function(x) x/sum(x))
+phyo_abund=subset_samples(abund, Comm_Frac=="Frac")
+sub=subset_samples(phyo_abund, Repeats=="Yes")
+
+pd <- psmelt(sub)
+
+colors_asv=c('gray70', colors)
+library(grid)
+#palette(as.character(t(colors)))
+d_rgn = ggplot(pd, aes(x = reorder(Sample, Timepoint), y = Abundance, fill = Class)) +
+  scale_fill_manual(values=as.character(t(colors_asv))) +
+  geom_bar(stat = "identity", width=0.97, color='black',
+           lwd=0.1) +
+  facet_grid(~Treatment, scale='free_x', space="free", shrink=TRUE) +
+  labs(x=" ", y = "Class Relative Abundance") +
+  theme_bw() +
+  theme(axis.text = element_text(color ='black',size=12, hjust=1,vjust=1),
+        axis.text.x=element_text(size=8, angle=90),
+        axis.title = element_text(color='black',face='bold',size=14),
+legend.position = "bottom",
+        panel.grid=element_blank(),
+        strip.text.x = element_text(
+          size = 10, color = "black", face = "bold"),
+       legend.text = element_text(size=6),
+        legend.key.size = unit(0.25, 'cm')
+        #strip.background = element_rect(
+        #  color="white", fill="white", size=1, linetype="solid"),
+       # panel.spacing = unit(0.05, "lines"))
+)
+d_rgn
+```
+
+### Beta Diversity 
+
+#### Aitchison's distance 
+
+```{r 16s-repeats2, fig.width=10,fig.height=8, dpi=300, warning=FALSE, error=FALSE, message=FALSE}
+
+library(CoDaSeq)
+library(compositions)
+input=t(data.frame(otu_table(sub)))
+dim(input)
+
+log_rats <- (compositions::clr((input)))
+OTU=otu_table(t(log_rats),taxa_are_rows = T)
+comp_clr=phyloseq(OTU,map,tax2)
+
+
+otu=t(otu_table(comp_clr))
+euc=vegdist(otu,'euc')
+p=prcomp(euc)
+# summary(p)
+{
+par(mar=c(5,5,1,15),xpd=T)
+plot(p$x[,1],p$x[,2], pch = sample_data(comp_clr)$pch,
+     bg=sample_data(comp_clr)$col,cex.lab=1.3,
+     xlab= 'PCoA1 73.21%', ylab='PCoA2 5.37%',cex=1.5)
+legend(17,10, legend=c("MC1-C12 Batch Fractions","MC1-C12 Batch Fracs >25 cycles","MC2-Met Batch Fractions","MC2-Met Batch Fracs >25 cycles","MC4-Ace Batch Fractions","MC4-Ace Batch Fracs >25 cycles"),xpd=T,
+       pt.bg=c("gray70","gray70","#a44f9a","#a44f9a","#6870c8","#6870c8",
+             "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f","black",'gray70','gray70','#a44f9a',"#a44f9a","#56ae6c","#56ae6c"),
+       pch=c(22,23,
+             22,23,22,23),
+       bty='n',cex=1)
+ordiellipse(p, groups=sample_data(comp_clr)$pch)
+
+
+```
+
+#### Philr
+
+```{r 16s-repeats3, fig.width=10,fig.height=8, dpi=300, warning=FALSE, error=FALSE, message=FALSE}
+
+library(CoDaSeq)
+library(compositions)
+
+comm1=sub
+
+tax=data.frame(tax_table(comm1))
+otus=tax$strain
+my_subset <- subset(otu_table(comm1), rownames(otu_table(comm1)) %in% otus)
+new_physeq <- merge_phyloseq(my_subset, tax_table(comm1), sample_data(comm1), phy_tree(comm1))
+
+
+GP <- transform_sample_counts(new_physeq, function(x) x+1)
+phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
+name.balance(phy_tree(GP), tax_table(GP), 'n1')
+
+otu.table <- t(otu_table(GP))
+treefr <- phy_tree(GP)
+metadata <- sample_data(GP)
+tax <- tax_table(GP)
+
+gp.philr <- philr(otu.table, treefr, 
+                  part.weights='enorm.x.gm.counts', 
+                  ilr.weights='blw.sqrt')
+
+
+gp.dist <- dist(gp.philr, method="euclidean")
+p <- prcomp(gp.dist)
+# summary(p)
+{
+par(mar=c(5,5,1,15),xpd=T)
+plot(p$x[,1],p$x[,2], pch = sample_data(comm1)$pch,
+     bg=sample_data(comm1)$col,cex.lab=1.3,
+     xlab= 'PCoA1 68.4%', ylab='PCoA2 11.6%',cex=1.5)
+legend(0.12,0, legend=c("MC1-C12 Batch Fractions","MC1-C12 Batch Fracs >25 cycles","MC2-Met Batch Fractions","MC2-Met Batch Fracs >25 cycles","MC4-Ace Batch Fractions","MC4-Ace Batch Fracs >25 cycles"),xpd=T,
+       pt.bg=c("gray70","gray70","#a44f9a","#a44f9a","#6870c8","#6870c8",
+             "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f","black",'gray70','gray70','#a44f9a',"#a44f9a","#56ae6c","#56ae6c"),
+       pch=c(22,23,
+             22,23,22,23),
+       bty='n',cex=1)
+ordiellipse(p, groups=sample_data(comm1)$pch)
+}
+
+```
+
+
+## Beta Diversity 
+
+
+### Aitchinson's distance
+
+#### All Samples
+```{r pcoa_all_samples,fig.height=5,fig.width=8, dpi=300, message=FALSE, error=FALSE, warning=FALSE}
+
+library(CoDaSeq)
+library(compositions)
+input=t(data.frame(otu_table(phyo)))
+dim(input)
+d.subset <- codaSeq.filter(input, 
+                        samples.by.row=T,min.reads=2,min.prop =0.0001)
+
+dim(d.subset)
+log_rats <- (compositions::clr(t(d.subset)))
+OTU=otu_table(t(log_rats),taxa_are_rows = T)
+comp_clr=phyloseq(OTU,map,tax2)
+
+
+otu=t(otu_table(comp_clr))
+euc=vegdist(otu,'euc')
+p=prcomp(euc)
+# summary(p)
+{
+par(mar=c(5,5,1,15),xpd=T)
+plot(p$x[,1],p$x[,2], pch = sample_data(comp_clr)$pch,
+     bg=sample_data(comp_clr)$col,cex.lab=1.3,
+     xlab= 'PCoA1 62.98%', ylab='PCoA2 17.26%',cex=1.5)
+legend(140,30, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
+"MC2-Met Batch", "MC2-Met Chemostat",
+ "MC3-Eth Batch", "MC3-Eth Chemostat",
+                            "MC4-Ace Batch", "MC4-Ace Chemostat",
+                            "MC5-Glu Batch", "MC5-Glu Chemostat",
+                            "MC6-Xyl Batch", "MC6-Xyl Chemostat","Pond", "MC1-C12 Batch Fractions","MC1-C12 Batch Fracs >25 cycles","MC2-Met Batch Fractions","MC2-Met Batch Fracs >25 cycles","MC4-Ace Batch Fractions","MC4-Ace Batch Fracs >25 cycles"),xpd=T,
+       pt.bg=c("gray70","gray70","#a44f9a","#a44f9a","#6870c8","#6870c8",
+             "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f","black",'gray70','gray70','#a44f9a',"#a44f9a","#56ae6c","#56ae6c"),
+       pch=c(21,24,21,24,21,24,21,24,21,24,21,24,25,22,23,
+             22,23,22,23),
+       bty='n',cex=1)
+ordiellipse(p, groups=sample_data(comp_clr)$Timepoint)
+}
+```
+
+
+#### Community
+
+
+
+```{r pcoa_aitch_comp,fig.height=5,fig.width=8, dpi=300, message=FALSE, error=FALSE, warning=FALSE}
+
+subset=subset_samples(phyo, Comm_Frac=="Comm")
+library(CoDaSeq)
+library(compositions)
+input=t(data.frame(otu_table(subset)))
+dim(input)
+d.subset <- codaSeq.filter(input, 
+                        samples.by.row=T,min.reads=2,min.prop =0.0001)
+
+dim(d.subset)
+log_rats <- (compositions::clr(t(d.subset)))
+OTU=otu_table(t(log_rats),taxa_are_rows = T)
+comp_clr2=phyloseq(OTU,map,tax2)
+
+otu=t(otu_table(comp_clr2))
+euc=vegdist(otu,'euc')
+p=prcomp(euc)
+# summary(p)
+{
+par(mar=c(5,5,1,15),xpd=T)
+plot(p$x[,1],p$x[,2], pch = sample_data(comp_clr2)$pch,
+     bg=sample_data(comp_clr2)$col,cex.lab=1.3,
+     xlab= 'PCoA1 47.13%', ylab='PCoA2 23.83%',cex=1.5)
+legend(40,30, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
+"MC2-Met Batch", "MC2-Met Chemostat",
+ "MC3-Eth Batch", "MC3-Eth Chemostat",
+                            "MC4-Ace Batch", "MC4-Ace Chemostat",
+                            "MC5-Glu Batch", "MC5-Glu Chemostat",
+                            "MC6-Xyl Batch", "MC6-Xyl Chemostat","Pond"),xpd=T,
+       pt.bg=c("gray70","gray70","#a44f9a","#a44f9a","#6870c8","#6870c8",
+             "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f","black"),
+       pch=c(21,24,21,24,21,24,21,24,21,24,21,24,25),
+       bty='n',cex=1)
+ordiellipse(p, groups=sample_data(comp_clr2)$Timepoint)
+}
+```
+
+
+#### Fractions
+Outlier is Met-TB5-12, C12 spike for Met-TB5 is Met-TB5-11
+
+```{r pcoa_aitch_comf,fig.height=5,fig.width=8, dpi=300, message=FALSE, error=FALSE, warning=FALSE}
+
+subset=subset_samples(phyo, Comm_Frac=="Frac")
+library(CoDaSeq)
+library(compositions)
+input=t(data.frame(otu_table(subset)))
+dim(input)
+d.subset <- codaSeq.filter(input, 
+                        samples.by.row=T,min.reads=2,min.prop =0.0001)
+
+dim(d.subset)
+log_rats <- (compositions::clr(t(d.subset)))
+OTU=otu_table(t(log_rats),taxa_are_rows = T)
+comp_clr2=phyloseq(OTU,map,tax2)
+
+#comp_clr2=subset_samples(comp_clr, Comm_Frac=="Frac")
+otu=t(otu_table(comp_clr2))
+euc=vegdist(otu,'euc')
+p=prcomp(euc)
+# summary(p)
+{
+par(mar=c(5,5,1,15),xpd=T)
+plot(p$x[,1],p$x[,2], pch = sample_data(comp_clr2)$pch,
+     bg=sample_data(comp_clr2)$col,cex.lab=1.3,
+     xlab= 'PCoA1 85.58%', ylab='PCoA2 4.20%',cex=1.5)
+legend(45,10, legend=c("MC1-C12 Batch Fractions","MC1-C12 Batch Fracs >25 cycles","MC2-Met Batch Fractions","MC2-Met Batch Fracs >25 cycles","MC4-Ace Batch Fractions","MC4-Ace Batch Fracs >25 cycles"),xpd=T,
+       pt.bg=c('gray70','gray70','#a44f9a',"#a44f9a","#56ae6c","#56ae6c"),
+       pch=c(22,23,
+             22,23,22,23),
+       bty='n',cex=1)
+ordiellipse(p, groups=sample_data(comp_clr2)$Treatment)
+}
+
+# ordiplot(p, type='text')
+
+
+
+
+```
+
+
+### Phylogenetic Distance (philr)
+
+#### All Samples
+```{r pcoa_phil1,fig.height=5,fig.width=8,message=FALSE, error=FALSE, warning=FALSE, dpi=300}
+library(philr)
+# filter low abudnace
+library(CoDaSeq)
+library(compositions)
+#comm=subset_samples(phyo, Comm_Frac=="Comm")
+input=t(data.frame(otu_table(phyo)))
+dim(input)
+d.subset <- codaSeq.filter(input, 
+                        samples.by.row=T,min.reads=2,min.prop =0.0001)
+
+dim(d.subset)
+#log_rats <- (compositions::clr(t(d.subset)))
+OTU=otu_table((d.subset),taxa_are_rows = T)
+comm=phyloseq(OTU,map,tax2,tree)
+
+tax=data.frame(tax_table(comm))
+otus=tax$strain
+my_subset <- subset(otu_table(comm), rownames(otu_table(comm)) %in% otus)
+new_physeq <- merge_phyloseq(my_subset, tax_table(comm), sample_data(comm), phy_tree(comm))
+
+
+GP <- transform_sample_counts(new_physeq, function(x) x+1)
+phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
+name.balance(phy_tree(GP), tax_table(GP), 'n1')
+
+otu.table <- t(otu_table(GP))
+treefr <- phy_tree(GP)
+metadata <- sample_data(GP)
+tax <- tax_table(GP)
+
+gp.philr <- philr(otu.table, treefr, 
+                  part.weights='enorm.x.gm.counts', 
+                  ilr.weights='blw.sqrt')
+
+
+gp.dist <- dist(gp.philr, method="euclidean")
+p <- prcomp(gp.dist)
+
+
+{
+par(mar=c(5,5,1,15),xpd=T)
+plot(p$x[,1],p$x[,2], pch = sample_data(comm)$pch,
+     bg=sample_data(comm)$col,cex.lab=1.3,
+     xlab= 'PCoA1 71.16%', ylab='PCoA2 12.75%',cex=1.5)
+legend(35,5, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
+"MC2-Met Batch", "MC2-Met Chemostat",
+ "MC3-Eth Batch", "MC3-Eth Chemostat",
+                            "MC4-Ace Batch", "MC4-Ace Chemostat",
+                            "MC5-Glu Batch", "MC5-Glu Chemostat",
+                            "MC6-Xyl Batch", "MC6-Xyl Chemostat","Pond", "MC1-C12 Batch Fractions","MC1-C12 Batch Fracs >25 cycles","MC2-Met Batch Fractions","MC2-Met Batch Fracs >25 cycles","MC4-Ace Batch Fractions","MC4-Ace Batch Fracs >25 cycles"),xpd=T,
+       pt.bg=c("gray70","gray70","#a44f9a","#a44f9a","#6870c8","#6870c8",
+             "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f","black",'gray70','gray70','#a44f9a',"#a44f9a","#56ae6c","#56ae6c"),
+       pch=c(21,24,21,24,21,24,21,24,21,24,21,24,25,22,23,
+             22,23,22,23),
+       bty='n',cex=1)
+ordiellipse(p, groups=sample_data(comm)$Timepoint)
+}
+
+```
+
+
+
+
+#### Community Only
+
+
+```{r pcoa_phil2,fig.height=5,fig.width=8,message=FALSE, error=FALSE, warning=FALSE, dpi=300}
+library(philr)
+# filter low abudnace
+library(CoDaSeq)
+library(compositions)
+comm1=subset_samples(comm, Comm_Frac=="Comm")
+
+tax=data.frame(tax_table(comm1))
+otus=tax$strain
+my_subset <- subset(otu_table(comm1), rownames(otu_table(comm1)) %in% otus)
+new_physeq <- merge_phyloseq(my_subset, tax_table(comm1), sample_data(comm1), phy_tree(comm1))
+
+
+GP <- transform_sample_counts(new_physeq, function(x) x+1)
+phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
+name.balance(phy_tree(GP), tax_table(GP), 'n1')
+
+otu.table <- t(otu_table(GP))
+treefr <- phy_tree(GP)
+metadata <- sample_data(GP)
+tax <- tax_table(GP)
+
+gp.philr <- philr(otu.table, treefr, 
+                  part.weights='enorm.x.gm.counts', 
+                  ilr.weights='blw.sqrt')
+
+
+gp.dist <- dist(gp.philr, method="euclidean")
+p <- prcomp(gp.dist)
+
+
+{
+par(mar=c(5,5,1,15),xpd=T)
+plot(p$x[,1],p$x[,2], pch = sample_data(comm1)$pch,
+     bg=sample_data(comm1)$col,cex.lab=1.3,
+     xlab= 'PCoA1 79.4%', ylab='PCoA2 13.44%',cex=1.5)
+legend(45,5, legend=c("MC1-C12 Batch","MC1-C12 Chemostat",
+"MC2-Met Batch", "MC2-Met Chemostat",
+ "MC3-Eth Batch", "MC3-Eth Chemostat",
+                            "MC4-Ace Batch", "MC4-Ace Chemostat",
+                            "MC5-Glu Batch", "MC5-Glu Chemostat",
+                            "MC6-Xyl Batch", "MC6-Xyl Chemostat","Pond"),xpd=T,
+       pt.bg=c("gray70","gray70","#a44f9a","#a44f9a","#6870c8","#6870c8",
+             "#56ae6c","#56ae6c","#af953c","#af953c","#ba4a4f","#ba4a4f","black"),
+       pch=c(21,24,21,24,21,24,21,24,21,24,21,24,25),
+       bty='n',cex=1)
+ordiellipse(p, groups=sample_data(comm1)$Timepoint)
+}
+
+```
+
+
+
+
+#### Fractions
+
+```{r pcoa_phil3,fig.height=5,fig.width=8,message=FALSE, error=FALSE, warning=FALSE, dpi=300}
+library(philr)
+# filter low abudnace
+library(CoDaSeq)
+library(compositions)
+comm1=subset_samples(phyo, Comm_Frac=="Frac")
+
+tax=data.frame(tax_table(comm1))
+otus=tax$strain
+my_subset <- subset(otu_table(comm1), rownames(otu_table(comm1)) %in% otus)
+new_physeq <- merge_phyloseq(my_subset, tax_table(comm1), sample_data(comm1), phy_tree(comm1))
+
+
+GP <- transform_sample_counts(new_physeq, function(x) x+1)
+phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
+name.balance(phy_tree(GP), tax_table(GP), 'n1')
+
+otu.table <- t(otu_table(GP))
+treefr <- phy_tree(GP)
+metadata <- sample_data(GP)
+tax <- tax_table(GP)
+
+gp.philr <- philr(otu.table, treefr, 
+                  part.weights='enorm.x.gm.counts', 
+                  ilr.weights='blw.sqrt')
+
+
+gp.dist <- dist(gp.philr, method="euclidean")
+p <- prcomp(gp.dist)
+
+
+{
+par(mar=c(5,5,1,15),xpd=T)
+plot(p$x[,1],p$x[,2], pch = sample_data(comm1)$pch,
+     bg=sample_data(comm1)$col,cex.lab=1.3,
+     xlab= 'PCoA1 81.91%', ylab='PCoA2 8.6%',cex=1.5)
+legend(30,10, legend=c("MC1-C12 Batch Fractions","MC1-C12 Batch Fracs >25 cycles","MC2-Met Batch Fractions","MC2-Met Batch Fracs >25 cycles","MC4-Ace Batch Fractions","MC4-Ace Batch Fracs >25 cycles"),xpd=T,
+       pt.bg=c('gray70','gray70','#a44f9a',"#a44f9a","#56ae6c","#56ae6c"),
+       pch=c(22,23,
+             22,23,22,23),
+       bty='n',cex=1)
+ordiellipse(p, groups=sample_data(comm1)$Treatment)
+}
+
+```
+
+#### Fraction Dendrogram
+
+```{r}
+
+clust=hclust(gp.dist)
+dend=as.dendrogram(clust)
+library(dendextend)
+#groupCodes=sample_data(comm1)$Treatment
+#colorCodes=sample_data(comm1)$col
+#labels_colors(dend) <- colorCodes[groupCodes][order.dendrogram(dend)]
+
+
+par(mar=c(5,1,1,7))
+plot(as.dendrogram(clust),hang=-1, horiz=T, cex.lab=0.7)
+```
+
+
+#### Fractions no repeats
+
+```{r pcoa_phil4,fig.height=5,fig.width=8,message=FALSE, error=FALSE, warning=FALSE, dpi=300}
+library(philr)
+# filter low abudnace
+library(CoDaSeq)
+library(compositions)
+comm1=subset_samples(phyo, pch=="22")
+
+tax=data.frame(tax_table(comm1))
+otus=tax$strain
+my_subset <- subset(otu_table(comm1), rownames(otu_table(comm1)) %in% otus)
+new_physeq <- merge_phyloseq(my_subset, tax_table(comm1), sample_data(comm1), phy_tree(comm1))
+
+
+GP <- transform_sample_counts(new_physeq, function(x) x+1)
+phy_tree(GP) <- makeNodeLabel(phy_tree(GP), method="number", prefix='n')
+name.balance(phy_tree(GP), tax_table(GP), 'n1')
+
+otu.table <- t(otu_table(GP))
+treefr <- phy_tree(GP)
+metadata <- sample_data(GP)
+tax <- tax_table(GP)
+
+gp.philr <- philr(otu.table, treefr, 
+                  part.weights='enorm.x.gm.counts', 
+                  ilr.weights='blw.sqrt')
+
+
+gp.dist <- dist(gp.philr, method="euclidean")
+p <- prcomp(gp.dist)
+
+
+{
+par(mar=c(5,5,1,15),xpd=T)
+plot(p$x[,1],p$x[,2], pch = sample_data(comm1)$pch,
+     bg=sample_data(comm1)$col,cex.lab=1.3,
+     xlab= 'PCoA1 91.36%', ylab='PCoA2 3.4%',cex=1.5)
+legend(30,10, legend=c("MC1-C12 Batch Fractions","MC2-Met Batch Fractions","MC4-Ace Batch Fractions"),xpd=T,
+       pt.bg=c('gray70','#a44f9a',"#56ae6c"),
+       pch=c(22,23,
+             22,23,22,23),
+       bty='n',cex=1)
+ordiellipse(p, groups=sample_data(comm1)$Treatment)
+}
+
+```
+
+#### Fraction Dendrogram
+
+```{r}
+
+clust=hclust(gp.dist)
+dend=as.dendrogram(clust)
+library(dendextend)
+#groupCodes=sample_data(comm1)$Treatment
+#colorCodes=sample_data(comm1)$col
+#labels_colors(dend) <- colorCodes[groupCodes][order.dendrogram(dend)]
+
+
+par(mar=c(5,1,1,7))
+plot(as.dendrogram(clust),hang=-1, horiz=T, cex.lab=0.7)
+```
+
+## HR-SIP
+
+Note had to take away samples that had less than 100 reads 
+
+```{r, message=FALSE, error=FALSE, warning=FALSE}
+library(phyloseq)
+library(reshape2)
+library(tidyverse)
+library(vegan)
+library(HTSSIP)
+library(ape)
+library(CoDaSeq)
+library(philr)
+library(ggtree)
+library(cowplot)
+library(ggplot2)
+library(viridis)
+library(phytools)
+
+
+phyo_frac=subset_samples(phyo, over100=='good')
+#phyo_frac
+#input=otu_table(phyo_frac)
+#d.subset <- codaSeq.filter(input, samples.by.row=F,min.reads=2,min.prop	= 0.001)
+#d.subset <- codaSeq.filter(input, samples.by.row=F,min.occurrence	= 0.05)
+
+#OTU=otu_table(d.subset,taxa_are_rows = T)
+#phyo_frac=phyloseq(OTU,sample_data(phyo2),tax_table(phyo2),phy_tree(phyo2))
+
+params = get_treatment_params(phyo_frac, c('Treatment', 'Timepoint'))
+
+params = dplyr::filter(params, Treatment!="Control")
+
+ex = "(Treatment=='Control' & Timepoint == '${Timepoint}') |  (Treatment=='${Treatment}' & Timepoint=='${Timepoint}') "
+#sample_data(phyo_frac)$Treatment <- relevel(as.factor(sample_data(phyo_frac)$Treatment) , ref = "5MC2")
+#sample_data(all)$Treatment <- relevel(as.factor(get_variable(all, "Treatment")), ref="5MC2")
+
+physeq_S2D2_l = phyloseq_subset(phyo_frac, params, ex)
+physeq_S2D2_l
+```
+
+
+
+#### BD Shifts
+[Tutorials for HTSSIP can be found here](https://cran.r-project.org/web/packages/HTSSIP/vignettes/)
+
+##### Methanol and Control
+
+windows will be:
+
++ 1.787 - 1.798
++ 1.790 - 1.803
++ 1.795 - 1.808
+
+```{r bd-shifts, message=FALSE, error=FALSE, warning=FALSE, eval=FALSE}
+wmean1 = BD_shift(physeq_S2D2_l[[2]], nperm=20,ex="Treatment=='Control'", perm_method='overlap',a=0.1, weighted=TRUE, normalized=FALSE)
+cat('Subset:', names(physeq_S2D2_l)[2], '\n')
+
+wmean1_m = wmean1 %>%
+  mutate(BD_shift = wmean_dist > wmean_dist_CI_high) %>%
+  arrange(BD_min.x) %>%
+  mutate(window = (BD_shift == TRUE & lag(BD_shift) == TRUE & lag(BD_shift, 2) == TRUE) |
+                  (BD_shift == TRUE & lag(BD_shift) == TRUE & lead(BD_shift) == TRUE) |
+                  (BD_shift == TRUE & lead(BD_shift) == TRUE & lead(BD_shift, 2) == TRUE),
+         BD_shift = BD_shift == TRUE & window == TRUE,
+         BD_shift = ifelse(is.na(BD_shift), FALSE, BD_shift))
+
+wmean1_m %>% head(n=3)
+
+x_lab = bquote('Buoyant density (g '* ml^-1*')')
+y_lab = 'Weighted mean of\nweighted-Unifrac distances'
+ggplot(wmean1_m, aes(BD_min.x, wmean_dist)) +
+  geom_line(alpha=0.7) +
+  geom_linerange(aes(ymin=wmean_dist_CI_low,
+                     ymax=wmean_dist_CI_high),
+                 alpha=0.3) +
+  geom_point(aes(color=BD_shift)) +
+  scale_color_discrete('Gradient\nfraction\nin BD shift\nwindow?') +
+  labs(x=x_lab, y=y_lab, title='Beta diversity of 13C-Methanol relative to 12C-Con') +
+  theme_bw() 
+
+
+```
+
+
+##### Acetate
+```{r bdshift2, message=FALSE, error=FALSE, warning=FALSE, eval=FAlSE}
+
+wmean1 = BD_shift(physeq_S2D2_l[[1]], nperm=20,ex="Treatment=='Control'", perm_method='overlap')
+cat('Subset:', names(physeq_S2D2_l)[1], '\n')
+
+wmean1_m = wmean1 %>%
+  mutate(BD_shift = wmean_dist > wmean_dist_CI_high) %>%
+  arrange(BD_min.x) %>%
+  mutate(window = (BD_shift == TRUE & lag(BD_shift) == TRUE & lag(BD_shift, 2) == TRUE) |
+                  (BD_shift == TRUE & lag(BD_shift) == TRUE & lead(BD_shift) == TRUE) |
+                  (BD_shift == TRUE & lead(BD_shift) == TRUE & lead(BD_shift, 2) == TRUE),
+         BD_shift = BD_shift == TRUE & window == TRUE,
+         BD_shift = ifelse(is.na(BD_shift), FALSE, BD_shift))
+
+wmean1_m %>% head(n=3)
+
+x_lab = bquote('Buoyant density (g '* ml^-1*')')
+y_lab = 'Weighted mean of\nweighted-Unifrac distances'
+ggplot(wmean1_m, aes(BD_min.x, wmean_dist)) +
+  geom_line(alpha=0.7) +
+  geom_linerange(aes(ymin=wmean_dist_CI_low,
+                     ymax=wmean_dist_CI_high),
+                 alpha=0.3) +
+  geom_point(aes(color=BD_shift)) +
+  scale_color_discrete('Gradient\nfraction\nin BD shift\nwindow?') +
+  labs(x=x_lab, y=y_lab, title='Beta diversity of 13C-Acetate relative to 12C-Con') +
+  theme_bw() 
+
+
+
+```
+
+### BD Beta Diversity Plots
+
+```{r, message=FALSE, error=FALSE, warning=FALSE}
+library(dplyr)
+#physeq_S2D2_l
+physeq_S2D2_l_df = SIP_betaDiv_ord(physeq_S2D2_l[[2]], parallel=FALSE, weighted=TRUE, normalized = FALSE)
+
+phyloseq_ord_plot(physeq_S2D2_l_df, point_size=as.numeric(physeq_S2D2_l_df$Buoyant_density), point_fill='Treatment')
+
+
+physeq_S2D2_l_df = SIP_betaDiv_ord(physeq_S2D2_l[[1]], parallel=FALSE, weighted=TRUE)
+phyloseq_ord_plot(physeq_S2D2_l_df, point_size=as.numeric(physeq_S2D2_l_df$Buoyant_density), point_fill='Treatment')
+
+```
+
+### Try Windows 
+
+#### Methanol HRSIP Genus
+windows will be:
+
++ 1.787 - 1.798
++ 1.790 - 1.803
++ 1.795 - 1.808
++ 1.803 - 1.808
+
+According to my settings, there are 11 incorporators 
+
+```{r, message=FALSE, error=FALSE, warning=FALSE}
+
+phyo_frac=subset_samples(phyo2, pch=="22")
+phyo_frac_gen=tax_glom(phyo_frac, taxrank="Genus")
+#input=otu_table(phyo_frac)
+#d.subset <- codaSeq.filter(input, samples.by.row=F,min.reads=2,min.prop	= 0.001)
+#d.subset <- codaSeq.filter(input, samples.by.row=F,min.occurrence	= 0.05)
+
+#OTU=otu_table(d.subset,taxa_are_rows = T)
+#phyo_frac=phyloseq(OTU,sample_data(phyo2),tax_table(phyo2),phy_tree(phyo2))
+
+params = get_treatment_params(phyo_frac_gen, c('Treatment', 'Timepoint'))
+
+params = dplyr::filter(params, Treatment!="Control")
+
+ex = "(Treatment=='Control' & Timepoint == '${Timepoint}') |  (Treatment=='${Treatment}' & Timepoint=='${Timepoint}') "
+#sample_data(phyo_frac)$Treatment <- relevel(as.factor(sample_data(phyo_frac)$Treatment) , ref = "5MC2")
+#sample_data(all)$Treatment <- relevel(as.factor(get_variable(all, "Treatment")), ref="5MC2")
+
+physeq_S2D2_g = phyloseq_subset(phyo_frac_gen, params, ex)
+physeq_S2D2_g
+
+density_windows=data.frame(density_min = c(1.787,1.795), density_max = c(1.805,1.805))
+padj_cutoff=0.1
+df_l2fc=HRSIP(physeq_S2D2_g[[2]], design=~Treatment, density_windows = density_windows, padj_cutoff = 0.1, sparsity_apply = 'heavy', sparsity_threshold = c(0,0.1,0.2))
+
+df_l2fc %>% 
+  filter(padj < padj_cutoff) %>%
+  group_by() %>%
+  summarize(n_incorp_OTUs = OTU %>% unique %>% length)
+
+
+df_l2fc_s = df_l2fc %>% 
+  filter(padj < padj_cutoff) %>%
+  mutate(Genus = gsub('^__', '', Genus)) %>%
+  group_by(Genus) %>%
+  summarize(n_incorp_OTUs = OTU %>% unique %>% length) %>%
+  ungroup()
+
+# plotting
+ggplot(df_l2fc_s, aes(Genus, n_incorp_OTUs)) +
+    geom_bar(stat='identity') +
+    labs(x='Phylum', y='Number of incorporators') +
+    theme_bw() +
+    theme(
+      axis.text.x = element_text(angle=45, hjust=1)
+    )
+```
+
+
+
+
+
+
+
+#### Methanol HRSIP
+windows will be:
+
++ 1.787 - 1.798
++ 1.790 - 1.803
++ 1.795 - 1.808
++ 1.803 - 1.808
+
+According to my settings, there are 11 incorporators 
+
+```{r}
+density_windows=data.frame(density_min = c(1.777,1.787,1.795), density_max = c(1.79,1.805,1.818))
+padj_cutoff=0.1
+df_l2fc=HRSIP(physeq_S2D2_l[[2]], design=~Treatment, density_windows = density_windows, padj_cutoff = 0.1, sparsity_apply = 'heavy', sparsity_threshold = c(0,0.1,0.2))
+
+df_l2fc %>% 
+  filter(padj < padj_cutoff) %>%
+  group_by() %>%
+  summarize(n_incorp_OTUs = OTU %>% unique %>% length)
+
+
+df_l2fc_s = df_l2fc %>% 
+  filter(padj < padj_cutoff) %>%
+  mutate(Family = gsub('^__', '', Family)) %>%
+  group_by(Family) %>%
+  summarize(n_incorp_OTUs = OTU %>% unique %>% length) %>%
+  ungroup()
+
+# plotting
+ggplot(df_l2fc_s, aes(Family, n_incorp_OTUs)) +
+    geom_bar(stat='identity') +
+    labs(x='Phylum', y='Number of incorporators') +
+    theme_bw() +
+    theme(
+      axis.text.x = element_text(angle=45, hjust=1)
+    )
+```
+
+
+
+
+##### 13C Incoporators
+
+###### Strain c4216c5dba3e68bf695ce4ba87609679
+[Matches to Cypionkella sinensis Y1R2-4](https://bacdive.dsmz.de/strain/141057)
+
+```{r c13-a, warning=FALSE, message=FALSE, error=FALSE, dpi=300}
+
+sub=subset_taxa(physeq_S2D2_l[[2]], strain=="c4216c5dba3e68bf695ce4ba87609679")
+
+
+plot(sample_data(subset_samples(sub, Treatment=="Control"))$Buoyant_density, 
+     log(otu_table(subset_samples(sub, Treatment=="Control"))+1), type='o', col="gray70", 
+     pch=21, bg="gray70", ylim=c(0,20), xlim=c(1.76, 1.82),
+     xlab="Buoyant Density", ylab="Log Rel Abund ASV",)
+lines(sample_data(subset_samples(sub, Treatment=="Methanol"))$Buoyant_density, 
+      log(otu_table(subset_samples(sub, Treatment=="Methanol"))+1), type='o', 
+      pch=21, col="#a44f9a", bg="#a44f9a")
+```
+
+###### Strain cf8612188c36a1bb1ca8be8d338e4383
+[Matches to Pseudogemmobacter bohemicus strain Cd-10, can do pretty much everything](https://bacdive.dsmz.de/strain/159090)
+
+```{r c13-b, warning=FALSE, message=FALSE, error=FALSE, dpi=300}
+
+sub=subset_taxa(physeq_S2D2_l[[2]], strain=="cf8612188c36a1bb1ca8be8d338e4383")
+
+
+plot(sample_data(subset_samples(sub, Treatment=="Control"))$Buoyant_density, 
+     log(otu_table(subset_samples(sub, Treatment=="Control"))+1), type='o', col="gray70", 
+     pch=21, bg="gray70", ylim=c(0,20), xlim=c(1.76, 1.82),
+     xlab="Buoyant Density", ylab="Log Rel Abund ASV",)
+lines(sample_data(subset_samples(sub, Treatment=="Methanol"))$Buoyant_density, 
+      log(otu_table(subset_samples(sub, Treatment=="Methanol"))+1), type='o', 
+      pch=21, col="#a44f9a", bg="#a44f9a")
+```
+
+
+###### Strain ec6873c66fb99a1ab54dfe11fa0d5949
+[Matches to Sulfitobacter litoralis DSM 17584](https://bacdive.dsmz.de/strain/13797)
+
+```{r c13-c, warning=FALSE, message=FALSE, error=FALSE, dpi=300}
+
+sub=subset_taxa(physeq_S2D2_l[[2]], strain=="ec6873c66fb99a1ab54dfe11fa0d5949")
+
+
+plot(sample_data(subset_samples(sub, Treatment=="Control"))$Buoyant_density, 
+     log(otu_table(subset_samples(sub, Treatment=="Control"))+1), type='o', col="gray70", 
+     pch=21, bg="gray70", ylim=c(0,20), xlim=c(1.76, 1.82),
+     xlab="Buoyant Density", ylab="Log Rel Abund ASV",)
+lines(sample_data(subset_samples(sub, Treatment=="Methanol"))$Buoyant_density, 
+      log(otu_table(subset_samples(sub, Treatment=="Methanol"))+1), type='o', 
+      pch=21, col="#a44f9a", bg="#a44f9a")
+```
+
+
+###### Strain 746729798909e5ca7d471db105995663
+  Alphaproteobacteria  Rhodobacteraceae
+  [Matches to this strain Gemmobacter nectariphilus](https://www.dsmz.de/collection/catalogue/details/culture/DSM-15620)
+
+```{r c13-2, warning=FALSE, message=FALSE, error=FALSE, dpi=300}
+
+sub=subset_taxa(physeq_S2D2_l[[2]], strain=="746729798909e5ca7d471db105995663")
+
+
+plot(sample_data(subset_samples(sub, Treatment=="Control"))$Buoyant_density, 
+     log(otu_table(subset_samples(sub, Treatment=="Control"))+1), type='o', col="gray70", 
+     pch=21, bg="gray70", ylim=c(0,20), xlim=c(1.76, 1.82),
+     xlab="Buoyant Density", ylab="Log Rel Abund ASV",)
+lines(sample_data(subset_samples(sub, Treatment=="Methanol"))$Buoyant_density, 
+      log(otu_table(subset_samples(sub, Treatment=="Methanol"))+1), type='o', 
+      pch=21, col="#a44f9a", bg="#a44f9a")
+```
+
+
+###### Strain 90aadf10af37c1b552ec5541e32c3ccf
+  Alphaproteobacteria  Rhodobacteraceae
+[Matches to this Cypionkella aquatica strain DC2N1-10, formerly Pseudorhodobacter aquatica](https://bacdive.dsmz.de/strain/141058)
+
+```{r c13-3, warning=FALSE, message=FALSE, error=FALSE, dpi=300}
+
+sub=subset_taxa(physeq_S2D2_l[[2]], strain=="90aadf10af37c1b552ec5541e32c3ccf")
+
+
+plot(sample_data(subset_samples(sub, Treatment=="Control"))$Buoyant_density, 
+     log(otu_table(subset_samples(sub, Treatment=="Control"))+1), type='o', col="gray70", 
+     pch=21, bg="gray70", ylim=c(0,20), xlim=c(1.76, 1.82),
+     xlab="Buoyant Density", ylab="Log Rel Abund ASV",)
+lines(sample_data(subset_samples(sub, Treatment=="Methanol"))$Buoyant_density, 
+      log(otu_table(subset_samples(sub, Treatment=="Methanol"))+1), type='o', 
+      pch=21, col="#a44f9a", bg="#a44f9a")
+```
+
+
+### Methanol heavy_sip
+101 Incorporators
+```{r}
+density_windows=data.frame(density_min = c(1.787,1.795), density_max = c(1.805,1.805))
+padj_cutoff=0.1
+
+hev=heavy_SIP(physeq_S2D2_l[[2]], light_window = c(1.769, 1.798), 
+              heavy_window = c(1.798, 1.808), comparison="H-v-H",
+              ex="Treatment=='Methanol'")
+
+
+hev$statistic %>% table
+#write.csv(hev,'heavysip_met.csv')
+
+```
+
+#### Acetate 
+windows will be:
+
++ 1.787 - 1.798
++ 1.790 - 1.803
++ 1.795 - 1.808
++ 1.803 - 1.808
+
+According to my settings, there are 11 incorporators 
+
+```{r}
+density_windows=data.frame(density_min = c(1.777), density_max = c(1.821))
+padj_cutoff=0.1
+df_l2fc=HRSIP(physeq_S2D2_l[[1]], design=~Treatment, density_windows = density_windows, padj_cutoff = 0.1, sparsity_apply = 'all', sparsity_threshold = c(0,0.1,0.2))
+
+df_l2fc %>% 
+  filter(padj < padj_cutoff) %>%
+  group_by() %>%
+  summarize(n_incorp_OTUs = OTU %>% unique %>% length)
+
+
+df_l2fc_s = df_l2fc %>% 
+  filter(padj < padj_cutoff) %>%
+  mutate(Family = gsub('^__', '', Family)) %>%
+  group_by(Family) %>%
+  summarize(n_incorp_OTUs = OTU %>% unique %>% length) %>%
+  ungroup()
+
+# plotting
+ggplot(df_l2fc_s, aes(Family, n_incorp_OTUs)) +
+    geom_bar(stat='identity') +
+    labs(x='Phylum', y='Number of incorporators') +
+    theme_bw() +
+    theme(
+      axis.text.x = element_text(angle=45, hjust=1)
+    )
+```
+
+
+
+
+
+
+
