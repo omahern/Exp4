@@ -5,6 +5,8 @@ dim(qpcr)
 qpcr_sub=subset(qpcr, Buckley > 1.74)
 dim(qpcr_sub)
 
+
+
 sub <- function(df, selection){
   df_out <- df %>% 
     filter(MC %in% c("MC1",selection))}
